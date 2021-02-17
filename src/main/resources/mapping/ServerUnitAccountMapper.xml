@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.ServerUnitAccountMapper">
+    <resultMap id="BaseResultMap" type="com.example.design.entity.ServerUnitAccount">
+        <id column="server_unit_account_id" jdbcType="INTEGER" property="serverUnitAccountId"/>
+        <result column="server_unit_company_id" jdbcType="INTEGER" property="serverUnitCompanyId"/>
+        <result column="server_unit_account_account" jdbcType="VARCHAR" property="serverUnitAccountAccount"/>
+        <result column="server_unit_account_password" jdbcType="VARCHAR" property="serverUnitAccountPassword"/>
+        <result column="server_unit_account_email" jdbcType="VARCHAR" property="serverUnitAccountEmail"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from server_unit_account
+        where server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
+    </delete>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select server_unit_account_id,
+               server_unit_company_id,
+               server_unit_account_account,
+               server_unit_account_password,
+               server_unit_account_email
+        from server_unit_account
+        where server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select server_unit_account_id,
+               server_unit_company_id,
+               server_unit_account_account,
+               server_unit_account_password,
+               server_unit_account_email
+        from server_unit_account
+    </select>
+
+    <select id="selectByAccount" resultMap="BaseResultMap">
+        select server_unit_account_id,
+               server_unit_company_id,
+               server_unit_account_account,
+               server_unit_account_password,
+               server_unit_account_email
+        from server_unit_account
+        where server_unit_account_account = #{account,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="com.example.design.entity.ServerUnitAccount">
+        <selectKey keyProperty="serverUnitAccountId" order="AFTER" resultType="java.lang.Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into server_unit_account (server_unit_account_id, server_unit_company_id,
+        server_unit_account_account, server_unit_account_password,
+        server_unit_account_email)
+        values (#{serverUnitAccountId,jdbcType=INTEGER}, #{serverUnitCompanyId,jdbcType=INTEGER},
+        #{serverUnitAccountAccount,jdbcType=VARCHAR}, #{serverUnitAccountPassword,jdbcType=VARCHAR},
+        #{serverUnitAccountEmail,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.example.design.entity.ServerUnitAccount">
+        update server_unit_account
+        set server_unit_company_id       = #{serverUnitCompanyId,jdbcType=INTEGER},
+            server_unit_account_account  = #{serverUnitAccountAccount,jdbcType=VARCHAR},
+            server_unit_account_password = #{serverUnitAccountPassword,jdbcType=VARCHAR},
+            server_unit_account_email    = #{serverUnitAccountEmail,jdbcType=VARCHAR}
+        where server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
+    </update>
+</mapper>

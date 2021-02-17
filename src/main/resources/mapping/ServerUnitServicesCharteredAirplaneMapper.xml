@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.ServerUnitServicesCharteredAirplaneMapper">
+
+  <resultMap id="BaseResultMap" type="com.example.design.entity.ServerUnitServicesCharteredAirplane">
+    <id column="server_unit_services_chartered_airplane_id" jdbcType="INTEGER" property="serverUnitServicesCharteredAirplaneId" />
+    <result column="server_unit_services_id" jdbcType="INTEGER" property="serverUnitServicesId" />
+    <result column="server_unit_services_chartered_airplane_start_address" jdbcType="VARCHAR" property="serverUnitServicesCharteredAirplaneStartAddress" />
+    <result column="server_unit_services_chartered_airplane_end_address" jdbcType="VARCHAR" property="serverUnitServicesCharteredAirplaneEndAddress" />
+    <result column="server_unit_services_chartered_airplane_aircraft_model" jdbcType="VARCHAR" property="serverUnitServicesCharteredAirplaneAircraftModel" />
+    <result column="server_unit_services_chartered_airplane_seats_num" jdbcType="VARCHAR" property="serverUnitServicesCharteredAirplaneSeatsNum" />
+    <result column="server_unit_services_chartered_airplane_boarding_location" jdbcType="VARCHAR" property="serverUnitServicesCharteredAirplaneBoardingLocation" />
+    <result column="server_unit_services_chartered_airplane_price" jdbcType="VARCHAR" property="serverUnitServicesCharteredAirplanePrice" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from server_unit_services_chartered_airplane
+    where server_unit_services_chartered_airplane_id = #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.design.entity.ServerUnitServicesCharteredAirplane">
+    <selectKey keyProperty="serverUnitServicesCharteredAirplaneId" order="AFTER" resultType="java.lang.Integer">
+      select last_insert_id()
+    </selectKey>
+insert into server_unit_services_chartered_airplane (server_unit_services_chartered_airplane_id, server_unit_services_id,
+      server_unit_services_chartered_airplane_start_address, server_unit_services_chartered_airplane_end_address, 
+      server_unit_services_chartered_airplane_aircraft_model, server_unit_services_chartered_airplane_seats_num, 
+      server_unit_services_chartered_airplane_boarding_location, server_unit_services_chartered_airplane_price
+      )
+    values (#{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER}, #{serverUnitServicesId,jdbcType=INTEGER}, 
+      #{serverUnitServicesCharteredAirplaneStartAddress,jdbcType=VARCHAR}, #{serverUnitServicesCharteredAirplaneEndAddress,jdbcType=VARCHAR}, 
+      #{serverUnitServicesCharteredAirplaneAircraftModel,jdbcType=VARCHAR}, #{serverUnitServicesCharteredAirplaneSeatsNum,jdbcType=VARCHAR}, 
+      #{serverUnitServicesCharteredAirplaneBoardingLocation,jdbcType=VARCHAR}, #{serverUnitServicesCharteredAirplanePrice,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.design.entity.ServerUnitServicesCharteredAirplane">
+    update server_unit_services_chartered_airplane
+    set server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER},
+      server_unit_services_chartered_airplane_start_address = #{serverUnitServicesCharteredAirplaneStartAddress,jdbcType=VARCHAR},
+      server_unit_services_chartered_airplane_end_address = #{serverUnitServicesCharteredAirplaneEndAddress,jdbcType=VARCHAR},
+      server_unit_services_chartered_airplane_aircraft_model = #{serverUnitServicesCharteredAirplaneAircraftModel,jdbcType=VARCHAR},
+      server_unit_services_chartered_airplane_seats_num = #{serverUnitServicesCharteredAirplaneSeatsNum,jdbcType=VARCHAR},
+      server_unit_services_chartered_airplane_boarding_location = #{serverUnitServicesCharteredAirplaneBoardingLocation,jdbcType=VARCHAR},
+      server_unit_services_chartered_airplane_price = #{serverUnitServicesCharteredAirplanePrice,jdbcType=VARCHAR}
+    where server_unit_services_chartered_airplane_id = #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select server_unit_services_chartered_airplane_id, server_unit_services_id, server_unit_services_chartered_airplane_start_address, 
+    server_unit_services_chartered_airplane_end_address, server_unit_services_chartered_airplane_aircraft_model, 
+    server_unit_services_chartered_airplane_seats_num, server_unit_services_chartered_airplane_boarding_location, 
+    server_unit_services_chartered_airplane_price
+    from server_unit_services_chartered_airplane
+    where server_unit_services_chartered_airplane_id = #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select server_unit_services_chartered_airplane_id, server_unit_services_id, server_unit_services_chartered_airplane_start_address, 
+    server_unit_services_chartered_airplane_end_address, server_unit_services_chartered_airplane_aircraft_model, 
+    server_unit_services_chartered_airplane_seats_num, server_unit_services_chartered_airplane_boarding_location, 
+    server_unit_services_chartered_airplane_price
+    from server_unit_services_chartered_airplane
+  </select>
+</mapper>

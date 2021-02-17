@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.ServerUnitCompanyMapper">
+    <resultMap id="BaseResultMap" type="com.example.design.entity.ServerUnitCompany">
+        <id column="server_unit_company_id" jdbcType="INTEGER" property="serverUnitCompanyId"/>
+        <result column="server_unit_account_id" jdbcType="INTEGER" property="serverUnitAccountId"/>
+        <result column="server_unit_company_name" jdbcType="VARCHAR" property="serverUnitCompanyName"/>
+        <result column="server_unit_company_base" jdbcType="VARCHAR" property="serverUnitCompanyBase"/>
+        <result column="server_unit_company_airport" jdbcType="VARCHAR" property="serverUnitCompanyAirport"/>
+        <result column="server_unit_company_type" jdbcType="VARCHAR" property="serverUnitCompanyType"/>
+        <result column="server_unit_company_capital" jdbcType="VARCHAR" property="serverUnitCompanyCapital"/>
+        <result column="server_unit_company_legal_representative_name" jdbcType="VARCHAR"
+                property="serverUnitCompanyLegalRepresentativeName"/>
+        <result column="server_unit_company_legal_representative_phone" jdbcType="VARCHAR"
+                property="serverUnitCompanyLegalRepresentativePhone"/>
+        <result column="server_unit_company_validity_term" jdbcType="VARCHAR" property="serverUnitCompanyValidityTerm"/>
+        <result column="server_unit_company_scope" jdbcType="VARCHAR" property="serverUnitCompanyScope"/>
+        <result column="server_unit_company_audit_status" jdbcType="VARCHAR" property="serverUnitCompanyAuditStatus"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from server_unit_company
+        where server_unit_company_id = #{serverUnitCompanyId,jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.example.design.entity.ServerUnitCompany">
+        update server_unit_company
+        set server_unit_account_id                         = #{serverUnitAccountId,jdbcType=INTEGER},
+            server_unit_company_name                       = #{serverUnitCompanyName,jdbcType=VARCHAR},
+            server_unit_company_base                       = #{serverUnitCompanyBase,jdbcType=VARCHAR},
+            server_unit_company_airport                    = #{serverUnitCompanyAirport,jdbcType=VARCHAR},
+            server_unit_company_type                       = #{serverUnitCompanyType,jdbcType=VARCHAR},
+            server_unit_company_capital                    = #{serverUnitCompanyCapital,jdbcType=VARCHAR},
+            server_unit_company_legal_representative_name  = #{serverUnitCompanyLegalRepresentativeName,jdbcType=VARCHAR},
+            server_unit_company_legal_representative_phone = #{serverUnitCompanyLegalRepresentativePhone,jdbcType=VARCHAR},
+            server_unit_company_validity_term              = #{serverUnitCompanyValidityTerm,jdbcType=VARCHAR},
+            server_unit_company_scope                      = #{serverUnitCompanyScope,jdbcType=VARCHAR},
+            server_unit_company_audit_status               = #{serverUnitCompanyAuditStatus,jdbcType=VARCHAR}
+        where server_unit_company_id = #{serverUnitCompanyId,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select server_unit_company_id,
+               server_unit_account_id,
+               server_unit_company_name,
+               server_unit_company_base,
+               server_unit_company_airport,
+               server_unit_company_type,
+               server_unit_company_capital,
+               server_unit_company_legal_representative_name,
+               server_unit_company_legal_representative_phone,
+               server_unit_company_validity_term,
+               server_unit_company_scope,
+               server_unit_company_audit_status
+        from server_unit_company
+        where server_unit_company_id = #{serverUnitCompanyId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select server_unit_company_id,
+               server_unit_account_id,
+               server_unit_company_name,
+               server_unit_company_base,
+               server_unit_company_airport,
+               server_unit_company_type,
+               server_unit_company_capital,
+               server_unit_company_legal_representative_name,
+               server_unit_company_legal_representative_phone,
+               server_unit_company_validity_term,
+               server_unit_company_scope,
+               server_unit_company_audit_status
+        from server_unit_company
+    </select>
+
+    <insert id="insert" parameterType="com.example.design.entity.ServerUnitCompany">
+        <selectKey keyProperty="serverUnitCompanyId" order="AFTER" resultType="java.lang.Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into server_unit_company (server_unit_company_id, server_unit_account_id,
+        server_unit_company_name, server_unit_company_base,
+        server_unit_company_airport, server_unit_company_type,
+        server_unit_company_capital, server_unit_company_legal_representative_name,
+        server_unit_company_legal_representative_phone, server_unit_company_validity_term,
+        server_unit_company_scope, server_unit_company_audit_status
+        )
+        values (#{serverUnitCompanyId,jdbcType=INTEGER}, #{serverUnitAccountId,jdbcType=INTEGER},
+        #{serverUnitCompanyName,jdbcType=VARCHAR}, #{serverUnitCompanyBase,jdbcType=VARCHAR},
+        #{serverUnitCompanyAirport,jdbcType=VARCHAR}, #{serverUnitCompanyType,jdbcType=VARCHAR},
+        #{serverUnitCompanyCapital,jdbcType=VARCHAR}, #{serverUnitCompanyLegalRepresentativeName,jdbcType=VARCHAR},
+        #{serverUnitCompanyLegalRepresentativePhone,jdbcType=VARCHAR},
+        #{serverUnitCompanyValidityTerm,jdbcType=VARCHAR},
+        #{serverUnitCompanyScope,jdbcType=VARCHAR}, #{serverUnitCompanyAuditStatus,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.design.entity.ServerUnitCompany">
+        update server_unit_company
+        <set>
+            <if test="serverUnitCompanyName != null">
+                server_unit_company_name = #{serverUnitCompanyName,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyBase != null">
+                server_unit_company_base = #{serverUnitCompanyBase,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyAirport != null">
+                server_unit_company_airport = #{serverUnitCompanyAirport,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyType != null">
+                server_unit_company_type = #{serverUnitCompanyType,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyCapital != null">
+                server_unit_company_capital = #{serverUnitCompanyCapital,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyLegalRepresentativeName != null">
+                server_unit_company_legal_representative_name =
+                #{serverUnitCompanyLegalRepresentativeName,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyLegalRepresentativePhone != null">
+                server_unit_company_legal_representative_phone =
+                #{serverUnitCompanyLegalRepresentativePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyValidityTerm != null">
+                server_unit_company_validity_term = #{serverUnitCompanyValidityTerm,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitCompanyScope != null">
+                server_unit_company_scope = #{serverUnitCompanyScope,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where server_unit_company_id = #{serverUnitCompanyId,jdbcType=INTEGER}
+    </update>
+</mapper>

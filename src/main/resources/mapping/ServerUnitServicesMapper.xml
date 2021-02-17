@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.ServerUnitServicesMapper">
+    <resultMap id="BaseResultMap" type="com.example.design.entity.ServerUnitServices">
+        <id column="server_unit_services_id" jdbcType="INTEGER" property="serverUnitServicesId"/>
+        <result column="server_unit_account_id" jdbcType="INTEGER" property="serverUnitAccountId"/>
+        <result column="server_unit_services_helicopter_rental_id" jdbcType="INTEGER"
+                property="serverUnitServicesHelicopterRentalId"/>
+        <result column="users_orders_id" jdbcType="INTEGER" property="usersOrdersId"/>
+        <result column="server_unit_services_parachute_flight_id" jdbcType="INTEGER"
+                property="serverUnitServicesParachuteFlightId"/>
+        <result column="server_unit_services_air_tour_id" jdbcType="INTEGER" property="serverUnitServicesAirTourId"/>
+        <result column="server_unit_services_chartered_airplane_id" jdbcType="INTEGER"
+                property="serverUnitServicesCharteredAirplaneId"/>
+        <result column="server_unit_services_artificial_rainfall_id" jdbcType="INTEGER"
+                property="serverUnitServicesArtificialRainfallId"/>
+        <result column="server_unit_services_title" jdbcType="VARCHAR" property="serverUnitServicesTitle"/>
+        <result column="server_unit_services_img" jdbcType="VARCHAR" property="serverUnitServicesImg"/>
+        <result column="server_unit_services_detail" jdbcType="VARCHAR" property="serverUnitServicesDetail"/>
+        <result column="server_unit_services_type" jdbcType="VARCHAR" property="serverUnitServicesType"/>
+        <result column="server_unit_services_audit_status" jdbcType="VARCHAR" property="serverUnitServicesAuditStatus"/>
+        <result column="server_unit_services_release_time" jdbcType="VARCHAR" property="serverUnitServicesReleaseTime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from server_unit_services
+        where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.design.entity.ServerUnitServices">
+        <selectKey keyProperty="serverUnitServicesId" order="AFTER" resultType="java.lang.Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into server_unit_services (server_unit_services_id, server_unit_account_id,
+        server_unit_services_helicopter_rental_id, users_orders_id,
+        server_unit_services_parachute_flight_id, server_unit_services_air_tour_id,
+        server_unit_services_chartered_airplane_id, server_unit_services_artificial_rainfall_id,
+        server_unit_services_title, server_unit_services_img,
+        server_unit_services_detail, server_unit_services_type,
+        server_unit_services_audit_status, server_unit_services_release_time
+        )
+        values (#{serverUnitServicesId,jdbcType=INTEGER}, #{serverUnitAccountId,jdbcType=INTEGER},
+        #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER}, #{usersOrdersId,jdbcType=INTEGER},
+        #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER}, #{serverUnitServicesAirTourId,jdbcType=INTEGER},
+        #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER},
+        #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER},
+        #{serverUnitServicesTitle,jdbcType=VARCHAR}, #{serverUnitServicesImg,jdbcType=VARCHAR},
+        #{serverUnitServicesDetail,jdbcType=VARCHAR}, #{serverUnitServicesType,jdbcType=VARCHAR},
+        #{serverUnitServicesAuditStatus,jdbcType=VARCHAR}, now()
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.example.design.entity.ServerUnitServices">
+        update server_unit_services
+        set server_unit_account_id                      = #{serverUnitAccountId,jdbcType=INTEGER},
+            server_unit_services_helicopter_rental_id   = #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER},
+            users_orders_id                             = #{usersOrdersId,jdbcType=INTEGER},
+            server_unit_services_parachute_flight_id    = #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},
+            server_unit_services_air_tour_id            = #{serverUnitServicesAirTourId,jdbcType=INTEGER},
+            server_unit_services_chartered_airplane_id  = #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER},
+            server_unit_services_artificial_rainfall_id = #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER},
+            server_unit_services_title                  = #{serverUnitServicesTitle,jdbcType=VARCHAR},
+            server_unit_services_img                    = #{serverUnitServicesImg,jdbcType=VARCHAR},
+            server_unit_services_detail                 = #{serverUnitServicesDetail,jdbcType=VARCHAR},
+            server_unit_services_type                   = #{serverUnitServicesType,jdbcType=VARCHAR},
+            server_unit_services_audit_status           = #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
+            server_unit_services_release_time           = #{serverUnitServicesReleaseTime,jdbcType=VARCHAR}
+        where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.design.entity.ServerUnitServices">
+        update server_unit_services
+        <set>
+            <if test="serverUnitAccountId != null">
+                server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="serverUnitServicesHelicopterRentalId != null">
+                server_unit_services_helicopter_rental_id = #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER},
+            </if>
+            <if test="usersOrdersId != null">
+                users_orders_id = #{usersOrdersId,jdbcType=INTEGER},
+            </if>
+            <if test="serverUnitServicesParachuteFlightId != null">
+                server_unit_services_parachute_flight_id = #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},
+            </if>
+            <if test="serverUnitServicesAirTourId != null">
+                server_unit_services_air_tour_id = #{serverUnitServicesAirTourId,jdbcType=INTEGER},
+            </if>
+            <if test="serverUnitServicesCharteredAirplaneId != null">
+                server_unit_services_chartered_airplane_id = #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER},
+            </if>
+            <if test="serverUnitServicesArtificialRainfallId != null">
+                server_unit_services_artificial_rainfall_id =
+                #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER},
+            </if>
+            <if test="serverUnitServicesTitle != null">
+                server_unit_services_title = #{serverUnitServicesTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitServicesImg != null">
+                server_unit_services_img = #{serverUnitServicesImg,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitServicesDetail != null">
+                server_unit_services_detail = #{serverUnitServicesDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitServicesType != null">
+                server_unit_services_type = #{serverUnitServicesType,jdbcType=VARCHAR},
+            </if>
+            <if test="serverUnitServicesAuditStatus != null">
+                server_unit_services_audit_status = #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select server_unit_services_id,
+               server_unit_account_id,
+               server_unit_services_helicopter_rental_id,
+               users_orders_id,
+               server_unit_services_parachute_flight_id,
+               server_unit_services_air_tour_id,
+               server_unit_services_chartered_airplane_id,
+               server_unit_services_artificial_rainfall_id,
+               server_unit_services_title,
+               server_unit_services_img,
+               server_unit_services_detail,
+               server_unit_services_type,
+               server_unit_services_audit_status,
+               server_unit_services_release_time
+        from server_unit_services
+        where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select server_unit_services_id,
+               server_unit_account_id,
+               server_unit_services_helicopter_rental_id,
+               users_orders_id,
+               server_unit_services_parachute_flight_id,
+               server_unit_services_air_tour_id,
+               server_unit_services_chartered_airplane_id,
+               server_unit_services_artificial_rainfall_id,
+               server_unit_services_title,
+               server_unit_services_img,
+               server_unit_services_detail,
+               server_unit_services_type,
+               server_unit_services_audit_status,
+               server_unit_services_release_time
+        from server_unit_services
+    </select>
+</mapper>
