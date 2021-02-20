@@ -3,15 +3,28 @@ package com.example.design.controller;
 import com.example.design.DesignApplication;
 import com.example.design.common.ErrorCode;
 import com.example.design.common.MyResponseBody;
+import com.example.design.common.UploadUtils;
 import com.example.design.entity.*;
 import com.example.design.entity.requestbean.ServerUnitLogin;
 import com.example.design.entity.requestbean.ServerUnitRegister;
 import com.example.design.entity.requestbean.ServerUnitServicesAdd;
+import com.example.design.entity.requestbean.ServerUnitServicesDetail;
+import com.example.design.entity.server.*;
 import com.example.design.service.*;
+import com.example.design.service.server.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/server")
@@ -134,16 +147,25 @@ public class ServerUnitController {
      */
     @PostMapping("/server/add")
     @ResponseBody
-    public Object addServer(@RequestBody ServerUnitServicesAdd addInfo) {
-        if (addInfo.getServerUnitServicesTitle() == null
-                || addInfo.getServerUnitServicesImg() == null
+    public Object addServer(@RequestParam MultipartFile file, ServerUnitServicesAdd addInfo) {
+        if (file.isEmpty()) {
+            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "服务图片不能为空");
+        }
+        String imgName = UploadUtils.uploadImg(file);
+        if (imgName == null) {
+            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "图片上传错误");
+        }
+
+        if (addInfo.getServerUnitAccountId() == null
+                || addInfo.getServerUnitServicesTitle() == null
                 || addInfo.getServerUnitServicesDetail() == null
                 || addInfo.getServerUnitServicesType() == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数未填写全");
         }
         ServerUnitServices services = new ServerUnitServices(
+                addInfo.getServerUnitAccountId(),
                 addInfo.getServerUnitServicesTitle(),
-                addInfo.getServerUnitServicesImg(),
+                imgName,
                 addInfo.getServerUnitServicesDetail(),
                 addInfo.getServerUnitServicesType(),
                 "待审核");
@@ -213,5 +235,195 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK");
     }
 
+    @GetMapping("/server/detail")
+    @ResponseBody
+    public Object getServer(@RequestParam int id) {
+        ServerUnitServices services = serverUnitServicesService.select(id);
+        if (services == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id 不合法");
+        }
+        IServerUnitService iServerUnitService;
+        switch (services.getServerUnitServicesType()) {
+            case "空中游览":
+                iServerUnitService = serverUnitServicesAirTourService.select(services.getServerUnitServicesAirTourId());
+                break;
+            case "包机飞行":
+                iServerUnitService = serverUnitServicesCharteredAirplaneService.select(services.getServerUnitServicesCharteredAirplaneId());
+                break;
+            case "跳伞飞行":
+                iServerUnitService = serverUnitServicesParachuteFlightService.select(services.getServerUnitServicesParachuteFlightId());
+                break;
+            case "人工增雨":
+                iServerUnitService = serverUnitServicesArtificialRainfallService.select(services.getServerUnitServicesArtificialRainfallId());
+                break;
+            case "直升机出租":
+                iServerUnitService = serverUnitServicesHelicopterRentalService.select(services.getServerUnitServicesHelicopterRentalId());
+                break;
+            default:
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id错误");
+        }
+        return new MyResponseBody(200, "OK", new ServerUnitServicesDetail(services, iServerUnitService));
+    }
+
+    @PostMapping("/server/update")
+    @ResponseBody
+    public Object updateServer(@RequestParam(required = false) MultipartFile file, ServerUnitServicesAdd addInfo) {
+        if (file != null) {
+            String imgName = UploadUtils.uploadImg(file);
+            if (imgName == null) {
+                return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "图片上传错误");
+            }
+            addInfo.setServerUnitServicesImg(imgName);
+        }
+//        System.out.println(addInfo.getServerUnitServicesImg());
+
+        if (addInfo.getServerUnitServicesId() == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "必须附带服务id");
+        }
+        ServerUnitServices services = new ServerUnitServices(
+                addInfo.getServerUnitServicesId(),
+                addInfo.getServerUnitServicesTitle(),
+                addInfo.getServerUnitServicesImg(),
+                addInfo.getServerUnitServicesDetail(),
+                addInfo.getServerUnitServicesType(),
+                "待审核"
+        );
+        System.out.println(services.getServerUnitServicesImg());
+        serverUnitServicesService.update(services);
+        switch (addInfo.getServerUnitServicesType()) {
+            case "空中游览":
+                ServerUnitServicesAirTour airTour = new ServerUnitServicesAirTour(
+                        addInfo.getServerUnitServicesAirTourId(),
+                        addInfo.getServerUnitServicesAirTourSightseeingPlaces(),
+                        addInfo.getServerUnitServicesAirTourDuration(),
+                        addInfo.getServerUnitServicesAirTourAircraftModel(),
+                        addInfo.getServerUnitServicesAirTourNumberLimit(),
+                        addInfo.getServerUnitServicesAirTourBoardingLocation(),
+                        addInfo.getServerUnitServicesAirTourPrice()
+                );
+                serverUnitServicesAirTourService.update(airTour);
+                break;
+            case "包机飞行":
+                ServerUnitServicesCharteredAirplane charteredAirplane = new ServerUnitServicesCharteredAirplane(
+                        addInfo.getServerUnitServicesCharteredAirplaneId(),
+                        addInfo.getServerUnitServicesCharteredAirplaneStartAddress(),
+                        addInfo.getServerUnitServicesCharteredAirplaneEndAddress(),
+                        addInfo.getServerUnitServicesCharteredAirplaneAircraftModel(),
+                        addInfo.getServerUnitServicesCharteredAirplaneSeatsNum(),
+                        addInfo.getServerUnitServicesCharteredAirplaneBoardingLocation(),
+                        addInfo.getServerUnitServicesCharteredAirplanePrice()
+                );
+                serverUnitServicesCharteredAirplaneService.update(charteredAirplane);
+                break;
+            case "跳伞飞行":
+                ServerUnitServicesParachuteFlight serverUnitServicesParachuteFlight = new ServerUnitServicesParachuteFlight(
+                        addInfo.getServerUnitServicesParachuteFlightId(),
+                        addInfo.getServerUnitServicesParachuteFlightAddress(),
+                        addInfo.getServerUnitServicesParachuteFlightAircraftModel(),
+                        addInfo.getServerUnitServicesParachuteFlightPrice()
+                );
+                serverUnitServicesParachuteFlightService.update(serverUnitServicesParachuteFlight);
+                break;
+            case "人工增雨":
+                ServerUnitServicesArtificialRainfall artificialRainfall = new ServerUnitServicesArtificialRainfall(
+                        addInfo.getServerUnitServicesArtificialRainfallId(),
+                        addInfo.getServerUnitServicesArtificialRainfallAircraftModel(),
+                        addInfo.getServerUnitServicesArtificialRainfallCatalyzer(),
+                        addInfo.getServerUnitServicesArtificialRainfallMaxDose(),
+                        addInfo.getServerUnitServicesArtificialRainfallPrice(),
+                        addInfo.getServerUnitServicesArtificialRainfallPhone()
+                );
+                serverUnitServicesArtificialRainfallService.update(artificialRainfall);
+                break;
+            case "直升机出租":
+                ServerUnitServicesHelicopterRental helicopterRental = new ServerUnitServicesHelicopterRental(
+                        addInfo.getServerUnitServicesHelicopterRentalId(),
+                        addInfo.getServerUnitServicesHelicopterRentalAircraftModel(),
+                        addInfo.getServerUnitServicesHelicopterRentalPrice(),
+                        addInfo.getServerUnitServicesHelicopterRentalPhone()
+                );
+                serverUnitServicesHelicopterRentalService.update(helicopterRental);
+                break;
+            default:
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.DUPLICATE_ACCOUNT_NUMBER_DESCRIBE + "服务类型错误");
+        }
+        return new MyResponseBody(200, "OK");
+    }
+
+    @GetMapping("/server/list")
+    public Object getServerList(@RequestParam int accountId) {
+        List<ServerUnitServices> result = serverUnitServicesService.selectByAccountKey(accountId);
+        return new MyResponseBody(200, "OK", result);
+    }
+
+//    @GetMapping("/test/img")
+//    public Object uploadImg(@RequestParam MultipartFile file) {
+//        if (file.isEmpty()) {
+//            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "服务图片不能为空");
+//        }
+//        String imgName = UploadUtils.uploadImg(file);
+//        if (imgName == null) {
+//            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "图片上传错误");
+//        }
+//        return new MyResponseBody(200, "OK", imgName);
+//    }
+
+    @GetMapping("/server/deleteSingle")
+    public Object deleteServer(@RequestParam int serverId) {
+        delete(serverId);
+        return new MyResponseBody(200, "OK");
+    }
+
+    @Transactional
+    void delete(int serverId) {
+        ServerUnitServices services = serverUnitServicesService.select(serverId);
+        if (services == null) return;
+        serverUnitServicesService.delete(serverId);
+        switch (services.getServerUnitServicesType()) {
+            case "空中游览":
+//                serverUnitServicesAirTourService
+                serverUnitServicesAirTourService.delete(services.getServerUnitServicesAirTourId());
+                break;
+            case "包机飞行":
+//                serverUnitServicesCharteredAirplaneService
+                serverUnitServicesCharteredAirplaneService.delete(services.getServerUnitServicesCharteredAirplaneId());
+
+                break;
+            case "跳伞飞行":
+//                serverUnitServicesParachuteFlightService
+                serverUnitServicesParachuteFlightService.delete(services.getServerUnitServicesParachuteFlightId());
+
+                break;
+            case "人工增雨":
+//                serverUnitServicesArtificialRainfallService
+                serverUnitServicesArtificialRainfallService.delete(services.getServerUnitServicesArtificialRainfallId());
+
+                break;
+            case "直升机出租":
+//                serverUnitServicesHelicopterRentalService
+                serverUnitServicesHelicopterRentalService.delete(services.getServerUnitServicesHelicopterRentalId());
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    @GetMapping("/server/deleteList")
+    public Object deleteServer(@RequestParam(value = "serverIdList[]") List<Integer> serverIdList) {
+        for (int serverId : serverIdList) {
+            delete(serverId);
+        }
+        return new MyResponseBody(200, "OK");
+    }
+
+    @GetMapping("/server/search")
+    public Object search(@RequestParam int accountId, String param) {
+        if (param == null || "".equals(param)) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "查询参数错误");
+        }
+        List<ServerUnitServices> servicesList = serverUnitServicesService.selectByAccountKeyParam(accountId, param);
+        return new MyResponseBody(200, "OK", servicesList);
+    }
 
 }

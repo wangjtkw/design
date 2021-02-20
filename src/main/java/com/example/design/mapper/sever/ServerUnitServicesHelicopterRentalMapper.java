@@ -1,9 +1,10 @@
-package com.example.design.mapper;
+package com.example.design.mapper.sever;
 
-import com.example.design.entity.ServerUnitServicesHelicopterRental;
+import com.example.design.entity.server.ServerUnitServicesHelicopterRental;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public interface ServerUnitServicesHelicopterRentalMapper {
     int deleteByPrimaryKey(Integer serverUnitServicesHelicopterRentalId);
@@ -15,4 +16,7 @@ public interface ServerUnitServicesHelicopterRentalMapper {
     List<ServerUnitServicesHelicopterRental> selectAll();
 
     int updateByPrimaryKey(ServerUnitServicesHelicopterRental record);
+
+    int updateByPrimaryKeySelective(ServerUnitServicesHelicopterRental record);
+
 }

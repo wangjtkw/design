@@ -1,6 +1,11 @@
-package com.example.design.entity;
+package com.example.design.entity.server;
 
-public class ServerUnitServicesAirTour {
+import com.example.design.entity.IServerUnitService;
+
+/**
+ * 空中游览
+ */
+public class ServerUnitServicesAirTour implements IServerUnitService {
     private Integer serverUnitServicesAirTourId;
 
     private Integer serverUnitServicesId;
@@ -17,8 +22,8 @@ public class ServerUnitServicesAirTour {
 
     private String serverUnitServicesAirTourPrice;
 
-    public ServerUnitServicesAirTour(Integer serverUnitServicesId, String serverUnitServicesAirTourSightseeingPlaces, String serverUnitServicesAirTourDuration, String serverUnitServicesAirTourAircraftModel, String serverUnitServicesAirTourNumberLimit, String serverUnitServicesAirTourBoardingLocation, String serverUnitServicesAirTourPrice) {
-        this.serverUnitServicesId = serverUnitServicesId;
+    public ServerUnitServicesAirTour(Integer serverUnitServicesAirTourId, String serverUnitServicesAirTourSightseeingPlaces, String serverUnitServicesAirTourDuration, String serverUnitServicesAirTourAircraftModel, String serverUnitServicesAirTourNumberLimit, String serverUnitServicesAirTourBoardingLocation, String serverUnitServicesAirTourPrice) {
+        this.serverUnitServicesAirTourId = serverUnitServicesAirTourId;
         this.serverUnitServicesAirTourSightseeingPlaces = serverUnitServicesAirTourSightseeingPlaces;
         this.serverUnitServicesAirTourDuration = serverUnitServicesAirTourDuration;
         this.serverUnitServicesAirTourAircraftModel = serverUnitServicesAirTourAircraftModel;
@@ -26,6 +31,7 @@ public class ServerUnitServicesAirTour {
         this.serverUnitServicesAirTourBoardingLocation = serverUnitServicesAirTourBoardingLocation;
         this.serverUnitServicesAirTourPrice = serverUnitServicesAirTourPrice;
     }
+
 
     public Integer getServerUnitServicesAirTourId() {
         return serverUnitServicesAirTourId;

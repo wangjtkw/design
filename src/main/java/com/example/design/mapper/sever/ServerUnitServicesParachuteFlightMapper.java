@@ -1,9 +1,10 @@
-package com.example.design.mapper;
+package com.example.design.mapper.sever;
 
-import com.example.design.entity.ServerUnitServicesParachuteFlight;
+import com.example.design.entity.server.ServerUnitServicesParachuteFlight;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public interface ServerUnitServicesParachuteFlightMapper {
     int deleteByPrimaryKey(Integer serverUnitServicesParachuteFlightId);
@@ -15,4 +16,7 @@ public interface ServerUnitServicesParachuteFlightMapper {
     List<ServerUnitServicesParachuteFlight> selectAll();
 
     int updateByPrimaryKey(ServerUnitServicesParachuteFlight record);
+
+    int updateByPrimaryKeySelective(ServerUnitServicesParachuteFlight record);
+
 }

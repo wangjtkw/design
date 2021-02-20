@@ -1,9 +1,11 @@
-package com.example.design.entity;
+package com.example.design.entity.server;
+
+import com.example.design.entity.IServerUnitService;
 
 /**
  * 包机飞行
  */
-public class ServerUnitServicesCharteredAirplane {
+public class ServerUnitServicesCharteredAirplane implements IServerUnitService {
     private Integer serverUnitServicesCharteredAirplaneId;
 
     private Integer serverUnitServicesId;

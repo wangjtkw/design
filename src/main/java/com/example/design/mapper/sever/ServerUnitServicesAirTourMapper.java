@@ -1,6 +1,6 @@
-package com.example.design.mapper;
+package com.example.design.mapper.sever;
 
-import com.example.design.entity.ServerUnitServicesAirTour;
+import com.example.design.entity.server.ServerUnitServicesAirTour;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +16,6 @@ public interface ServerUnitServicesAirTourMapper {
     List<ServerUnitServicesAirTour> selectAll();
 
     int updateByPrimaryKey(ServerUnitServicesAirTour record);
+
+    int updateByPrimaryKeySelective(ServerUnitServicesAirTour record);
 }

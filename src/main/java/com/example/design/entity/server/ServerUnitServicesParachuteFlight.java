@@ -1,9 +1,11 @@
-package com.example.design.entity;
+package com.example.design.entity.server;
+
+import com.example.design.entity.IServerUnitService;
 
 /**
  * 跳伞飞行
  */
-public class ServerUnitServicesParachuteFlight {
+public class ServerUnitServicesParachuteFlight implements IServerUnitService {
     private Integer serverUnitServicesParachuteFlightId;
 
     private Integer serverUnitServicesId;
@@ -20,6 +22,7 @@ public class ServerUnitServicesParachuteFlight {
         this.serverUnitServicesParachuteFlightAircraftModel = serverUnitServicesParachuteFlightAircraftModel;
         this.serverUnitServicesParachuteFlightPrice = serverUnitServicesParachuteFlightPrice;
     }
+
 
     public ServerUnitServicesParachuteFlight() {
     }

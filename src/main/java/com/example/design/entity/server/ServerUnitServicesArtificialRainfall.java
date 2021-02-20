@@ -1,9 +1,11 @@
-package com.example.design.entity;
+package com.example.design.entity.server;
+
+import com.example.design.entity.IServerUnitService;
 
 /**
  * 人工降雨
  */
-public class ServerUnitServicesArtificialRainfall {
+public class ServerUnitServicesArtificialRainfall implements IServerUnitService {
     private Integer serverUnitServicesArtificialRainfallId;
 
     private Integer serverUnitServicesId;

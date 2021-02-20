@@ -1,4 +1,4 @@
-package com.example.design.entity;
+package com.example.design.entity.server;
 
 public class ServerUnitServices {
     private Integer serverUnitServicesId;
@@ -29,7 +29,8 @@ public class ServerUnitServices {
 
     private String serverUnitServicesReleaseTime;
 
-    public ServerUnitServices(String serverUnitServicesTitle, String serverUnitServicesImg, String serverUnitServicesDetail, String serverUnitServicesType, String serverUnitServicesAuditStatus) {
+    public ServerUnitServices(Integer serverUnitServicesId, String serverUnitServicesTitle, String serverUnitServicesImg, String serverUnitServicesDetail, String serverUnitServicesType, String serverUnitServicesAuditStatus) {
+        this.serverUnitServicesId = serverUnitServicesId;
         this.serverUnitServicesTitle = serverUnitServicesTitle;
         this.serverUnitServicesImg = serverUnitServicesImg;
         this.serverUnitServicesDetail = serverUnitServicesDetail;
@@ -39,6 +40,8 @@ public class ServerUnitServices {
 
     public ServerUnitServices() {
     }
+
+
 
     public Integer getServerUnitServicesId() {
         return serverUnitServicesId;

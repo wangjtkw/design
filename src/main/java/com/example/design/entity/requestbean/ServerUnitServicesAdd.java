@@ -2,6 +2,16 @@ package com.example.design.entity.requestbean;
 
 public class ServerUnitServicesAdd {
 
+    private Integer serverUnitServicesId;
+
+    public Integer getServerUnitServicesId() {
+        return serverUnitServicesId;
+    }
+
+    public void setServerUnitServicesId(Integer serverUnitServicesId) {
+        this.serverUnitServicesId = serverUnitServicesId;
+    }
+
     private Integer serverUnitAccountId;
 
     private Integer serverUnitServicesHelicopterRentalId;
