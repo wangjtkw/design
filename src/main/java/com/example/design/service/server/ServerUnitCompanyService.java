@@ -5,6 +5,8 @@ import com.example.design.mapper.sever.ServerUnitCompanyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ServerUnitCompanyService {
 
@@ -23,6 +25,13 @@ public class ServerUnitCompanyService {
         return serverUnitCompanyMapper.selectByServerId(serverId);
     }
 
+    public List<ServerUnitCompany> selectByStatus(String status) {
+        return serverUnitCompanyMapper.selectByStatus(status);
+    }
+
+    public List<ServerUnitCompany> selectByParam(String param) {
+        return serverUnitCompanyMapper.selectByParam(param);
+    }
 
     public void update(ServerUnitCompany company) {
         serverUnitCompanyMapper.updateByPrimaryKeySelective(company);

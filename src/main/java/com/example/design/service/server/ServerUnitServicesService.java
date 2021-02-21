@@ -29,6 +29,10 @@ public class ServerUnitServicesService {
         return servicesMapper.selectByAccountKey(account);
     }
 
+    public List<ServerUnitServices> selectByStatus(String status) {
+        return servicesMapper.selectByStatus(status);
+    }
+
     public void delete(int id) {
         servicesMapper.deleteByPrimaryKey(id);
     }

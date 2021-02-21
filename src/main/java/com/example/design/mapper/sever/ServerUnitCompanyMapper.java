@@ -15,6 +15,11 @@ public interface ServerUnitCompanyMapper {
 
     List<ServerUnitCompany> selectAll();
 
+    List<ServerUnitCompany> selectByStatus(String status);
+
+    List<ServerUnitCompany> selectByParam(String param);
+
+
     int updateByPrimaryKey(ServerUnitCompany record);
 
     int updateByPrimaryKeySelective(ServerUnitCompany record);

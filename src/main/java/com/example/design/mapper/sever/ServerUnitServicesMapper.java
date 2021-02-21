@@ -20,6 +20,8 @@ public interface ServerUnitServicesMapper {
 
     List<ServerUnitServices> selectByAccountKeyParam(@Param("serverUnitAccountId") Integer serverUnitAccountId, @Param("param") String param);
 
+    List<ServerUnitServices> selectByStatus(String status);
+
     List<ServerUnitServices> selectAll();
 
     int updateByPrimaryKey(ServerUnitServices record);

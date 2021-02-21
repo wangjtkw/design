@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.admin.AdministratorsAccountMapper">
+  <resultMap id="BaseResultMap" type="com.example.design.entity.admin.AdministratorsAccount">
+    <id column="administrators_account_id" jdbcType="INTEGER" property="administratorsAccountId" />
+    <result column="administrators_account_account" jdbcType="VARCHAR" property="administratorsAccountAccount" />
+    <result column="administrators_account_password" jdbcType="VARCHAR" property="administratorsAccountPassword" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from administrators_account
+    where administrators_account_id = #{administratorsAccountId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.design.entity.admin.AdministratorsAccount">
+    insert into administrators_account (administrators_account_id, administrators_account_account, 
+      administrators_account_password)
+    values (#{administratorsAccountId,jdbcType=INTEGER}, #{administratorsAccountAccount,jdbcType=VARCHAR}, 
+      #{administratorsAccountPassword,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.design.entity.admin.AdministratorsAccount">
+    update administrators_account
+    set administrators_account_account = #{administratorsAccountAccount,jdbcType=VARCHAR},
+      administrators_account_password = #{administratorsAccountPassword,jdbcType=VARCHAR}
+    where administrators_account_id = #{administratorsAccountId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select administrators_account_id, administrators_account_account, administrators_account_password
+    from administrators_account
+    where administrators_account_id = #{administratorsAccountId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByAccount" parameterType="String" resultMap="BaseResultMap">
+    select administrators_account_id, administrators_account_account, administrators_account_password
+    from administrators_account
+    where administrators_account_account = #{account,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select administrators_account_id, administrators_account_account, administrators_account_password
+    from administrators_account
+  </select>
+</mapper>

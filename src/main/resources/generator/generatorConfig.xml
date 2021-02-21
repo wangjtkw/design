@@ -53,11 +53,15 @@
         <!--        <table schema="ServerUnitServicesHelicopterRental" tableName="server_unit_services_helicopter_rental" enableCountByExample="false" enableDeleteByExample="false"-->
         <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
 
-        <table schema="UsersAccount" tableName="users_account" enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false"/>
+        <!--        <table schema="UsersAccount" tableName="users_account" enableCountByExample="false"-->
+        <!--               enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
 
-        <table schema="UsersEssentialInformation" tableName="users_essential_information" enableCountByExample="false"
+        <!--        <table schema="UsersEssentialInformation" tableName="users_essential_information" enableCountByExample="false"-->
+        <!--               enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+
+        <table schema="AdministratorsAccount" tableName="administrators_account" enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false"/>
 
