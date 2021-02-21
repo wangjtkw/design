@@ -189,6 +189,32 @@
         )
     </select>
 
+    <select id="selectByParam" parameterType="String" resultMap="BaseResultMap">
+        select server_unit_services_id,
+        server_unit_account_id,
+        server_unit_services_helicopter_rental_id,
+        server_unit_services_parachute_flight_id,
+        server_unit_services_air_tour_id,
+        server_unit_services_chartered_airplane_id,
+        server_unit_services_artificial_rainfall_id,
+        server_unit_services_title,
+        server_unit_services_img,
+        server_unit_services_detail,
+        server_unit_services_type,
+        server_unit_services_audit_status,
+        server_unit_services_release_time
+        from server_unit_services
+        where
+        <if test="param != null || param != ''">
+            <bind name="param" value="'%' + param + '%'"/>
+            server_unit_services_title like #{param}
+            or server_unit_services_detail like #{param}
+            or server_unit_services_type like #{param}
+            or server_unit_services_audit_status like #{param}
+            or server_unit_services_release_time like #{param}
+        </if>
+    </select>
+
     <select id="selectAllByType" parameterType="String" resultMap="BaseResultMap">
         select server_unit_services_id,
         server_unit_account_id,

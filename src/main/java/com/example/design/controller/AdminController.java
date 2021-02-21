@@ -173,8 +173,6 @@ public class AdminController {
     @GetMapping("/get/server/param")
     @ResponseBody
     public Object selectServer(String param) {
-        return new MyResponseBody(200, "OK", serverUnitCompanyService.selectByParam(param));
+        return new MyResponseBody(200, "OK", serverUnitServicesService.selectByParam(param));
     }
-
-
 }

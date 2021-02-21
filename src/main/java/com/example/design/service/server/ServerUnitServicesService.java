@@ -41,6 +41,11 @@ public class ServerUnitServicesService {
         return servicesMapper.selectByAccountKeyParam(account, param);
     }
 
+    public List<ServerUnitServices> selectByParam(String param) {
+        return servicesMapper.selectByParam(param);
+    }
+
+
     public List<ServerUnitServices> selectByType(String param) {
         return servicesMapper.selectAllByType(param);
     }
