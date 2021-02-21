@@ -18,8 +18,8 @@ public class ServerUnitServicesHelicopterRentalService {
         return helicopterRentalMapper.selectByPrimaryKey(id);
     }
 
-    public void update(ServerUnitServicesHelicopterRental services) {
-        helicopterRentalMapper.updateByPrimaryKeySelective(services);
+    public int update(ServerUnitServicesHelicopterRental services) {
+        return helicopterRentalMapper.updateByPrimaryKeySelective(services);
     }
 
     public void delete(int id) {

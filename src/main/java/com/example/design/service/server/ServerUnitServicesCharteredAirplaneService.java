@@ -19,8 +19,8 @@ public class ServerUnitServicesCharteredAirplaneService {
         return charteredAirplaneMapper.selectByPrimaryKey(id);
     }
 
-    public void update(ServerUnitServicesCharteredAirplane services) {
-        charteredAirplaneMapper.updateByPrimaryKeySelective(services);
+    public int update(ServerUnitServicesCharteredAirplane services) {
+        return charteredAirplaneMapper.updateByPrimaryKeySelective(services);
     }
 
     public void delete(int id) {

@@ -1,4 +1,4 @@
-package com.example.design.entity.requestbean;
+package com.example.design.entity.requestbean.server;
 
 public class ServerUnitLogin {
     private String serverUnitAccountAccount;

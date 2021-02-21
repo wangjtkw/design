@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="com.example.design.entity.server.ServerUnitServicesArtificialRainfall">
         <id column="server_unit_services_artificial_rainfall_id" jdbcType="INTEGER"
             property="serverUnitServicesArtificialRainfallId"/>
-        <result column="server_unit_services_id" jdbcType="INTEGER" property="serverUnitServicesId"/>
         <result column="server_unit_services_artificial_rainfall_aircraft_model" jdbcType="VARCHAR"
                 property="serverUnitServicesArtificialRainfallAircraftModel"/>
         <result column="server_unit_services_artificial_rainfall_catalyzer" jdbcType="VARCHAR"
@@ -26,21 +25,20 @@
             select last_insert_id()
         </selectKey>
         insert into server_unit_services_artificial_rainfall (server_unit_services_artificial_rainfall_id,
-        server_unit_services_id,
         server_unit_services_artificial_rainfall_aircraft_model, server_unit_services_artificial_rainfall_catalyzer,
         server_unit_services_artificial_rainfall_max_dose, server_unit_services_artificial_rainfall_price,
         server_unit_services_artificial_rainfall_phone)
-        values (#{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER}, #{serverUnitServicesId,jdbcType=INTEGER},
+        values (#{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER},
         #{serverUnitServicesArtificialRainfallAircraftModel,jdbcType=VARCHAR},
         #{serverUnitServicesArtificialRainfallCatalyzer,jdbcType=VARCHAR},
         #{serverUnitServicesArtificialRainfallMaxDose,jdbcType=VARCHAR},
         #{serverUnitServicesArtificialRainfallPrice,jdbcType=VARCHAR},
         #{serverUnitServicesArtificialRainfallPhone,jdbcType=VARCHAR})
     </insert>
-    <update id="updateByPrimaryKey" parameterType="com.example.design.entity.server.ServerUnitServicesArtificialRainfall">
+    <update id="updateByPrimaryKey"
+            parameterType="com.example.design.entity.server.ServerUnitServicesArtificialRainfall">
         update server_unit_services_artificial_rainfall
-        set server_unit_services_id                                 = #{serverUnitServicesId,jdbcType=INTEGER},
-            server_unit_services_artificial_rainfall_aircraft_model = #{serverUnitServicesArtificialRainfallAircraftModel,jdbcType=VARCHAR},
+        set server_unit_services_artificial_rainfall_aircraft_model = #{serverUnitServicesArtificialRainfallAircraftModel,jdbcType=VARCHAR},
             server_unit_services_artificial_rainfall_catalyzer      = #{serverUnitServicesArtificialRainfallCatalyzer,jdbcType=VARCHAR},
             server_unit_services_artificial_rainfall_max_dose       = #{serverUnitServicesArtificialRainfallMaxDose,jdbcType=VARCHAR},
             server_unit_services_artificial_rainfall_price          = #{serverUnitServicesArtificialRainfallPrice,jdbcType=VARCHAR},
@@ -51,9 +49,7 @@
             parameterType="com.example.design.entity.server.ServerUnitServicesArtificialRainfall">
         update server_unit_services_artificial_rainfall
         <set>
-            <if test="serverUnitServicesId != null">
-                server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER},
-            </if>
+
             <if test="serverUnitServicesArtificialRainfallAircraftModel != null">
                 server_unit_services_artificial_rainfall_aircraft_model =
                 #{serverUnitServicesArtificialRainfallAircraftModel,jdbcType=VARCHAR},
@@ -79,7 +75,7 @@
     </update>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select server_unit_services_artificial_rainfall_id,
-               server_unit_services_id,
+
                server_unit_services_artificial_rainfall_aircraft_model,
                server_unit_services_artificial_rainfall_catalyzer,
                server_unit_services_artificial_rainfall_max_dose,
@@ -90,7 +86,7 @@
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select server_unit_services_artificial_rainfall_id,
-               server_unit_services_id,
+
                server_unit_services_artificial_rainfall_aircraft_model,
                server_unit_services_artificial_rainfall_catalyzer,
                server_unit_services_artificial_rainfall_max_dose,

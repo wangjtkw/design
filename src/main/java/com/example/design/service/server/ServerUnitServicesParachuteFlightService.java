@@ -18,8 +18,8 @@ public class ServerUnitServicesParachuteFlightService {
         return parachuteFlightMapper.selectByPrimaryKey(id);
     }
 
-    public void update(ServerUnitServicesParachuteFlight services) {
-        parachuteFlightMapper.updateByPrimaryKeySelective(services);
+    public int update(ServerUnitServicesParachuteFlight services) {
+        return parachuteFlightMapper.updateByPrimaryKeySelective(services);
     }
 
     public void delete(int id) {

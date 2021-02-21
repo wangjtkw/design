@@ -1,14 +1,10 @@
 package com.example.design.entity.server;
 
-import com.example.design.entity.IServerUnitService;
-
 /**
  * 包机飞行
  */
 public class ServerUnitServicesCharteredAirplane implements IServerUnitService {
     private Integer serverUnitServicesCharteredAirplaneId;
-
-    private Integer serverUnitServicesId;
 
     private String serverUnitServicesCharteredAirplaneStartAddress;
 
@@ -30,8 +26,7 @@ public class ServerUnitServicesCharteredAirplane implements IServerUnitService {
         this.serverUnitServicesCharteredAirplaneId = serverUnitServicesCharteredAirplaneId;
     }
 
-    public ServerUnitServicesCharteredAirplane(Integer serverUnitServicesId, String serverUnitServicesCharteredAirplaneStartAddress, String serverUnitServicesCharteredAirplaneEndAddress, String serverUnitServicesCharteredAirplaneAircraftModel, String serverUnitServicesCharteredAirplaneSeatsNum, String serverUnitServicesCharteredAirplaneBoardingLocation, String serverUnitServicesCharteredAirplanePrice) {
-        this.serverUnitServicesId = serverUnitServicesId;
+    public ServerUnitServicesCharteredAirplane( String serverUnitServicesCharteredAirplaneStartAddress, String serverUnitServicesCharteredAirplaneEndAddress, String serverUnitServicesCharteredAirplaneAircraftModel, String serverUnitServicesCharteredAirplaneSeatsNum, String serverUnitServicesCharteredAirplaneBoardingLocation, String serverUnitServicesCharteredAirplanePrice) {
         this.serverUnitServicesCharteredAirplaneStartAddress = serverUnitServicesCharteredAirplaneStartAddress;
         this.serverUnitServicesCharteredAirplaneEndAddress = serverUnitServicesCharteredAirplaneEndAddress;
         this.serverUnitServicesCharteredAirplaneAircraftModel = serverUnitServicesCharteredAirplaneAircraftModel;
@@ -40,12 +35,14 @@ public class ServerUnitServicesCharteredAirplane implements IServerUnitService {
         this.serverUnitServicesCharteredAirplanePrice = serverUnitServicesCharteredAirplanePrice;
     }
 
-    public Integer getServerUnitServicesId() {
-        return serverUnitServicesId;
-    }
-
-    public void setServerUnitServicesId(Integer serverUnitServicesId) {
-        this.serverUnitServicesId = serverUnitServicesId;
+    public ServerUnitServicesCharteredAirplane(Integer serverUnitServicesCharteredAirplaneId, String serverUnitServicesCharteredAirplaneStartAddress, String serverUnitServicesCharteredAirplaneEndAddress, String serverUnitServicesCharteredAirplaneAircraftModel, String serverUnitServicesCharteredAirplaneSeatsNum, String serverUnitServicesCharteredAirplaneBoardingLocation, String serverUnitServicesCharteredAirplanePrice) {
+        this.serverUnitServicesCharteredAirplaneId = serverUnitServicesCharteredAirplaneId;
+        this.serverUnitServicesCharteredAirplaneStartAddress = serverUnitServicesCharteredAirplaneStartAddress;
+        this.serverUnitServicesCharteredAirplaneEndAddress = serverUnitServicesCharteredAirplaneEndAddress;
+        this.serverUnitServicesCharteredAirplaneAircraftModel = serverUnitServicesCharteredAirplaneAircraftModel;
+        this.serverUnitServicesCharteredAirplaneSeatsNum = serverUnitServicesCharteredAirplaneSeatsNum;
+        this.serverUnitServicesCharteredAirplaneBoardingLocation = serverUnitServicesCharteredAirplaneBoardingLocation;
+        this.serverUnitServicesCharteredAirplanePrice = serverUnitServicesCharteredAirplanePrice;
     }
 
     public String getServerUnitServicesCharteredAirplaneStartAddress() {

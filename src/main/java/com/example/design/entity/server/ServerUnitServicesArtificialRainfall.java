@@ -1,14 +1,10 @@
 package com.example.design.entity.server;
 
-import com.example.design.entity.IServerUnitService;
-
 /**
  * 人工降雨
  */
 public class ServerUnitServicesArtificialRainfall implements IServerUnitService {
     private Integer serverUnitServicesArtificialRainfallId;
-
-    private Integer serverUnitServicesId;
 
     private String serverUnitServicesArtificialRainfallAircraftModel;
 
@@ -20,8 +16,16 @@ public class ServerUnitServicesArtificialRainfall implements IServerUnitService 
 
     private String serverUnitServicesArtificialRainfallPhone;
 
-    public ServerUnitServicesArtificialRainfall(Integer serverUnitServicesId, String serverUnitServicesArtificialRainfallAircraftModel, String serverUnitServicesArtificialRainfallCatalyzer, String serverUnitServicesArtificialRainfallMaxDose, String serverUnitServicesArtificialRainfallPrice, String serverUnitServicesArtificialRainfallPhone) {
-        this.serverUnitServicesId = serverUnitServicesId;
+    public ServerUnitServicesArtificialRainfall(String serverUnitServicesArtificialRainfallAircraftModel, String serverUnitServicesArtificialRainfallCatalyzer, String serverUnitServicesArtificialRainfallMaxDose, String serverUnitServicesArtificialRainfallPrice, String serverUnitServicesArtificialRainfallPhone) {
+        this.serverUnitServicesArtificialRainfallAircraftModel = serverUnitServicesArtificialRainfallAircraftModel;
+        this.serverUnitServicesArtificialRainfallCatalyzer = serverUnitServicesArtificialRainfallCatalyzer;
+        this.serverUnitServicesArtificialRainfallMaxDose = serverUnitServicesArtificialRainfallMaxDose;
+        this.serverUnitServicesArtificialRainfallPrice = serverUnitServicesArtificialRainfallPrice;
+        this.serverUnitServicesArtificialRainfallPhone = serverUnitServicesArtificialRainfallPhone;
+    }
+
+    public ServerUnitServicesArtificialRainfall(Integer serverUnitServicesArtificialRainfallId, String serverUnitServicesArtificialRainfallAircraftModel, String serverUnitServicesArtificialRainfallCatalyzer, String serverUnitServicesArtificialRainfallMaxDose, String serverUnitServicesArtificialRainfallPrice, String serverUnitServicesArtificialRainfallPhone) {
+        this.serverUnitServicesArtificialRainfallId = serverUnitServicesArtificialRainfallId;
         this.serverUnitServicesArtificialRainfallAircraftModel = serverUnitServicesArtificialRainfallAircraftModel;
         this.serverUnitServicesArtificialRainfallCatalyzer = serverUnitServicesArtificialRainfallCatalyzer;
         this.serverUnitServicesArtificialRainfallMaxDose = serverUnitServicesArtificialRainfallMaxDose;
@@ -38,14 +42,6 @@ public class ServerUnitServicesArtificialRainfall implements IServerUnitService 
 
     public void setServerUnitServicesArtificialRainfallId(Integer serverUnitServicesArtificialRainfallId) {
         this.serverUnitServicesArtificialRainfallId = serverUnitServicesArtificialRainfallId;
-    }
-
-    public Integer getServerUnitServicesId() {
-        return serverUnitServicesId;
-    }
-
-    public void setServerUnitServicesId(Integer serverUnitServicesId) {
-        this.serverUnitServicesId = serverUnitServicesId;
     }
 
     public String getServerUnitServicesArtificialRainfallAircraftModel() {

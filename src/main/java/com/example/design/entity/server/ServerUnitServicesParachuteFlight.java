@@ -1,14 +1,10 @@
 package com.example.design.entity.server;
 
-import com.example.design.entity.IServerUnitService;
-
 /**
  * 跳伞飞行
  */
 public class ServerUnitServicesParachuteFlight implements IServerUnitService {
     private Integer serverUnitServicesParachuteFlightId;
-
-    private Integer serverUnitServicesId;
 
     private String serverUnitServicesParachuteFlightAddress;
 
@@ -16,13 +12,18 @@ public class ServerUnitServicesParachuteFlight implements IServerUnitService {
 
     private String serverUnitServicesParachuteFlightPrice;
 
-    public ServerUnitServicesParachuteFlight(Integer serverUnitServicesId, String serverUnitServicesParachuteFlightAddress, String serverUnitServicesParachuteFlightAircraftModel, String serverUnitServicesParachuteFlightPrice) {
-        this.serverUnitServicesId = serverUnitServicesId;
+    public ServerUnitServicesParachuteFlight(String serverUnitServicesParachuteFlightAddress, String serverUnitServicesParachuteFlightAircraftModel, String serverUnitServicesParachuteFlightPrice) {
         this.serverUnitServicesParachuteFlightAddress = serverUnitServicesParachuteFlightAddress;
         this.serverUnitServicesParachuteFlightAircraftModel = serverUnitServicesParachuteFlightAircraftModel;
         this.serverUnitServicesParachuteFlightPrice = serverUnitServicesParachuteFlightPrice;
     }
 
+    public ServerUnitServicesParachuteFlight(Integer serverUnitServicesParachuteFlightId, String serverUnitServicesParachuteFlightAddress, String serverUnitServicesParachuteFlightAircraftModel, String serverUnitServicesParachuteFlightPrice) {
+        this.serverUnitServicesParachuteFlightId = serverUnitServicesParachuteFlightId;
+        this.serverUnitServicesParachuteFlightAddress = serverUnitServicesParachuteFlightAddress;
+        this.serverUnitServicesParachuteFlightAircraftModel = serverUnitServicesParachuteFlightAircraftModel;
+        this.serverUnitServicesParachuteFlightPrice = serverUnitServicesParachuteFlightPrice;
+    }
 
     public ServerUnitServicesParachuteFlight() {
     }
@@ -33,14 +34,6 @@ public class ServerUnitServicesParachuteFlight implements IServerUnitService {
 
     public void setServerUnitServicesParachuteFlightId(Integer serverUnitServicesParachuteFlightId) {
         this.serverUnitServicesParachuteFlightId = serverUnitServicesParachuteFlightId;
-    }
-
-    public Integer getServerUnitServicesId() {
-        return serverUnitServicesId;
-    }
-
-    public void setServerUnitServicesId(Integer serverUnitServicesId) {
-        this.serverUnitServicesId = serverUnitServicesId;
     }
 
     public String getServerUnitServicesParachuteFlightAddress() {

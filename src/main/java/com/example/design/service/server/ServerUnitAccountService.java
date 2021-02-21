@@ -1,7 +1,7 @@
-package com.example.design.service;
+package com.example.design.service.server;
 
-import com.example.design.entity.ServerUnitAccount;
-import com.example.design.mapper.ServerUnitAccountMapper;
+import com.example.design.entity.server.ServerUnitAccount;
+import com.example.design.mapper.sever.ServerUnitAccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

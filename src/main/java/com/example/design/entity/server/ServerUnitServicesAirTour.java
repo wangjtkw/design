@@ -1,14 +1,10 @@
 package com.example.design.entity.server;
 
-import com.example.design.entity.IServerUnitService;
-
 /**
  * 空中游览
  */
 public class ServerUnitServicesAirTour implements IServerUnitService {
     private Integer serverUnitServicesAirTourId;
-
-    private Integer serverUnitServicesId;
 
     private String serverUnitServicesAirTourSightseeingPlaces;
 
@@ -22,6 +18,15 @@ public class ServerUnitServicesAirTour implements IServerUnitService {
 
     private String serverUnitServicesAirTourPrice;
 
+    public ServerUnitServicesAirTour( String serverUnitServicesAirTourSightseeingPlaces, String serverUnitServicesAirTourDuration, String serverUnitServicesAirTourAircraftModel, String serverUnitServicesAirTourNumberLimit, String serverUnitServicesAirTourBoardingLocation, String serverUnitServicesAirTourPrice) {
+        this.serverUnitServicesAirTourSightseeingPlaces = serverUnitServicesAirTourSightseeingPlaces;
+        this.serverUnitServicesAirTourDuration = serverUnitServicesAirTourDuration;
+        this.serverUnitServicesAirTourAircraftModel = serverUnitServicesAirTourAircraftModel;
+        this.serverUnitServicesAirTourNumberLimit = serverUnitServicesAirTourNumberLimit;
+        this.serverUnitServicesAirTourBoardingLocation = serverUnitServicesAirTourBoardingLocation;
+        this.serverUnitServicesAirTourPrice = serverUnitServicesAirTourPrice;
+    }
+
     public ServerUnitServicesAirTour(Integer serverUnitServicesAirTourId, String serverUnitServicesAirTourSightseeingPlaces, String serverUnitServicesAirTourDuration, String serverUnitServicesAirTourAircraftModel, String serverUnitServicesAirTourNumberLimit, String serverUnitServicesAirTourBoardingLocation, String serverUnitServicesAirTourPrice) {
         this.serverUnitServicesAirTourId = serverUnitServicesAirTourId;
         this.serverUnitServicesAirTourSightseeingPlaces = serverUnitServicesAirTourSightseeingPlaces;
@@ -32,7 +37,6 @@ public class ServerUnitServicesAirTour implements IServerUnitService {
         this.serverUnitServicesAirTourPrice = serverUnitServicesAirTourPrice;
     }
 
-
     public Integer getServerUnitServicesAirTourId() {
         return serverUnitServicesAirTourId;
     }
@@ -41,13 +45,6 @@ public class ServerUnitServicesAirTour implements IServerUnitService {
         this.serverUnitServicesAirTourId = serverUnitServicesAirTourId;
     }
 
-    public Integer getServerUnitServicesId() {
-        return serverUnitServicesId;
-    }
-
-    public void setServerUnitServicesId(Integer serverUnitServicesId) {
-        this.serverUnitServicesId = serverUnitServicesId;
-    }
 
     public String getServerUnitServicesAirTourSightseeingPlaces() {
         return serverUnitServicesAirTourSightseeingPlaces;

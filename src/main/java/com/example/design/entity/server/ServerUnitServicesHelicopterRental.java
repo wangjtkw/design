@@ -1,14 +1,10 @@
 package com.example.design.entity.server;
 
-import com.example.design.entity.IServerUnitService;
-
 /**
  * 直升机租赁
  */
 public class ServerUnitServicesHelicopterRental implements IServerUnitService {
     private Integer serverUnitServicesHelicopterRentalId;
-
-    private Integer serverUnitServicesId;
 
     private String serverUnitServicesHelicopterRentalAircraftModel;
 
@@ -16,8 +12,14 @@ public class ServerUnitServicesHelicopterRental implements IServerUnitService {
 
     private String serverUnitServicesHelicopterRentalPhone;
 
-    public ServerUnitServicesHelicopterRental(Integer serverUnitServicesId, String serverUnitServicesHelicopterRentalAircraftModel, String serverUnitServicesHelicopterRentalPrice, String serverUnitServicesHelicopterRentalPhone) {
-        this.serverUnitServicesId = serverUnitServicesId;
+    public ServerUnitServicesHelicopterRental(String serverUnitServicesHelicopterRentalAircraftModel, String serverUnitServicesHelicopterRentalPrice, String serverUnitServicesHelicopterRentalPhone) {
+        this.serverUnitServicesHelicopterRentalAircraftModel = serverUnitServicesHelicopterRentalAircraftModel;
+        this.serverUnitServicesHelicopterRentalPrice = serverUnitServicesHelicopterRentalPrice;
+        this.serverUnitServicesHelicopterRentalPhone = serverUnitServicesHelicopterRentalPhone;
+    }
+
+    public ServerUnitServicesHelicopterRental(Integer serverUnitServicesHelicopterRentalId, String serverUnitServicesHelicopterRentalAircraftModel, String serverUnitServicesHelicopterRentalPrice, String serverUnitServicesHelicopterRentalPhone) {
+        this.serverUnitServicesHelicopterRentalId = serverUnitServicesHelicopterRentalId;
         this.serverUnitServicesHelicopterRentalAircraftModel = serverUnitServicesHelicopterRentalAircraftModel;
         this.serverUnitServicesHelicopterRentalPrice = serverUnitServicesHelicopterRentalPrice;
         this.serverUnitServicesHelicopterRentalPhone = serverUnitServicesHelicopterRentalPhone;
@@ -32,14 +34,6 @@ public class ServerUnitServicesHelicopterRental implements IServerUnitService {
 
     public void setServerUnitServicesHelicopterRentalId(Integer serverUnitServicesHelicopterRentalId) {
         this.serverUnitServicesHelicopterRentalId = serverUnitServicesHelicopterRentalId;
-    }
-
-    public Integer getServerUnitServicesId() {
-        return serverUnitServicesId;
-    }
-
-    public void setServerUnitServicesId(Integer serverUnitServicesId) {
-        this.serverUnitServicesId = serverUnitServicesId;
     }
 
     public String getServerUnitServicesHelicopterRentalAircraftModel() {

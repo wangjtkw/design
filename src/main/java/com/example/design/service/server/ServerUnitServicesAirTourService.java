@@ -19,8 +19,8 @@ public class ServerUnitServicesAirTourService {
         return airTourMapper.selectByPrimaryKey(id);
     }
 
-    public void update(ServerUnitServicesAirTour services) {
-        airTourMapper.updateByPrimaryKeySelective(services);
+    public int update(ServerUnitServicesAirTour services) {
+        return airTourMapper.updateByPrimaryKeySelective(services);
     }
 
     public void delete(int id) {

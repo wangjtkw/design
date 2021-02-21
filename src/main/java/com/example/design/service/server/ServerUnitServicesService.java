@@ -17,12 +17,12 @@ public class ServerUnitServicesService {
         return servicesMapper.insert(services);
     }
 
-    public void update(ServerUnitServices services) {
-        servicesMapper.updateByPrimaryKeySelective(services);
+    public int update(ServerUnitServices services) {
+        return servicesMapper.updateByPrimaryKeySelective(services);
     }
 
-    public ServerUnitServices select(int id) {
-        return servicesMapper.selectByPrimaryKey(id);
+    public ServerUnitServices select(int serverId) {
+        return servicesMapper.selectByPrimaryKey(serverId);
     }
 
     public List<ServerUnitServices> selectByAccountKey(int account) {
@@ -36,4 +36,9 @@ public class ServerUnitServicesService {
     public List<ServerUnitServices> selectByAccountKeyParam(int account, String param) {
         return servicesMapper.selectByAccountKeyParam(account, param);
     }
+
+    public List<ServerUnitServices> selectByType(String param) {
+        return servicesMapper.selectAllByType(param);
+    }
+
 }

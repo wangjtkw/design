@@ -6,7 +6,6 @@
         <result column="server_unit_account_id" jdbcType="INTEGER" property="serverUnitAccountId"/>
         <result column="server_unit_services_helicopter_rental_id" jdbcType="INTEGER"
                 property="serverUnitServicesHelicopterRentalId"/>
-        <result column="users_orders_id" jdbcType="INTEGER" property="usersOrdersId"/>
         <result column="server_unit_services_parachute_flight_id" jdbcType="INTEGER"
                 property="serverUnitServicesParachuteFlightId"/>
         <result column="server_unit_services_air_tour_id" jdbcType="INTEGER" property="serverUnitServicesAirTourId"/>
@@ -31,28 +30,26 @@
             select last_insert_id()
         </selectKey>
         insert into server_unit_services (server_unit_services_id, server_unit_account_id,
-        server_unit_services_helicopter_rental_id, users_orders_id,
-        server_unit_services_parachute_flight_id, server_unit_services_air_tour_id,
-        server_unit_services_chartered_airplane_id, server_unit_services_artificial_rainfall_id,
-        server_unit_services_title, server_unit_services_img,
-        server_unit_services_detail, server_unit_services_type,
-        server_unit_services_audit_status, server_unit_services_release_time
-        )
+        server_unit_services_helicopter_rental_id,
+        server_unit_services_parachute_flight_id,
+        server_unit_services_air_tour_id, server_unit_services_chartered_airplane_id,
+        server_unit_services_artificial_rainfall_id, server_unit_services_title,
+        server_unit_services_img, server_unit_services_detail,
+        server_unit_services_type, server_unit_services_audit_status,
         values (#{serverUnitServicesId,jdbcType=INTEGER}, #{serverUnitAccountId,jdbcType=INTEGER},
-        #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER}, #{usersOrdersId,jdbcType=INTEGER},
-        #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER}, #{serverUnitServicesAirTourId,jdbcType=INTEGER},
+        #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER},
+        #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},
+        #{serverUnitServicesAirTourId,jdbcType=INTEGER},
         #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER},
-        #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER},
-        #{serverUnitServicesTitle,jdbcType=VARCHAR}, #{serverUnitServicesImg,jdbcType=VARCHAR},
-        #{serverUnitServicesDetail,jdbcType=VARCHAR}, #{serverUnitServicesType,jdbcType=VARCHAR},
-        #{serverUnitServicesAuditStatus,jdbcType=VARCHAR}, now()
-        )
+        #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER}, #{serverUnitServicesTitle,jdbcType=VARCHAR},
+        #{serverUnitServicesImg,jdbcType=VARCHAR}, #{serverUnitServicesDetail,jdbcType=VARCHAR},
+        #{serverUnitServicesType,jdbcType=VARCHAR}, #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
+        now()
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.example.design.entity.server.ServerUnitServices">
         update server_unit_services
         set server_unit_account_id                      = #{serverUnitAccountId,jdbcType=INTEGER},
             server_unit_services_helicopter_rental_id   = #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER},
-            users_orders_id                             = #{usersOrdersId,jdbcType=INTEGER},
             server_unit_services_parachute_flight_id    = #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},
             server_unit_services_air_tour_id            = #{serverUnitServicesAirTourId,jdbcType=INTEGER},
             server_unit_services_chartered_airplane_id  = #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER},
@@ -74,9 +71,6 @@
             </if>
             <if test="serverUnitServicesHelicopterRentalId != null">
                 server_unit_services_helicopter_rental_id = #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER},
-            </if>
-            <if test="usersOrdersId != null">
-                users_orders_id = #{usersOrdersId,jdbcType=INTEGER},
             </if>
             <if test="serverUnitServicesParachuteFlightId != null">
                 server_unit_services_parachute_flight_id = #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},
@@ -113,7 +107,6 @@
         select server_unit_services_id,
                server_unit_account_id,
                server_unit_services_helicopter_rental_id,
-               users_orders_id,
                server_unit_services_parachute_flight_id,
                server_unit_services_air_tour_id,
                server_unit_services_chartered_airplane_id,
@@ -132,7 +125,7 @@
         select server_unit_services_id,
                server_unit_account_id,
                server_unit_services_helicopter_rental_id,
-               users_orders_id,
+
                server_unit_services_parachute_flight_id,
                server_unit_services_air_tour_id,
                server_unit_services_chartered_airplane_id,
@@ -151,7 +144,6 @@
         select server_unit_services_id,
         server_unit_account_id,
         server_unit_services_helicopter_rental_id,
-        users_orders_id,
         server_unit_services_parachute_flight_id,
         server_unit_services_air_tour_id,
         server_unit_services_chartered_airplane_id,
@@ -177,25 +169,32 @@
             or server_unit_services_release_time like #{param}
         </if>
         )
-
-
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAllByType" parameterType="String" resultMap="BaseResultMap">
         select server_unit_services_id,
-               server_unit_account_id,
-               server_unit_services_helicopter_rental_id,
-               users_orders_id,
-               server_unit_services_parachute_flight_id,
-               server_unit_services_air_tour_id,
-               server_unit_services_chartered_airplane_id,
-               server_unit_services_artificial_rainfall_id,
-               server_unit_services_title,
-               server_unit_services_img,
-               server_unit_services_detail,
-               server_unit_services_type,
-               server_unit_services_audit_status,
-               server_unit_services_release_time
+        server_unit_account_id,
+        server_unit_services_helicopter_rental_id,
+        server_unit_services_parachute_flight_id,
+        server_unit_services_air_tour_id,
+        server_unit_services_chartered_airplane_id,
+        server_unit_services_artificial_rainfall_id,
+        server_unit_services_title,
+        server_unit_services_img,
+        server_unit_services_detail,
+        server_unit_services_type,
+        server_unit_services_audit_status,
+        server_unit_services_release_time
         from server_unit_services
+        where
+        <if test="param != null">
+            server_unit_services_type = #{param}
+        </if>
+        and server_unit_services.server_unit_services_audit_status = '审批通过'
+        and server_unit_services.server_unit_services_id in (select server_unit_services.server_unit_services_id
+        from server_unit_services,server_unit_account,server_unit_company
+        where server_unit_services.server_unit_account_id = server_unit_account.server_unit_account_id
+        and server_unit_account.server_unit_company_id = server_unit_company.server_unit_company_id
+        and server_unit_company.server_unit_company_audit_status = '审批通过')
     </select>
 </mapper>

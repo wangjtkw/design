@@ -1,4 +1,4 @@
-package com.example.design.entity;
+package com.example.design.entity.server;
 
 public class ServerUnitAccount {
     private Integer serverUnitAccountId;

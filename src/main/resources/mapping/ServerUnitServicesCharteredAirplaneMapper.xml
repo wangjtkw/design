@@ -5,7 +5,6 @@
     <resultMap id="BaseResultMap" type="com.example.design.entity.server.ServerUnitServicesCharteredAirplane">
         <id column="server_unit_services_chartered_airplane_id" jdbcType="INTEGER"
             property="serverUnitServicesCharteredAirplaneId"/>
-        <result column="server_unit_services_id" jdbcType="INTEGER" property="serverUnitServicesId"/>
         <result column="server_unit_services_chartered_airplane_start_address" jdbcType="VARCHAR"
                 property="serverUnitServicesCharteredAirplaneStartAddress"/>
         <result column="server_unit_services_chartered_airplane_end_address" jdbcType="VARCHAR"
@@ -29,12 +28,12 @@
             select last_insert_id()
         </selectKey>
         insert into server_unit_services_chartered_airplane (server_unit_services_chartered_airplane_id,
-        server_unit_services_id,
+
         server_unit_services_chartered_airplane_start_address, server_unit_services_chartered_airplane_end_address,
         server_unit_services_chartered_airplane_aircraft_model, server_unit_services_chartered_airplane_seats_num,
         server_unit_services_chartered_airplane_boarding_location, server_unit_services_chartered_airplane_price
         )
-        values (#{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER}, #{serverUnitServicesId,jdbcType=INTEGER},
+        values (#{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER},
         #{serverUnitServicesCharteredAirplaneStartAddress,jdbcType=VARCHAR},
         #{serverUnitServicesCharteredAirplaneEndAddress,jdbcType=VARCHAR},
         #{serverUnitServicesCharteredAirplaneAircraftModel,jdbcType=VARCHAR},
@@ -43,10 +42,10 @@
         #{serverUnitServicesCharteredAirplanePrice,jdbcType=VARCHAR}
         )
     </insert>
-    <update id="updateByPrimaryKey" parameterType="com.example.design.entity.server.ServerUnitServicesCharteredAirplane">
+    <update id="updateByPrimaryKey"
+            parameterType="com.example.design.entity.server.ServerUnitServicesCharteredAirplane">
         update server_unit_services_chartered_airplane
-        set server_unit_services_id                                   = #{serverUnitServicesId,jdbcType=INTEGER},
-            server_unit_services_chartered_airplane_start_address     = #{serverUnitServicesCharteredAirplaneStartAddress,jdbcType=VARCHAR},
+        set server_unit_services_chartered_airplane_start_address     = #{serverUnitServicesCharteredAirplaneStartAddress,jdbcType=VARCHAR},
             server_unit_services_chartered_airplane_end_address       = #{serverUnitServicesCharteredAirplaneEndAddress,jdbcType=VARCHAR},
             server_unit_services_chartered_airplane_aircraft_model    = #{serverUnitServicesCharteredAirplaneAircraftModel,jdbcType=VARCHAR},
             server_unit_services_chartered_airplane_seats_num         = #{serverUnitServicesCharteredAirplaneSeatsNum,jdbcType=VARCHAR},
@@ -58,9 +57,7 @@
             parameterType="com.example.design.entity.server.ServerUnitServicesCharteredAirplane">
         update server_unit_services_chartered_airplane
         <set>
-            <if test="serverUnitServicesId != null">
-                server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER},
-            </if>
+
             <if test="serverUnitServicesCharteredAirplaneStartAddress != null">
                 server_unit_services_chartered_airplane_start_address =
                 #{serverUnitServicesCharteredAirplaneStartAddress,jdbcType=VARCHAR},
@@ -90,7 +87,7 @@
     </update>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select server_unit_services_chartered_airplane_id,
-               server_unit_services_id,
+
                server_unit_services_chartered_airplane_start_address,
                server_unit_services_chartered_airplane_end_address,
                server_unit_services_chartered_airplane_aircraft_model,
@@ -102,7 +99,7 @@
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select server_unit_services_chartered_airplane_id,
-               server_unit_services_id,
+
                server_unit_services_chartered_airplane_start_address,
                server_unit_services_chartered_airplane_end_address,
                server_unit_services_chartered_airplane_aircraft_model,

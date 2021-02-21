@@ -1,16 +1,8 @@
-package com.example.design.entity.requestbean;
+package com.example.design.entity.requestbean.server;
 
 public class ServerUnitServicesAdd {
 
     private Integer serverUnitServicesId;
-
-    public Integer getServerUnitServicesId() {
-        return serverUnitServicesId;
-    }
-
-    public void setServerUnitServicesId(Integer serverUnitServicesId) {
-        this.serverUnitServicesId = serverUnitServicesId;
-    }
 
     private Integer serverUnitAccountId;
 
@@ -36,9 +28,6 @@ public class ServerUnitServicesAdd {
 
     private String serverUnitServicesReleaseTime;
 
-
-
-
     private String serverUnitServicesAirTourSightseeingPlaces;
 
     private String serverUnitServicesAirTourDuration;
@@ -51,10 +40,6 @@ public class ServerUnitServicesAdd {
 
     private String serverUnitServicesAirTourPrice;
 
-
-
-
-
     private String serverUnitServicesArtificialRainfallAircraftModel;
 
     private String serverUnitServicesArtificialRainfallCatalyzer;
@@ -64,10 +49,6 @@ public class ServerUnitServicesAdd {
     private String serverUnitServicesArtificialRainfallPrice;
 
     private String serverUnitServicesArtificialRainfallPhone;
-
-
-
-
 
     private String serverUnitServicesCharteredAirplaneStartAddress;
 
@@ -81,25 +62,25 @@ public class ServerUnitServicesAdd {
 
     private String serverUnitServicesCharteredAirplanePrice;
 
-
-
-
-
     private String serverUnitServicesHelicopterRentalAircraftModel;
 
     private String serverUnitServicesHelicopterRentalPrice;
 
     private String serverUnitServicesHelicopterRentalPhone;
 
-
-
-
-
     private String serverUnitServicesParachuteFlightAddress;
 
     private String serverUnitServicesParachuteFlightAircraftModel;
 
     private String serverUnitServicesParachuteFlightPrice;
+
+    public Integer getServerUnitServicesId() {
+        return serverUnitServicesId;
+    }
+
+    public void setServerUnitServicesId(Integer serverUnitServicesId) {
+        this.serverUnitServicesId = serverUnitServicesId;
+    }
 
     public Integer getServerUnitAccountId() {
         return serverUnitAccountId;

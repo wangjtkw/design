@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.user.UsersAccountMapper">
+    <resultMap id="BaseResultMap" type="com.example.design.entity.user.UsersAccount">
+        <id column="users_account_id" jdbcType="INTEGER" property="usersAccountId"/>
+        <result column="users_essential_information_id" jdbcType="INTEGER" property="usersEssentialInformationId"/>
+        <result column="users_account_account" jdbcType="VARCHAR" property="usersAccountAccount"/>
+        <result column="users_account_password" jdbcType="VARCHAR" property="usersAccountPassword"/>
+        <result column="users_account_email" jdbcType="VARCHAR" property="usersAccountEmail"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from users_account
+        where users_account_id = #{usersAccountId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.design.entity.user.UsersAccount">
+        <selectKey keyProperty="usersAccountId" order="AFTER" resultType="java.lang.Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into users_account (users_account_id, users_essential_information_id,
+        users_account_account, users_account_password,
+        users_account_email)
+        values (#{usersAccountId,jdbcType=INTEGER}, #{usersEssentialInformationId,jdbcType=INTEGER},
+        #{usersAccountAccount,jdbcType=VARCHAR}, #{usersAccountPassword,jdbcType=VARCHAR},
+        #{usersAccountEmail,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.example.design.entity.user.UsersAccount">
+        update users_account
+        set users_essential_information_id = #{usersEssentialInformationId,jdbcType=INTEGER},
+            users_account_account          = #{usersAccountAccount,jdbcType=VARCHAR},
+            users_account_password         = #{usersAccountPassword,jdbcType=VARCHAR},
+            users_account_email            = #{usersAccountEmail,jdbcType=VARCHAR}
+        where users_account_id = #{usersAccountId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.design.entity.user.UsersAccount">
+        update users_account
+        <set>
+            <if test="usersEssentialInformationId != null">
+                users_essential_information_id = #{usersEssentialInformationId,jdbcType=INTEGER},
+            </if>
+            <if test="usersAccountAccount != null">
+                users_account_account = #{usersAccountAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="usersAccountPassword != null">
+                users_account_password = #{usersAccountPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="usersAccountEmail != null">
+                users_account_email = #{usersAccountEmail,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where users_account_id = #{usersAccountId,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select users_account_id,
+               users_essential_information_id,
+               users_account_account,
+               users_account_password,
+               users_account_email
+        from users_account
+        where users_account_id = #{usersAccountId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByAccount" resultMap="BaseResultMap">
+        select users_account_id,
+               users_essential_information_id,
+               users_account_account,
+               users_account_password,
+               users_account_email
+        from users_account
+        where users_account_account = #{usersAccountAccount,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select users_account_id,
+               users_essential_information_id,
+               users_account_account,
+               users_account_password,
+               users_account_email
+        from users_account
+    </select>
+</mapper>

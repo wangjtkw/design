@@ -1,9 +1,7 @@
-package com.example.design.entity;
+package com.example.design.entity.server;
 
 public class ServerUnitCompany {
     private Integer serverUnitCompanyId;
-
-    private Integer serverUnitAccountId;
 
     private String serverUnitCompanyName;
 
@@ -31,14 +29,6 @@ public class ServerUnitCompany {
 
     public void setServerUnitCompanyId(Integer serverUnitCompanyId) {
         this.serverUnitCompanyId = serverUnitCompanyId;
-    }
-
-    public Integer getServerUnitAccountId() {
-        return serverUnitAccountId;
-    }
-
-    public void setServerUnitAccountId(Integer serverUnitAccountId) {
-        this.serverUnitAccountId = serverUnitAccountId;
     }
 
     public String getServerUnitCompanyName() {
@@ -141,7 +131,6 @@ public class ServerUnitCompany {
     public String toString() {
         return "ServerUnitCompany{" +
                 "serverUnitCompanyId=" + serverUnitCompanyId +
-                ", serverUnitAccountId=" + serverUnitAccountId +
                 ", serverUnitCompanyName='" + serverUnitCompanyName + '\'' +
                 ", serverUnitCompanyBase='" + serverUnitCompanyBase + '\'' +
                 ", serverUnitCompanyAirport='" + serverUnitCompanyAirport + '\'' +

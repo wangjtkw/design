@@ -18,8 +18,8 @@ public class ServerUnitServicesArtificialRainfallService {
         return artificialRainfallMapper.selectByPrimaryKey(id);
     }
 
-    public void update(ServerUnitServicesArtificialRainfall services) {
-        artificialRainfallMapper.updateByPrimaryKeySelective(services);
+    public int update(ServerUnitServicesArtificialRainfall services) {
+        return artificialRainfallMapper.updateByPrimaryKeySelective(services);
     }
 
     public void delete(int id) {

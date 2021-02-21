@@ -1,6 +1,6 @@
-package com.example.design.mapper;
+package com.example.design.mapper.user;
 
-import com.example.design.entity.UsersAccount;
+import com.example.design.entity.user.UsersAccount;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +13,11 @@ public interface UsersAccountMapper {
 
     UsersAccount selectByPrimaryKey(Integer usersAccountId);
 
+    UsersAccount selectByAccount(String account);
+
     List<UsersAccount> selectAll();
 
     int updateByPrimaryKey(UsersAccount record);
+
+    int updateByPrimaryKeySelective(UsersAccount record);
 }

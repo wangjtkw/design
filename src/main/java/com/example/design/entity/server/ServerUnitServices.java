@@ -7,8 +7,6 @@ public class ServerUnitServices {
 
     private Integer serverUnitServicesHelicopterRentalId;
 
-    private Integer usersOrdersId;
-
     private Integer serverUnitServicesParachuteFlightId;
 
     private Integer serverUnitServicesAirTourId;
@@ -29,8 +27,8 @@ public class ServerUnitServices {
 
     private String serverUnitServicesReleaseTime;
 
-    public ServerUnitServices(Integer serverUnitServicesId, String serverUnitServicesTitle, String serverUnitServicesImg, String serverUnitServicesDetail, String serverUnitServicesType, String serverUnitServicesAuditStatus) {
-        this.serverUnitServicesId = serverUnitServicesId;
+    public ServerUnitServices(Integer serverUnitAccountId, String serverUnitServicesTitle, String serverUnitServicesImg, String serverUnitServicesDetail, String serverUnitServicesType, String serverUnitServicesAuditStatus) {
+        this.serverUnitAccountId = serverUnitAccountId;
         this.serverUnitServicesTitle = serverUnitServicesTitle;
         this.serverUnitServicesImg = serverUnitServicesImg;
         this.serverUnitServicesDetail = serverUnitServicesDetail;
@@ -65,14 +63,6 @@ public class ServerUnitServices {
 
     public void setServerUnitServicesHelicopterRentalId(Integer serverUnitServicesHelicopterRentalId) {
         this.serverUnitServicesHelicopterRentalId = serverUnitServicesHelicopterRentalId;
-    }
-
-    public Integer getUsersOrdersId() {
-        return usersOrdersId;
-    }
-
-    public void setUsersOrdersId(Integer usersOrdersId) {
-        this.usersOrdersId = usersOrdersId;
     }
 
     public Integer getServerUnitServicesParachuteFlightId() {

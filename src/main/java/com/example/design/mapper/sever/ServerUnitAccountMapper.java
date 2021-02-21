@@ -1,6 +1,6 @@
-package com.example.design.mapper;
+package com.example.design.mapper.sever;
 
-import com.example.design.entity.ServerUnitAccount;
+import com.example.design.entity.server.ServerUnitAccount;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

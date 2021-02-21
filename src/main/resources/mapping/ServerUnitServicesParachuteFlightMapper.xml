@@ -4,7 +4,6 @@
     <resultMap id="BaseResultMap" type="com.example.design.entity.server.ServerUnitServicesParachuteFlight">
         <id column="server_unit_services_parachute_flight_id" jdbcType="INTEGER"
             property="serverUnitServicesParachuteFlightId"/>
-        <result column="server_unit_services_id" jdbcType="INTEGER" property="serverUnitServicesId"/>
         <result column="server_unit_services_parachute_flight_address" jdbcType="VARCHAR"
                 property="serverUnitServicesParachuteFlightAddress"/>
         <result column="server_unit_services_parachute_flight_aircraft_model" jdbcType="VARCHAR"
@@ -22,18 +21,17 @@
             select last_insert_id()
         </selectKey>
         insert into server_unit_services_parachute_flight (server_unit_services_parachute_flight_id,
-        server_unit_services_id,
+
         server_unit_services_parachute_flight_address, server_unit_services_parachute_flight_aircraft_model,
         server_unit_services_parachute_flight_price)
-        values (#{serverUnitServicesParachuteFlightId,jdbcType=INTEGER}, #{serverUnitServicesId,jdbcType=INTEGER},
+        values (#{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},
         #{serverUnitServicesParachuteFlightAddress,jdbcType=VARCHAR},
         #{serverUnitServicesParachuteFlightAircraftModel,jdbcType=VARCHAR},
         #{serverUnitServicesParachuteFlightPrice,jdbcType=VARCHAR})
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.example.design.entity.server.ServerUnitServicesParachuteFlight">
         update server_unit_services_parachute_flight
-        set server_unit_services_id                              = #{serverUnitServicesId,jdbcType=INTEGER},
-            server_unit_services_parachute_flight_address        = #{serverUnitServicesParachuteFlightAddress,jdbcType=VARCHAR},
+        set server_unit_services_parachute_flight_address        = #{serverUnitServicesParachuteFlightAddress,jdbcType=VARCHAR},
             server_unit_services_parachute_flight_aircraft_model = #{serverUnitServicesParachuteFlightAircraftModel,jdbcType=VARCHAR},
             server_unit_services_parachute_flight_price          = #{serverUnitServicesParachuteFlightPrice,jdbcType=VARCHAR}
         where server_unit_services_parachute_flight_id = #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER}
@@ -42,9 +40,7 @@
             parameterType="com.example.design.entity.server.ServerUnitServicesParachuteFlight">
         update server_unit_services_parachute_flight
         <set>
-            <if test="serverUnitServicesId != null">
-                server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER},
-            </if>
+
             <if test="serverUnitServicesParachuteFlightAddress != null">
                 server_unit_services_parachute_flight_address =
                 #{serverUnitServicesParachuteFlightAddress,jdbcType=VARCHAR},
@@ -61,7 +57,7 @@
     </update>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select server_unit_services_parachute_flight_id,
-               server_unit_services_id,
+
                server_unit_services_parachute_flight_address,
                server_unit_services_parachute_flight_aircraft_model,
                server_unit_services_parachute_flight_price
@@ -70,7 +66,7 @@
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         select server_unit_services_parachute_flight_id,
-               server_unit_services_id,
+
                server_unit_services_parachute_flight_address,
                server_unit_services_parachute_flight_aircraft_model,
                server_unit_services_parachute_flight_price

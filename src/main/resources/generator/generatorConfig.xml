@@ -35,17 +35,32 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table schema="ServerUnitServices" tableName="server_unit_services" enableCountByExample="false" enableDeleteByExample="false"
+        <!--        <table schema="ServerUnitAccount" tableName="server_unit_account" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <!--        <table schema="ServerUnitCompany" tableName="server_unit_company" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/> -->
+
+        <!--        <table schema="ServerUnitServices" tableName="server_unit_services" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <!--        <table schema="ServerUnitServicesAirTour" tableName="server_unit_services_air_tour" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <!--        <table schema="ServerUnitServicesCharteredAirplane" tableName="server_unit_services_chartered_airplane" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <!--        <table schema="ServerUnitServicesParachuteFlight" tableName="server_unit_services_parachute_flight" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <!--        <table schema="ServerUnitServicesArtificialRainfall" tableName="server_unit_services_artificial_rainfall" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <!--        <table schema="ServerUnitServicesHelicopterRental" tableName="server_unit_services_helicopter_rental" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+
+        <table schema="UsersAccount" tableName="users_account" enableCountByExample="false"
+               enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false"/>
-        <table schema="ServerUnitServicesAirTour" tableName="server_unit_services_air_tour" enableCountByExample="false" enableDeleteByExample="false"
+
+        <table schema="UsersEssentialInformation" tableName="users_essential_information" enableCountByExample="false"
+               enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false"/>
-        <table schema="ServerUnitServicesCharteredAirplane" tableName="server_unit_services_chartered_airplane" enableCountByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false"/>
-        <table schema="ServerUnitServicesParachuteFlight" tableName="server_unit_services_parachute_flight" enableCountByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false"/>
-        <table schema="ServerUnitServicesArtificialRainfall" tableName="server_unit_services_artificial_rainfall" enableCountByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false"/>
-        <table schema="ServerUnitServicesHelicopterRental" tableName="server_unit_services_helicopter_rental" enableCountByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" enableUpdateByExample="false"/>
+
+
     </context>
 </generatorConfiguration>

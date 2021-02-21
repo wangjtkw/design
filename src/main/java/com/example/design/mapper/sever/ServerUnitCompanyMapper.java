@@ -1,6 +1,6 @@
-package com.example.design.mapper;
+package com.example.design.mapper.sever;
 
-import com.example.design.entity.ServerUnitCompany;
+import com.example.design.entity.server.ServerUnitCompany;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +18,7 @@ public interface ServerUnitCompanyMapper {
     int updateByPrimaryKey(ServerUnitCompany record);
 
     int updateByPrimaryKeySelective(ServerUnitCompany record);
+
+    ServerUnitCompany selectByServerId(Integer serverId);
+
 }
