@@ -15,6 +15,15 @@ public class ServerUnitAccountService {
         return serverUnitAccountMapper.selectByAccount(account);
     }
 
+    public ServerUnitAccount selectByCompanyId(int companyId) {
+        return serverUnitAccountMapper.selectByCompanyId(companyId);
+    }
+
+    public void delete(int accountId) {
+        serverUnitAccountMapper.deleteByPrimaryKey(accountId);
+    }
+
+
     public int insert(ServerUnitAccount account) {
         return serverUnitAccountMapper.insert(account);
     }

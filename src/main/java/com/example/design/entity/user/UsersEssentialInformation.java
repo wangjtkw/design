@@ -3,16 +3,13 @@ package com.example.design.entity.user;
 public class UsersEssentialInformation {
     private Integer usersEssentialInformationId;
 
-    private Integer usersAccountId;
-
     private String usersEssentialInformationName;
 
     private String usersEssentialInformationIdNumber;
 
     private String usersEssentialInformationCompany;
 
-    public UsersEssentialInformation(Integer usersAccountId, String usersEssentialInformationName, String usersEssentialInformationIdNumber, String usersEssentialInformationCompany) {
-        this.usersAccountId = usersAccountId;
+    public UsersEssentialInformation(String usersEssentialInformationName, String usersEssentialInformationIdNumber, String usersEssentialInformationCompany) {
         this.usersEssentialInformationName = usersEssentialInformationName;
         this.usersEssentialInformationIdNumber = usersEssentialInformationIdNumber;
         this.usersEssentialInformationCompany = usersEssentialInformationCompany;
@@ -24,14 +21,6 @@ public class UsersEssentialInformation {
 
     public void setUsersEssentialInformationId(Integer usersEssentialInformationId) {
         this.usersEssentialInformationId = usersEssentialInformationId;
-    }
-
-    public Integer getUsersAccountId() {
-        return usersAccountId;
-    }
-
-    public void setUsersAccountId(Integer usersAccountId) {
-        this.usersAccountId = usersAccountId;
     }
 
     public String getUsersEssentialInformationName() {

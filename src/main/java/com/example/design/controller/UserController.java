@@ -81,7 +81,6 @@ public class UserController {
                 register.getUsersAccountPassword(),
                 register.getUsersAccountEmail());
         UsersEssentialInformation essentialInformation = new UsersEssentialInformation(
-                usersAccount.getUsersAccountId(),
                 register.getUsersEssentialInformationName(),
                 register.getUsersEssentialInformationIdNumber(),
                 register.getUsersEssentialInformationCompany());

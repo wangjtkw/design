@@ -97,7 +97,35 @@
             or server_unit_company_scope like #{param}
             )
         </if>
+    </select>
 
+    <select id="selectAllByParam" parameterType="String" resultMap="BaseResultMap">
+        select server_unit_company_id,
+        server_unit_company_name,
+        server_unit_company_base,
+        server_unit_company_airport,
+        server_unit_company_type,
+        server_unit_company_capital,
+        server_unit_company_legal_representative_name,
+        server_unit_company_legal_representative_phone,
+        server_unit_company_validity_term,
+        server_unit_company_scope,
+        server_unit_company_audit_status
+        from server_unit_company
+        where
+        <if test="param != null and param != ''">
+            <bind name="param" value="'%' + param + '%'"/>
+            server_unit_company_name like #{param}
+            or server_unit_company_base like #{param}
+            or server_unit_company_airport like #{param}
+            or server_unit_company_type like #{param}
+            or server_unit_company_capital like #{param}
+            or server_unit_company_legal_representative_name like #{param}
+            or server_unit_company_legal_representative_phone like #{param}
+            or server_unit_company_validity_term like #{param}
+            or server_unit_company_scope like #{param}
+            or server_unit_company_audit_status like #{param}
+        </if>
     </select>
 
     <select id="selectByServerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">

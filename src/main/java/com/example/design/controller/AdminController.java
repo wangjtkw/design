@@ -4,12 +4,18 @@ import com.example.design.common.ErrorCode;
 import com.example.design.common.MyResponseBody;
 import com.example.design.entity.admin.AdministratorsAccount;
 import com.example.design.entity.requestbean.admin.AdminLogin;
+import com.example.design.entity.responsebean.AdminUserManagerListBean;
 import com.example.design.entity.responsebean.ServerUnitServicesDetail;
 import com.example.design.entity.server.IServerUnitService;
+import com.example.design.entity.server.ServerUnitAccount;
 import com.example.design.entity.server.ServerUnitCompany;
 import com.example.design.entity.server.ServerUnitServices;
+import com.example.design.entity.user.UsersAccount;
+import com.example.design.entity.user.UsersEssentialInformation;
 import com.example.design.service.admin.AdminService;
 import com.example.design.service.server.*;
+import com.example.design.service.user.UsersAccountService;
+import com.example.design.service.user.UsersEssentialInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +24,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private ServerUnitAccountService serverUnitAccountService;
 
     @Autowired
     private ServerUnitCompanyService serverUnitCompanyService;
@@ -45,6 +57,11 @@ public class AdminController {
     @Autowired
     private ServerUnitServicesHelicopterRentalService serverUnitServicesHelicopterRentalService;
 
+    @Autowired
+    private UsersAccountService usersAccountService;
+
+    @Autowired
+    private UsersEssentialInfoService usersEssentialInfoService;
 
     @PostMapping("/login")
     @ResponseBody
@@ -175,4 +192,155 @@ public class AdminController {
     public Object selectServer(String param) {
         return new MyResponseBody(200, "OK", serverUnitServicesService.selectByParam(param));
     }
+
+    @GetMapping("/get/serverUnit/list")
+    @ResponseBody
+    public Object getServerUnitList() {
+        List<ServerUnitCompany> list = serverUnitCompanyService.selectAll();
+        return new MyResponseBody(200, "OK", list);
+    }
+
+    @GetMapping("/get/serverUnit/detail")
+    @ResponseBody
+    public Object getServerUnitDetail(int companyId) {
+        ServerUnitCompany company = serverUnitCompanyService.select(companyId);
+        if (company == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "运行单位企业信息编号不存在");
+        }
+        return new MyResponseBody(200, "OK", company);
+    }
+
+    @GetMapping("/get/serverUnit/param")
+    @ResponseBody
+    public Object getServerUnitByParam(String param) {
+        List<ServerUnitCompany> companyList = serverUnitCompanyService.selectAllByParam(param);
+        return new MyResponseBody(200, "OK", companyList);
+    }
+
+    /**
+     * 待测试
+     *
+     * @param companyId
+     * @return
+     */
+    @GetMapping("/delete/serverUnit")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object deleteServerUnit(int companyId) {
+        List<ServerUnitServices> servicesList = serverUnitServicesService.selectByCompanyId(companyId);
+        for (ServerUnitServices service : servicesList) {
+            delete(service.getServerUnitServicesId());
+        }
+        ServerUnitAccount account = serverUnitAccountService.selectByCompanyId(companyId);
+        serverUnitAccountService.delete(account.getServerUnitAccountId());
+        serverUnitCompanyService.delete(companyId);
+        return new MyResponseBody(200, "OK");
+    }
+
+    void delete(int serverId) {
+        ServerUnitServices services = serverUnitServicesService.select(serverId);
+        if (services == null) return;
+        serverUnitServicesService.delete(serverId);
+        switch (services.getServerUnitServicesType()) {
+            case "空中游览":
+//                serverUnitServicesAirTourService
+                serverUnitServicesAirTourService.delete(services.getServerUnitServicesAirTourId());
+                break;
+            case "包机飞行":
+//                serverUnitServicesCharteredAirplaneService
+                serverUnitServicesCharteredAirplaneService.delete(services.getServerUnitServicesCharteredAirplaneId());
+
+                break;
+            case "跳伞飞行":
+//                serverUnitServicesParachuteFlightService
+                serverUnitServicesParachuteFlightService.delete(services.getServerUnitServicesParachuteFlightId());
+
+                break;
+            case "人工增雨":
+//                serverUnitServicesArtificialRainfallService
+                serverUnitServicesArtificialRainfallService.delete(services.getServerUnitServicesArtificialRainfallId());
+
+                break;
+            case "直升机出租":
+//                serverUnitServicesHelicopterRentalService
+                serverUnitServicesHelicopterRentalService.delete(services.getServerUnitServicesHelicopterRentalId());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @GetMapping("/get/user/list")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object getUserList() {
+        List<UsersAccount> accountList = usersAccountService.getAll();
+        List<AdminUserManagerListBean> userList = new ArrayList<>();
+        for (UsersAccount account : accountList) {
+            UsersEssentialInformation essentialInformation = usersEssentialInfoService.getById(account.getUsersEssentialInformationId());
+            AdminUserManagerListBean bean = new AdminUserManagerListBean(
+                    account.getUsersAccountId(),
+                    account.getUsersEssentialInformationId(),
+                    account.getUsersAccountAccount(),
+                    account.getUsersAccountEmail(),
+                    essentialInformation.getUsersEssentialInformationName(),
+                    essentialInformation.getUsersEssentialInformationIdNumber(),
+                    essentialInformation.getUsersEssentialInformationCompany()
+            );
+            userList.add(bean);
+        }
+        return new MyResponseBody(200, "OK", userList);
+    }
+
+    @GetMapping("/get/user/detail")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object getUserDetail(int accountId) {
+        UsersAccount account = usersAccountService.getUserByKey(accountId);
+        if (account == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户编号不存在");
+        }
+        UsersEssentialInformation essentialInformation = usersEssentialInfoService.getById(account.getUsersEssentialInformationId());
+        AdminUserManagerListBean bean = new AdminUserManagerListBean(
+                account.getUsersAccountId(),
+                account.getUsersEssentialInformationId(),
+                account.getUsersAccountAccount(),
+                account.getUsersAccountEmail(),
+                essentialInformation.getUsersEssentialInformationName(),
+                essentialInformation.getUsersEssentialInformationIdNumber(),
+                essentialInformation.getUsersEssentialInformationCompany()
+        );
+        return new MyResponseBody(200, "OK", bean);
+    }
+
+    /**
+     * 用户参数查询待完成
+     */
+//    @GetMapping("/get/user/param")
+//    @ResponseBody
+//    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+//    public Object getUserByParam(String param) {
+//
+//    }
+
+    /**
+     * 待测试
+     *
+     * @param accountId
+     * @return
+     */
+    @GetMapping("/delete/user")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object deleteUser(int accountId) {
+        UsersAccount account = usersAccountService.getUserByKey(accountId);
+        if (account == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户编号不存在");
+        }
+        usersEssentialInfoService.delete(account.getUsersEssentialInformationId());
+        usersAccountService.delete(accountId);
+        return new MyResponseBody(200, "OK");
+    }
+
+
 }

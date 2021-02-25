@@ -5,6 +5,8 @@ import com.example.design.mapper.user.UsersAccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsersAccountService {
 
@@ -27,4 +29,15 @@ public class UsersAccountService {
         return usersAccountMapper.selectByPrimaryKey(userAccountId);
     }
 
+    public UsersAccount getUserByKey(int accountId) {
+        return usersAccountMapper.selectByPrimaryKey(accountId);
+    }
+
+    public List<UsersAccount> getAll() {
+        return usersAccountMapper.selectAll();
+    }
+
+    public void delete(int accountId){
+        usersAccountMapper.deleteByPrimaryKey(accountId);
+    }
 }

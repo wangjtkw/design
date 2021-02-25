@@ -13,6 +13,8 @@ public interface ServerUnitAccountMapper {
 
     ServerUnitAccount selectByPrimaryKey(Integer serverUnitAccountId);
 
+    ServerUnitAccount selectByCompanyId(Integer companyId);
+
     List<ServerUnitAccount> selectAll();
 
     int updateByPrimaryKey(ServerUnitAccount record);

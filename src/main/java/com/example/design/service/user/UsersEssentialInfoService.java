@@ -15,4 +15,12 @@ public class UsersEssentialInfoService {
         return essentialInformationMapper.insert(essentialInformation);
     }
 
+    public UsersEssentialInformation getById(int essentialId) {
+        return essentialInformationMapper.selectByPrimaryKey(essentialId);
+    }
+
+    public void delete(int essentialId) {
+        essentialInformationMapper.deleteByPrimaryKey(essentialId);
+    }
+
 }

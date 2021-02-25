@@ -24,6 +24,8 @@ public interface ServerUnitServicesMapper {
 
     List<ServerUnitServices> selectByParam(String param);
 
+    List<ServerUnitServices> selectByCompanyId(int companyId);
+
     List<ServerUnitServices> selectAll();
 
     int updateByPrimaryKey(ServerUnitServices record);

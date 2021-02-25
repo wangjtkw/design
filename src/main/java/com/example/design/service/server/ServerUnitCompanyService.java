@@ -33,9 +33,20 @@ public class ServerUnitCompanyService {
         return serverUnitCompanyMapper.selectByParam(param);
     }
 
+    public List<ServerUnitCompany> selectAllByParam(String param) {
+        return serverUnitCompanyMapper.selectAllByParam(param);
+    }
+
+    public List<ServerUnitCompany> selectAll() {
+        return serverUnitCompanyMapper.selectAll();
+    }
+
     public void update(ServerUnitCompany company) {
         serverUnitCompanyMapper.updateByPrimaryKeySelective(company);
     }
 
+    public void delete(int companyId) {
+        serverUnitCompanyMapper.deleteByPrimaryKey(companyId);
+    }
 
 }
