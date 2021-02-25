@@ -29,22 +29,36 @@
         <selectKey keyProperty="serverUnitServicesId" order="AFTER" resultType="java.lang.Integer">
             select last_insert_id()
         </selectKey>
-        insert into server_unit_services (server_unit_services_id, server_unit_account_id,
+        insert into
+        server_unit_services (
+        server_unit_services_id,
+        server_unit_account_id,
         server_unit_services_helicopter_rental_id,
         server_unit_services_parachute_flight_id,
-        server_unit_services_air_tour_id, server_unit_services_chartered_airplane_id,
-        server_unit_services_artificial_rainfall_id, server_unit_services_title,
-        server_unit_services_img, server_unit_services_detail,
-        server_unit_services_type, server_unit_services_audit_status,
-        values (#{serverUnitServicesId,jdbcType=INTEGER}, #{serverUnitAccountId,jdbcType=INTEGER},
+        server_unit_services_air_tour_id,
+        server_unit_services_chartered_airplane_id,
+        server_unit_services_artificial_rainfall_id,
+        server_unit_services_title,
+        server_unit_services_img,
+        server_unit_services_detail,
+        server_unit_services_type,
+        server_unit_services_audit_status,
+        server_unit_services_release_time)
+        values (
+        #{serverUnitServicesId,jdbcType=INTEGER},
+        #{serverUnitAccountId,jdbcType=INTEGER},
         #{serverUnitServicesHelicopterRentalId,jdbcType=INTEGER},
         #{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},
         #{serverUnitServicesAirTourId,jdbcType=INTEGER},
         #{serverUnitServicesCharteredAirplaneId,jdbcType=INTEGER},
-        #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER}, #{serverUnitServicesTitle,jdbcType=VARCHAR},
-        #{serverUnitServicesImg,jdbcType=VARCHAR}, #{serverUnitServicesDetail,jdbcType=VARCHAR},
-        #{serverUnitServicesType,jdbcType=VARCHAR}, #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
-        now()
+        #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER},
+        #{serverUnitServicesTitle,jdbcType=VARCHAR},
+        #{serverUnitServicesImg,jdbcType=VARCHAR},
+        #{serverUnitServicesDetail,jdbcType=VARCHAR},
+        #{serverUnitServicesType,jdbcType=VARCHAR},
+        #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
+        NOW()
+        )
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.example.design.entity.server.ServerUnitServices">
         update server_unit_services
@@ -215,7 +229,7 @@
         </if>
     </select>
 
-    <select id="selectAllByType" parameterType="String" resultMap="BaseResultMap">
+    <select id="selectAllByType" parameterType="java.util.Map" resultMap="BaseResultMap">
         select server_unit_services_id,
         server_unit_account_id,
         server_unit_services_helicopter_rental_id,
@@ -233,13 +247,17 @@
         where
         <if test="param != null">
             server_unit_services_type = #{param}
+            and
         </if>
-        and server_unit_services.server_unit_services_audit_status = '审批通过'
+        server_unit_services.server_unit_services_audit_status = '审批通过'
         and server_unit_services.server_unit_services_id in (select server_unit_services.server_unit_services_id
         from server_unit_services,server_unit_account,server_unit_company
         where server_unit_services.server_unit_account_id = server_unit_account.server_unit_account_id
         and server_unit_account.server_unit_company_id = server_unit_company.server_unit_company_id
         and server_unit_company.server_unit_company_audit_status = '审批通过')
+        <if test="limit > 0">
+            order by server_unit_services_release_time desc LIMIT 0,#{limit}
+        </if>
     </select>
 
     <select id="selectByCompanyId" parameterType="java.lang.Integer" resultMap="BaseResultMap">

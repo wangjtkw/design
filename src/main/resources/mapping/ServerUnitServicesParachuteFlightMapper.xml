@@ -21,7 +21,6 @@
             select last_insert_id()
         </selectKey>
         insert into server_unit_services_parachute_flight (server_unit_services_parachute_flight_id,
-
         server_unit_services_parachute_flight_address, server_unit_services_parachute_flight_aircraft_model,
         server_unit_services_parachute_flight_price)
         values (#{serverUnitServicesParachuteFlightId,jdbcType=INTEGER},

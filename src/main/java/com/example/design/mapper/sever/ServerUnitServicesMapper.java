@@ -16,7 +16,7 @@ public interface ServerUnitServicesMapper {
 
     List<ServerUnitServices> selectByAccountKey(Integer serverUnitAccountId);
 
-    List<ServerUnitServices> selectAllByType(String param);
+    List<ServerUnitServices> selectAllByType(@Param("param")String param,@Param("limit")int limit);
 
     List<ServerUnitServices> selectByAccountKeyParam(@Param("serverUnitAccountId") Integer serverUnitAccountId, @Param("param") String param);
 

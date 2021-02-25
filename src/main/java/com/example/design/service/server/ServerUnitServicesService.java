@@ -50,8 +50,8 @@ public class ServerUnitServicesService {
     }
 
 
-    public List<ServerUnitServices> selectByType(String param) {
-        return servicesMapper.selectAllByType(param);
+    public List<ServerUnitServices> selectByType(String param,int limit) {
+        return servicesMapper.selectAllByType(param,limit);
     }
 
 }

@@ -5,6 +5,7 @@ import com.example.design.common.MyResponseBody;
 import com.example.design.entity.requestbean.user.UserUpdateEmail;
 import com.example.design.entity.requestbean.user.UserUpdatePW;
 import com.example.design.entity.responsebean.ServerUnitServicesDetail;
+import com.example.design.entity.responsebean.UserServerHomeBean;
 import com.example.design.entity.responsebean.UserServerItemDetailBean;
 import com.example.design.entity.responsebean.UserServerTypeItemBean;
 import com.example.design.entity.server.IServerUnitService;
@@ -110,6 +111,28 @@ public class UserController {
         return new MyResponseBody(200, "OK");
     }
 
+    @PostMapping("/update/email")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object updateEmail(UserUpdateEmail userUpdateEmail) {
+        if (userUpdateEmail == null
+                || userUpdateEmail.getPw() == null
+                || userUpdateEmail.getPw().equals("")
+                || userUpdateEmail.getNewEmail() == null
+                || userUpdateEmail.getNewEmail().equals("")) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "密码或邮箱不能为空");
+        }
+        UsersAccount usersAccount = usersAccountService.getUsersAccount(userUpdateEmail.getUsersAccountId());
+        if (usersAccount == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户id不存在");
+        }
+        if (!usersAccount.getUsersAccountPassword().equals(userUpdateEmail.getPw())) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "密码错误");
+        }
+        usersAccount.setUsersAccountEmail(userUpdateEmail.getNewEmail());
+        usersAccountService.update(usersAccount);
+        return new MyResponseBody(200, "OK");
+    }
 
     @PostMapping("/update/pw")
     @ResponseBody
@@ -134,39 +157,31 @@ public class UserController {
         return new MyResponseBody(200, "OK");
     }
 
-    @PostMapping("/update/email")
+    @GetMapping("/get/server/home")
     @ResponseBody
-    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object updateEmail(UserUpdateEmail userUpdateEmail) {
-        if (userUpdateEmail == null
-                || userUpdateEmail.getPw() == null
-                || userUpdateEmail.getPw().equals("")
-                || userUpdateEmail.getNewEmail() == null
-                || userUpdateEmail.getNewEmail().equals("")) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "密码或邮箱不能为空");
-        }
-        UsersAccount usersAccount = usersAccountService.getUsersAccount(userUpdateEmail.getUsersAccountId());
-        if (usersAccount == null) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户id不存在");
-        }
-        if (!usersAccount.getUsersAccountPassword().equals(userUpdateEmail.getPw())) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "密码错误");
-        }
-        usersAccount.setUsersAccountEmail(userUpdateEmail.getNewEmail());
-        usersAccountService.update(usersAccount);
-        return new MyResponseBody(200, "OK");
-    }
-
-
-    @GetMapping("/get/server")
-    @ResponseBody
-    public Object getServer() {
-        return new MyResponseBody(10000, "待完成");
+    public Object getServer(int limit) {
+        List<UserServerTypeItemBean> airTour = getServerByType("空中游览", limit);
+        List<UserServerTypeItemBean> charteredAirplane = getServerByType("包机飞行", limit);
+        List<UserServerTypeItemBean> parachuteFlight = getServerByType("跳伞飞行", limit);
+        List<UserServerTypeItemBean> artificialRainfall = getServerByType("人工增雨", limit);
+        List<UserServerTypeItemBean> helicopterRental = getServerByType("直升机出租", limit);
+        UserServerHomeBean homeBean = new UserServerHomeBean(
+                airTour, charteredAirplane, parachuteFlight, artificialRainfall, helicopterRental
+        );
+        return new MyResponseBody(200, "OK", homeBean);
     }
 
     @GetMapping("/get/server/type")
     @ResponseBody
     public Object getServerType(String type) {
+        List<UserServerTypeItemBean> result = getServerByType(type, -1);
+        if (result == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "请求类型错误");
+        }
+        return new MyResponseBody(200, "OK", result);
+    }
+
+    private List<UserServerTypeItemBean> getServerByType(String type, int limit) {
         List<ServerUnitServices> services;
         switch (type) {
             case "空中游览":
@@ -174,10 +189,10 @@ public class UserController {
             case "跳伞飞行":
             case "人工增雨":
             case "直升机出租":
-                services = serverUnitServicesService.selectByType(type);
+                services = serverUnitServicesService.selectByType(type, limit);
                 break;
             default:
-                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "请求类型错误");
+                return null;
         }
         List<UserServerTypeItemBean> result = new ArrayList<>();
         for (ServerUnitServices service : services) {
@@ -185,7 +200,7 @@ public class UserController {
             UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(service, company);
             result.add(serverTypeItemBean);
         }
-        return new MyResponseBody(200, "OK", result);
+        return result;
     }
 
     @GetMapping("/server/detail")
