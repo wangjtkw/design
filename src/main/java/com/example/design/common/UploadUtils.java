@@ -17,7 +17,7 @@ public class UploadUtils {
 //        // 构建上传文件的存放 "文件夹" 路径
 //        String fileDirPath = new String("src/main/resources/" + IMG_PATH_PREFIX);
 
-        File fileDir = new File(MyFile.uploadFolder);
+        File fileDir = new File(MyFile.uploadWindowImg);
         if (!fileDir.exists()) {
             // 递归生成文件夹
             fileDir.mkdirs();

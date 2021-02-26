@@ -351,17 +351,17 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK", result);
     }
 
-//    @GetMapping("/test/img")
-//    public Object uploadImg(@RequestParam MultipartFile file) {
-//        if (file.isEmpty()) {
-//            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "服务图片不能为空");
-//        }
-//        String imgName = UploadUtils.uploadImg(file);
-//        if (imgName == null) {
-//            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "图片上传错误");
-//        }
-//        return new MyResponseBody(200, "OK", imgName);
-//    }
+    @GetMapping("/test/img")
+    public Object uploadImg(@RequestParam MultipartFile file) {
+        if (file.isEmpty()) {
+            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "服务图片不能为空");
+        }
+        String imgName = UploadUtils.uploadImg(file);
+        if (imgName == null) {
+            return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "图片上传错误");
+        }
+        return new MyResponseBody(200, "OK", imgName);
+    }
 
     @GetMapping("/server/deleteSingle")
     public Object deleteServer(@RequestParam int serverId) {

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.user.UsersOrdersMapper">
+    <resultMap id="BaseResultMap" type="com.example.design.entity.user.UsersOrders">
+        <id column="users_orders_id" jdbcType="INTEGER" property="usersOrdersId"/>
+        <result column="server_unit_account_id" jdbcType="INTEGER" property="serverUnitAccountId"/>
+        <result column="users_account_id" jdbcType="INTEGER" property="usersAccountId"/>
+        <result column="server_unit_services_id" jdbcType="INTEGER" property="serverUnitServicesId"/>
+        <result column="users_orders_config_air_tour_id" jdbcType="INTEGER" property="usersOrdersConfigAirTourId"/>
+        <result column="users_orders_config_chartered_airplane_id" jdbcType="INTEGER"
+                property="usersOrdersConfigCharteredAirplaneId"/>
+        <result column="users_orders_config_parachute_flight_id" jdbcType="INTEGER"
+                property="usersOrdersConfigParachuteFlightId"/>
+        <result column="users_orders_order_state" jdbcType="VARCHAR" property="usersOrdersOrderState"/>
+        <result column="users_orders_server_type" jdbcType="VARCHAR" property="usersOrdersServerType"/>
+        <result column="users_orders_money" jdbcType="VARCHAR" property="usersOrdersMoney"/>
+        <result column="users_orders_time_create" jdbcType="VARCHAR" property="usersOrdersTimeCreate"/>
+        <result column="users_orders_time_pay" jdbcType="VARCHAR" property="usersOrdersTimePay"/>
+        <result column="users_orders_time_finish" jdbcType="VARCHAR" property="usersOrdersTimeFinish"/>
+        <result column="users_orders_order_code" jdbcType="VARCHAR" property="usersOrdersOrderCode"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from users_orders
+        where users_orders_id = #{usersOrdersId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.example.design.entity.user.UsersOrders">
+        <selectKey keyProperty="usersOrdersId" order="AFTER" resultType="java.lang.Integer">
+            select last_insert_id()
+        </selectKey>
+        insert into users_orders (users_orders_id, server_unit_account_id,
+        users_account_id, server_unit_services_id, users_orders_config_air_tour_id,
+        users_orders_config_chartered_airplane_id, users_orders_config_parachute_flight_id,
+        users_orders_order_state, users_orders_server_type,
+        users_orders_money, users_orders_time_create,
+        users_orders_time_pay, users_orders_time_finish,
+        users_orders_order_code)
+        values (#{usersOrdersId,jdbcType=INTEGER},
+        #{serverUnitAccountId,jdbcType=INTEGER},
+        #{usersAccountId,jdbcType=INTEGER},
+        #{serverUnitServicesId,jdbcType=INTEGER},
+        #{usersOrdersConfigAirTourId,jdbcType=INTEGER},
+        #{usersOrdersConfigCharteredAirplaneId,jdbcType=INTEGER},
+        #{usersOrdersConfigParachuteFlightId,jdbcType=INTEGER},
+        #{usersOrdersOrderState,jdbcType=VARCHAR},
+        #{usersOrdersServerType,jdbcType=VARCHAR},
+        #{usersOrdersMoney,jdbcType=VARCHAR},
+        NOW(),
+        #{usersOrdersTimePay,jdbcType=VARCHAR},
+        #{usersOrdersTimeFinish,jdbcType=VARCHAR},
+        #{usersOrdersOrderCode,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.example.design.entity.user.UsersOrders">
+        update users_orders
+        set server_unit_account_id                    = #{serverUnitAccountId,jdbcType=INTEGER},
+            users_account_id                          = #{usersAccountId,jdbcType=INTEGER},
+            server_unit_services_id                   = #{serverUnitServicesId,jdbcType=INTEGER},
+            users_orders_config_air_tour_id           = #{usersOrdersConfigAirTourId,jdbcType=INTEGER},
+            users_orders_config_chartered_airplane_id = #{usersOrdersConfigCharteredAirplaneId,jdbcType=INTEGER},
+            users_orders_config_parachute_flight_id   = #{usersOrdersConfigParachuteFlightId,jdbcType=INTEGER},
+            users_orders_order_state                  = #{usersOrdersOrderState,jdbcType=VARCHAR},
+            users_orders_server_type                  = #{usersOrdersServerType,jdbcType=VARCHAR},
+            users_orders_money                        = #{usersOrdersMoney,jdbcType=VARCHAR},
+            users_orders_time_create                  = #{usersOrdersTimeCreate,jdbcType=VARCHAR},
+            users_orders_time_pay                     = #{usersOrdersTimePay,jdbcType=VARCHAR},
+            users_orders_time_finish                  = #{usersOrdersTimeFinish,jdbcType=VARCHAR},
+            users_orders_order_code                   = #{usersOrdersOrderCode,jdbcType=VARCHAR}
+        where users_orders_id = #{usersOrdersId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateBySelective" parameterType="com.example.design.entity.user.UsersOrders">
+        update users_orders
+        <set>
+            <if test="serverUnitAccountId != null">
+                server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="usersAccountId != null">
+                users_account_id = #{usersAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="serverUnitServicesId != null">
+                server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER},
+            </if>
+            <if test="usersOrdersConfigAirTourId != null">
+                users_orders_config_air_tour_id = #{usersOrdersConfigAirTourId,jdbcType=INTEGER},
+            </if>
+            <if test="usersOrdersConfigCharteredAirplaneId != null">
+                users_orders_config_chartered_airplane_id = #{usersOrdersConfigCharteredAirplaneId,jdbcType=INTEGER},
+            </if>
+            <if test="usersOrdersConfigParachuteFlightId != null">
+                users_orders_config_parachute_flight_id = #{usersOrdersConfigParachuteFlightId,jdbcType=INTEGER},
+            </if>
+            <if test="usersOrdersOrderState != null">
+                users_orders_order_state = #{usersOrdersOrderState,jdbcType=VARCHAR},
+            </if>
+            <if test="usersOrdersServerType != null">
+                users_orders_server_type = #{usersOrdersServerType,jdbcType=VARCHAR},
+            </if>
+            <if test="usersOrdersMoney != null">
+                users_orders_money = #{usersOrdersMoney,jdbcType=VARCHAR},
+            </if>
+            <if test="usersOrdersOrderState == '待完成'.toString()">
+                users_orders_time_pay = NOW(),
+            </if>
+            <if test="usersOrdersOrderState == '已完成'.toString()">
+                users_orders_time_finish = NOW(),
+            </if>
+            <if test="usersOrdersOrderCode != null">
+                users_orders_order_code = #{usersOrdersOrderCode,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where users_orders_id = #{usersOrdersId,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select users_orders_id,
+               server_unit_account_id,
+               users_account_id,
+               server_unit_services_id,
+               users_orders_config_air_tour_id,
+               users_orders_config_chartered_airplane_id,
+               users_orders_config_parachute_flight_id,
+               users_orders_order_state,
+               users_orders_server_type,
+               users_orders_money,
+               users_orders_time_create,
+               users_orders_time_pay,
+               users_orders_time_finish,
+               users_orders_order_code
+        from users_orders
+        where users_orders_id = #{usersOrdersId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select users_orders_id,
+               server_unit_account_id,
+               users_account_id,
+               server_unit_services_id,
+               users_orders_config_air_tour_id,
+               users_orders_config_chartered_airplane_id,
+               users_orders_config_parachute_flight_id,
+               users_orders_order_state,
+               users_orders_server_type,
+               users_orders_money,
+               users_orders_time_create,
+               users_orders_time_pay,
+               users_orders_time_finish,
+               users_orders_order_code
+        from users_orders
+    </select>
+</mapper>

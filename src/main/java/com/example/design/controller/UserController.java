@@ -2,26 +2,25 @@ package com.example.design.controller;
 
 import com.example.design.common.ErrorCode;
 import com.example.design.common.MyResponseBody;
+import com.example.design.common.QrCodeUtil;
 import com.example.design.entity.requestbean.user.UserUpdateEmail;
 import com.example.design.entity.requestbean.user.UserUpdatePW;
-import com.example.design.entity.responsebean.ServerUnitServicesDetail;
-import com.example.design.entity.responsebean.UserServerHomeBean;
-import com.example.design.entity.responsebean.UserServerItemDetailBean;
-import com.example.design.entity.responsebean.UserServerTypeItemBean;
+import com.example.design.entity.responsebean.*;
 import com.example.design.entity.server.IServerUnitService;
 import com.example.design.entity.server.ServerUnitCompany;
-import com.example.design.entity.user.UsersAccount;
-import com.example.design.entity.user.UsersEssentialInformation;
+import com.example.design.entity.user.*;
 import com.example.design.entity.requestbean.user.UserLogin;
 import com.example.design.entity.requestbean.user.UserRegister;
 import com.example.design.entity.server.ServerUnitServices;
 import com.example.design.service.server.*;
-import com.example.design.service.user.UsersAccountService;
-import com.example.design.service.user.UsersEssentialInfoService;
+import com.example.design.service.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +54,18 @@ public class UserController {
 
     @Autowired
     private ServerUnitServicesHelicopterRentalService serverUnitServicesHelicopterRentalService;
+
+    @Autowired
+    private UsersOrderService usersOrderService;
+
+    @Autowired
+    private UsersOrdersConfigAirTourService usersOrdersConfigAirTourService;
+
+    @Autowired
+    private UsersOrdersConfigCharteredAirplaneService usersOrdersConfigCharteredAirplaneService;
+
+    @Autowired
+    private UsersOrdersConfigParachuteFlightService usersOrdersConfigParachuteFlightService;
 
 
     /**
@@ -232,6 +243,114 @@ public class UserController {
         ServerUnitCompany company = serverUnitCompanyService.selectByServerId(services.getServerUnitServicesId());
         UserServerItemDetailBean detailBean = new UserServerItemDetailBean(services, iServerUnitService, company);
         return new MyResponseBody(200, "OK", detailBean);
+    }
+
+    @RequestMapping("/pay/request")
+    public void pay(HttpServletRequest request, HttpServletResponse response, UserPayBean payBean) {
+        String requestContent;
+        int orderId = saveOrder(payBean);
+        if (orderId < 0) {
+            requestContent = "请求参数不完全或参数错误";
+        } else {
+            String ip = "192.168.0.106";
+            StringBuilder builder = new StringBuilder();
+            builder.append("http://").append(ip).append(":8080/page/order.html?");
+            builder.append("orderId=").append(orderId);
+            requestContent = builder.toString();
+        }
+        try {
+            OutputStream os = response.getOutputStream();
+            QrCodeUtil.encode(requestContent, null, os);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public int saveOrder(UserPayBean payBean) {
+        if (payBean.getServerUnitAccountId() == null
+                || payBean.getUsersAccountId() == null
+                || payBean.getServerUnitServicesId() == null
+                || payBean.getUsersOrdersServerType() == null
+                || payBean.getUsersOrdersServerType().equals("")
+                || payBean.getUsersOrdersMoney() == null) {
+            return -1;
+        }
+        UsersOrders orders = new UsersOrders(
+                payBean.getServerUnitAccountId(),
+                payBean.getUsersAccountId(),
+                payBean.getServerUnitServicesId(),
+                "待付款",
+                payBean.getUsersOrdersServerType(),
+                payBean.getUsersOrdersMoney());
+
+        switch (payBean.getUsersOrdersServerType()) {
+            case "空中游览":
+//                usersOrdersConfigAirTourService
+                if (payBean.getUsersOrdersConfigAirTourDuration() == null
+                        || payBean.getUsersOrdersConfigAirTourNumber() == null
+                        || payBean.getUsersOrdersConfigAirTourAircraftModel() == null
+                        || payBean.getUsersOrdersConfigAirTourScheduledTime() == null) {
+                    return -1;
+                }
+                UsersOrdersConfigAirTour airTour = new UsersOrdersConfigAirTour(
+                        payBean.getUsersOrdersConfigAirTourDuration(),
+                        payBean.getUsersOrdersConfigAirTourNumber(),
+                        payBean.getUsersOrdersConfigAirTourAircraftModel(),
+                        payBean.getUsersOrdersConfigAirTourScheduledTime()
+                );
+                usersOrdersConfigAirTourService.insert(airTour);
+                orders.setUsersOrdersConfigAirTourId(airTour.getUsersOrdersConfigAirTourId());
+                break;
+            case "包机飞行":
+//              usersOrdersConfigCharteredAirplaneService
+                if (payBean.getUsersOrdersConfigCharteredAirplaneAircraftModel() == null
+                        || payBean.getUsersOrdersConfigCharteredAirplaneScheduledTime() == null) {
+                    return -1;
+                }
+                UsersOrdersConfigCharteredAirplane charteredAirplane = new UsersOrdersConfigCharteredAirplane(
+                        payBean.getUsersOrdersConfigCharteredAirplaneAircraftModel(),
+                        payBean.getUsersOrdersConfigCharteredAirplaneScheduledTime()
+                );
+                usersOrdersConfigCharteredAirplaneService.insert(charteredAirplane);
+                orders.setUsersOrdersConfigCharteredAirplaneId(charteredAirplane.getUsersOrdersConfigCharteredAirplaneId());
+                break;
+            case "跳伞飞行":
+//                usersOrdersConfigParachuteFlightService
+                if (payBean.getUsersOrdersConfigParachuteFlightType() == null
+                        || payBean.getUsersOrdersConfigParachuteFlightNeedHold() == null
+                        || payBean.getUsersOrdersConfigParachuteFlightNeedTripartite() == null
+                        || payBean.getUsersOrdersConfigParachuteFlightScheduledTime() == null
+                        || payBean.getUsersOrdersConfigParachuteFlightPersonNum() == null) {
+                    return -1;
+                }
+                UsersOrdersConfigParachuteFlight parachuteFlight = new UsersOrdersConfigParachuteFlight(
+                        payBean.getUsersOrdersConfigParachuteFlightType(),
+                        payBean.getUsersOrdersConfigParachuteFlightNeedHold(),
+                        payBean.getUsersOrdersConfigParachuteFlightNeedTripartite(),
+                        payBean.getUsersOrdersConfigParachuteFlightScheduledTime(),
+                        payBean.getUsersOrdersConfigParachuteFlightPersonNum()
+                );
+                usersOrdersConfigParachuteFlightService.insert(parachuteFlight);
+                orders.setUsersOrdersConfigParachuteFlightId(parachuteFlight.getUsersOrdersConfigParachuteFlightId());
+                break;
+            default:
+                return -1;
+        }
+        usersOrderService.insert(orders);
+        return orders.getUsersOrdersId();
+    }
+
+    @RequestMapping("/pay/confirm")
+    public Object payConfirm(int orderId) {
+        UsersOrders orders = usersOrderService.selectById(orderId);
+        if (orders == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单id错误");
+        }
+        orders.setUsersOrdersOrderState("待完成");
+        usersOrderService.updateBySelective(orders);
+        System.out.println("运行");
+        return new MyResponseBody(200,"OK");
     }
 
 

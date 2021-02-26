@@ -10,6 +10,13 @@ public class UploadConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(MyFile.staticAccessPath).addResourceLocations("file:" + MyFile.uploadFolder);
+        String os = System.getProperty("os.name");
+        if (os.toLowerCase().startsWith("win")) {
+            registry.addResourceHandler(MyFile.imgAccessPath).addResourceLocations("file:" + MyFile.uploadWindowImg);
+            registry.addResourceHandler(MyFile.pageAccessPath).addResourceLocations("file:" + MyFile.uploadWindowPage);
+        } else {  //linux 和mac
+            registry.addResourceHandler(MyFile.imgAccessPath).addResourceLocations("file:" + MyFile.uploadLinuxImg);
+            registry.addResourceHandler(MyFile.pageAccessPath).addResourceLocations("file:" + MyFile.uploadLinuxPage);
+        }
     }
 }

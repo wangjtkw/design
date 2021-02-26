@@ -61,9 +61,23 @@
         <!--               enableDeleteByExample="false"-->
         <!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
 
-        <table schema="AdministratorsAccount" tableName="administrators_account" enableCountByExample="false"
+<!--        <table schema="AdministratorsAccount" tableName="administrators_account" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" enableUpdateByExample="false"/>-->
+
+        <table schema="UsersOrders" tableName="users_orders" enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false"/>
+        <table schema="UsersOrdersAirTour" tableName="users_orders_config_air_tour" enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false"/>
+        <table schema="UsersOrdersCharteredAirplane" tableName="users_orders_config_chartered_airplane" enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false"/>
+        <table schema="UsersOrdersParachuteFlight" tableName="users_orders_config_parachute_flight" enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false"/>
+
 
 
     </context>

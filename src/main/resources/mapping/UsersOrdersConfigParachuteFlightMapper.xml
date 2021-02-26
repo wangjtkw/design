@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.user.UsersOrdersConfigParachuteFlightMapper">
+  <resultMap id="BaseResultMap" type="com.example.design.entity.user.UsersOrdersConfigParachuteFlight">
+    <id column="users_orders_config_parachute_flight_id" jdbcType="INTEGER" property="usersOrdersConfigParachuteFlightId" />
+    <result column="users_orders_config_parachute_flight_type" jdbcType="VARCHAR" property="usersOrdersConfigParachuteFlightType" />
+    <result column="users_orders_config_parachute_flight_need_hold" jdbcType="VARCHAR" property="usersOrdersConfigParachuteFlightNeedHold" />
+    <result column="users_orders_config_parachute_flight_need_tripartite" jdbcType="VARCHAR" property="usersOrdersConfigParachuteFlightNeedTripartite" />
+    <result column="users_orders_config_parachute_flight_scheduled_time" jdbcType="VARCHAR" property="usersOrdersConfigParachuteFlightScheduledTime" />
+    <result column="users_orders_config_parachute_flight_person_num" jdbcType="VARCHAR" property="usersOrdersConfigParachuteFlightPersonNum" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from users_orders_config_parachute_flight
+    where users_orders_config_parachute_flight_id = #{usersOrdersConfigParachuteFlightId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.design.entity.user.UsersOrdersConfigParachuteFlight">
+    <selectKey keyProperty="usersOrdersConfigParachuteFlightId" order="AFTER" resultType="java.lang.Integer">
+      select last_insert_id()
+    </selectKey>
+    insert into users_orders_config_parachute_flight (users_orders_config_parachute_flight_id, users_orders_config_parachute_flight_type,
+      users_orders_config_parachute_flight_need_hold, users_orders_config_parachute_flight_need_tripartite, 
+      users_orders_config_parachute_flight_scheduled_time, users_orders_config_parachute_flight_person_num
+      )
+    values (#{usersOrdersConfigParachuteFlightId,jdbcType=INTEGER}, #{usersOrdersConfigParachuteFlightType,jdbcType=VARCHAR}, 
+      #{usersOrdersConfigParachuteFlightNeedHold,jdbcType=VARCHAR}, #{usersOrdersConfigParachuteFlightNeedTripartite,jdbcType=VARCHAR}, 
+      #{usersOrdersConfigParachuteFlightScheduledTime,jdbcType=VARCHAR}, #{usersOrdersConfigParachuteFlightPersonNum,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.design.entity.user.UsersOrdersConfigParachuteFlight">
+    update users_orders_config_parachute_flight
+    set users_orders_config_parachute_flight_type = #{usersOrdersConfigParachuteFlightType,jdbcType=VARCHAR},
+      users_orders_config_parachute_flight_need_hold = #{usersOrdersConfigParachuteFlightNeedHold,jdbcType=VARCHAR},
+      users_orders_config_parachute_flight_need_tripartite = #{usersOrdersConfigParachuteFlightNeedTripartite,jdbcType=VARCHAR},
+      users_orders_config_parachute_flight_scheduled_time = #{usersOrdersConfigParachuteFlightScheduledTime,jdbcType=VARCHAR},
+      users_orders_config_parachute_flight_person_num = #{usersOrdersConfigParachuteFlightPersonNum,jdbcType=VARCHAR}
+    where users_orders_config_parachute_flight_id = #{usersOrdersConfigParachuteFlightId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select users_orders_config_parachute_flight_id, users_orders_config_parachute_flight_type, 
+    users_orders_config_parachute_flight_need_hold, users_orders_config_parachute_flight_need_tripartite, 
+    users_orders_config_parachute_flight_scheduled_time, users_orders_config_parachute_flight_person_num
+    from users_orders_config_parachute_flight
+    where users_orders_config_parachute_flight_id = #{usersOrdersConfigParachuteFlightId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select users_orders_config_parachute_flight_id, users_orders_config_parachute_flight_type, 
+    users_orders_config_parachute_flight_need_hold, users_orders_config_parachute_flight_need_tripartite, 
+    users_orders_config_parachute_flight_scheduled_time, users_orders_config_parachute_flight_person_num
+    from users_orders_config_parachute_flight
+  </select>
+</mapper>

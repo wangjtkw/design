@@ -1,5 +1,5 @@
-server:
-  port: 8080
+
+
 
 spring:
   datasource:
@@ -12,11 +12,15 @@ mybatis:
   mapper-locations: classpath:mapping/*.xml
   type-aliases-package: com.example.design.entity
 
-myfile:
-  accessPath: /uploadimg/
-  staticAccessPath: /uploadimg/**
-#  uploadFolder: /root/uploadFiles/
-  uploadFolder: C://File_rec/tmp/
+
+file:
+  common:
+    ## windows系统下访问路径
+    uploadWindowImg: C:\File_rec\img
+    uploadWindowPage: C:\File_rec\page
+    ## windows系统下访问路径
+    uploadLinuxImg: /user/img/
+    uploadLinuxPage: /user/page/
 
 #  # 上传的服务器上的映射文件夹
 #  file.accessPath=/uploadimg/

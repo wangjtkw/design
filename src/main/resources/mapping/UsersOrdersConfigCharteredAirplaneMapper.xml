@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.design.mapper.user.UsersOrdersConfigCharteredAirplaneMapper">
+  <resultMap id="BaseResultMap" type="com.example.design.entity.user.UsersOrdersConfigCharteredAirplane">
+    <id column="users_orders_config_chartered_airplane_id" jdbcType="INTEGER" property="usersOrdersConfigCharteredAirplaneId" />
+    <result column="users_orders_config_chartered_airplane_aircraft_model" jdbcType="VARCHAR" property="usersOrdersConfigCharteredAirplaneAircraftModel" />
+    <result column="users_orders_config_chartered_airplane_scheduled_time" jdbcType="VARCHAR" property="usersOrdersConfigCharteredAirplaneScheduledTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from users_orders_config_chartered_airplane
+    where users_orders_config_chartered_airplane_id = #{usersOrdersConfigCharteredAirplaneId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.design.entity.user.UsersOrdersConfigCharteredAirplane">
+    <selectKey keyProperty="usersOrdersConfigCharteredAirplaneId" order="AFTER" resultType="java.lang.Integer">
+      select last_insert_id()
+    </selectKey>
+insert into users_orders_config_chartered_airplane (users_orders_config_chartered_airplane_id, users_orders_config_chartered_airplane_aircraft_model,
+      users_orders_config_chartered_airplane_scheduled_time)
+    values (#{usersOrdersConfigCharteredAirplaneId,jdbcType=INTEGER}, #{usersOrdersConfigCharteredAirplaneAircraftModel,jdbcType=VARCHAR}, 
+      #{usersOrdersConfigCharteredAirplaneScheduledTime,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.example.design.entity.user.UsersOrdersConfigCharteredAirplane">
+    update users_orders_config_chartered_airplane
+    set users_orders_config_chartered_airplane_aircraft_model = #{usersOrdersConfigCharteredAirplaneAircraftModel,jdbcType=VARCHAR},
+      users_orders_config_chartered_airplane_scheduled_time = #{usersOrdersConfigCharteredAirplaneScheduledTime,jdbcType=VARCHAR}
+    where users_orders_config_chartered_airplane_id = #{usersOrdersConfigCharteredAirplaneId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select users_orders_config_chartered_airplane_id, users_orders_config_chartered_airplane_aircraft_model, 
+    users_orders_config_chartered_airplane_scheduled_time
+    from users_orders_config_chartered_airplane
+    where users_orders_config_chartered_airplane_id = #{usersOrdersConfigCharteredAirplaneId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select users_orders_config_chartered_airplane_id, users_orders_config_chartered_airplane_aircraft_model, 
+    users_orders_config_chartered_airplane_scheduled_time
+    from users_orders_config_chartered_airplane
+  </select>
+</mapper>
