@@ -14,4 +14,11 @@ public class UsersOrdersConfigCharteredAirplaneService {
         mapper.insert(airplane);
     }
 
+    public UsersOrdersConfigCharteredAirplane selectById(int id){
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    public int delete(int id) {
+        return mapper.deleteByPrimaryKey(id);
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.design.entity.responsebean;
 
-public class AdminUserManagerListBean {
+public class UserDetailBean {
 
     private Integer usersAccountId;
 
@@ -16,7 +16,7 @@ public class AdminUserManagerListBean {
 
     private String usersEssentialInformationCompany;
 
-    public AdminUserManagerListBean(Integer usersAccountId, Integer usersEssentialInformationId, String usersAccountAccount, String usersAccountEmail, String usersEssentialInformationName, String usersEssentialInformationIdNumber, String usersEssentialInformationCompany) {
+    public UserDetailBean(Integer usersAccountId, Integer usersEssentialInformationId, String usersAccountAccount, String usersAccountEmail, String usersEssentialInformationName, String usersEssentialInformationIdNumber, String usersEssentialInformationCompany) {
         this.usersAccountId = usersAccountId;
         this.usersEssentialInformationId = usersEssentialInformationId;
         this.usersAccountAccount = usersAccountAccount;

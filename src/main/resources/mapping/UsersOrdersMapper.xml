@@ -130,6 +130,75 @@
         from users_orders
         where users_orders_id = #{usersOrdersId,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByAccountId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select users_orders_id,
+               server_unit_account_id,
+               users_account_id,
+               server_unit_services_id,
+               users_orders_config_air_tour_id,
+               users_orders_config_chartered_airplane_id,
+               users_orders_config_parachute_flight_id,
+               users_orders_order_state,
+               users_orders_server_type,
+               users_orders_money,
+               users_orders_time_create,
+               users_orders_time_pay,
+               users_orders_time_finish,
+               users_orders_order_code
+        from users_orders
+        where users_account_id = #{accountId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByAccountParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select users_orders_id,
+        server_unit_account_id,
+        users_account_id,
+        server_unit_services_id,
+        users_orders_config_air_tour_id,
+        users_orders_config_chartered_airplane_id,
+        users_orders_config_parachute_flight_id,
+        users_orders_order_state,
+        users_orders_server_type,
+        users_orders_money,
+        users_orders_time_create,
+        users_orders_time_pay,
+        users_orders_time_finish,
+        users_orders_order_code
+        from users_orders
+        where users_account_id = #{accountId,jdbcType=INTEGER}
+        <if test="param != null || param != ''">
+            <bind name="param" value="'%' + param + '%'"/>
+            and(users_orders_order_state like #{param}
+            or users_orders_server_type like #{param}
+            or users_orders_money like #{param}
+            or users_orders_time_create like #{param}
+            or users_orders_time_pay like #{param}
+            or users_orders_time_finish like #{param}
+            or users_orders_order_code like #{param}
+            )
+        </if>
+    </select>
+
+    <select id="selectByServerUnitAccount" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select users_orders_id,
+               server_unit_account_id,
+               users_account_id,
+               server_unit_services_id,
+               users_orders_config_air_tour_id,
+               users_orders_config_chartered_airplane_id,
+               users_orders_config_parachute_flight_id,
+               users_orders_order_state,
+               users_orders_server_type,
+               users_orders_money,
+               users_orders_time_create,
+               users_orders_time_pay,
+               users_orders_time_finish,
+               users_orders_order_code
+        from users_orders
+        where server_unit_account_id = #{serverAccountId,jdbcType=INTEGER}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap">
         select users_orders_id,
                server_unit_account_id,

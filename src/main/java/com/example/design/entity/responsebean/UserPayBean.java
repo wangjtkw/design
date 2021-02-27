@@ -59,6 +59,23 @@ public class UserPayBean {
 
     private String usersOrdersConfigParachuteFlightPersonNum;
 
+    public UserPayBean(Integer usersOrdersId, Integer serverUnitAccountId, Integer usersAccountId, Integer serverUnitServicesId, Integer usersOrdersConfigAirTourId, Integer usersOrdersConfigCharteredAirplaneId, Integer usersOrdersConfigParachuteFlightId, String usersOrdersOrderState, String usersOrdersServerType, String usersOrdersMoney, String usersOrdersTimeCreate, String usersOrdersTimePay, String usersOrdersTimeFinish, String usersOrdersOrderCode) {
+        this.usersOrdersId = usersOrdersId;
+        this.serverUnitAccountId = serverUnitAccountId;
+        this.usersAccountId = usersAccountId;
+        this.serverUnitServicesId = serverUnitServicesId;
+        this.usersOrdersConfigAirTourId = usersOrdersConfigAirTourId;
+        this.usersOrdersConfigCharteredAirplaneId = usersOrdersConfigCharteredAirplaneId;
+        this.usersOrdersConfigParachuteFlightId = usersOrdersConfigParachuteFlightId;
+        this.usersOrdersOrderState = usersOrdersOrderState;
+        this.usersOrdersServerType = usersOrdersServerType;
+        this.usersOrdersMoney = usersOrdersMoney;
+        this.usersOrdersTimeCreate = usersOrdersTimeCreate;
+        this.usersOrdersTimePay = usersOrdersTimePay;
+        this.usersOrdersTimeFinish = usersOrdersTimeFinish;
+        this.usersOrdersOrderCode = usersOrdersOrderCode;
+    }
+
     public Integer getUsersOrdersId() {
         return usersOrdersId;
     }

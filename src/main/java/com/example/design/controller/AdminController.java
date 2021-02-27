@@ -4,7 +4,7 @@ import com.example.design.common.ErrorCode;
 import com.example.design.common.MyResponseBody;
 import com.example.design.entity.admin.AdministratorsAccount;
 import com.example.design.entity.requestbean.admin.AdminLogin;
-import com.example.design.entity.responsebean.AdminUserManagerListBean;
+import com.example.design.entity.responsebean.UserDetailBean;
 import com.example.design.entity.responsebean.ServerUnitServicesDetail;
 import com.example.design.entity.server.IServerUnitService;
 import com.example.design.entity.server.ServerUnitAccount;
@@ -275,10 +275,10 @@ public class AdminController {
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public Object getUserList() {
         List<UsersAccount> accountList = usersAccountService.getAll();
-        List<AdminUserManagerListBean> userList = new ArrayList<>();
+        List<UserDetailBean> userList = new ArrayList<>();
         for (UsersAccount account : accountList) {
             UsersEssentialInformation essentialInformation = usersEssentialInfoService.getById(account.getUsersEssentialInformationId());
-            AdminUserManagerListBean bean = new AdminUserManagerListBean(
+            UserDetailBean bean = new UserDetailBean(
                     account.getUsersAccountId(),
                     account.getUsersEssentialInformationId(),
                     account.getUsersAccountAccount(),
@@ -301,7 +301,7 @@ public class AdminController {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户编号不存在");
         }
         UsersEssentialInformation essentialInformation = usersEssentialInfoService.getById(account.getUsersEssentialInformationId());
-        AdminUserManagerListBean bean = new AdminUserManagerListBean(
+        UserDetailBean bean = new UserDetailBean(
                 account.getUsersAccountId(),
                 account.getUsersEssentialInformationId(),
                 account.getUsersAccountAccount(),

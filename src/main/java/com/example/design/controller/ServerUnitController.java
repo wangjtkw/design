@@ -280,7 +280,7 @@ public class ServerUnitController {
                 "待审批"
         );
         System.out.println(services.getServerUnitServicesImg());
-        int result = -1;
+        int result;
         switch (addInfo.getServerUnitServicesType()) {
             case "空中游览":
                 ServerUnitServicesAirTour airTour = new ServerUnitServicesAirTour(

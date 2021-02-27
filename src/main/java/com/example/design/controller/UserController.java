@@ -245,6 +245,13 @@ public class UserController {
         return new MyResponseBody(200, "OK", detailBean);
     }
 
+    /**
+     * 支付请求二维码
+     *
+     * @param request
+     * @param response
+     * @param payBean
+     */
     @RequestMapping("/pay/request")
     public void pay(HttpServletRequest request, HttpServletResponse response, UserPayBean payBean) {
         String requestContent;
@@ -267,7 +274,7 @@ public class UserController {
     }
 
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public int saveOrder(UserPayBean payBean) {
+    int saveOrder(UserPayBean payBean) {
         if (payBean.getServerUnitAccountId() == null
                 || payBean.getUsersAccountId() == null
                 || payBean.getServerUnitServicesId() == null
@@ -342,6 +349,7 @@ public class UserController {
     }
 
     @RequestMapping("/pay/confirm")
+    @ResponseBody
     public Object payConfirm(int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
         if (orders == null) {
@@ -350,8 +358,216 @@ public class UserController {
         orders.setUsersOrdersOrderState("待完成");
         usersOrderService.updateBySelective(orders);
         System.out.println("运行");
-        return new MyResponseBody(200,"OK");
+        return new MyResponseBody(200, "OK");
     }
 
+    @RequestMapping("/get/order/list")
+    @ResponseBody
+    public Object getOrderList(int accountId) {
+        List<UsersOrders> ordersList = usersOrderService.selectByAccountId(accountId);
+        List<OrderDetailBean> result = new ArrayList<>();
+        for (UsersOrders orders : ordersList) {
+            UserPayBean payBean = getUserPayBean(orders);
+            if (payBean == null) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            int serverId = payBean.getServerUnitServicesId();
+            if (serverId == 0) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            ServerUnitCompany company = getCompanyByServerId(serverId);
+            if (company == null) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            ServerUnitServicesDetail serverDetail = getServerUnitService(serverId);
+            if (serverDetail == null) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            OrderDetailBean orderDetailBean = new OrderDetailBean();
+            orderDetailBean.setPayBean(payBean);
+            orderDetailBean.setCompany(company);
+            orderDetailBean.setServerUnitServicesDetail(serverDetail);
+            result.add(orderDetailBean);
+        }
+        return new MyResponseBody(200, "OK", result);
+    }
+
+    @RequestMapping("/get/order/detail")
+    @ResponseBody
+    public Object getOrderDetail(int orderId) {
+        UsersOrders orders = usersOrderService.selectById(orderId);
+        if (orders == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单id错误");
+        }
+        UserPayBean payBean = getUserPayBean(orders);
+        if (payBean == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+        }
+        int serverId = payBean.getServerUnitServicesId();
+        if (serverId == 0) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+        }
+        ServerUnitCompany company = getCompanyByServerId(serverId);
+        if (company == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+        }
+        ServerUnitServicesDetail serverDetail = getServerUnitService(serverId);
+        if (serverDetail == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+        }
+        OrderDetailBean orderDetailBean = new OrderDetailBean();
+        orderDetailBean.setPayBean(payBean);
+        orderDetailBean.setCompany(company);
+        orderDetailBean.setServerUnitServicesDetail(serverDetail);
+        return new MyResponseBody(200, "OK", orderDetailBean);
+    }
+
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public UserPayBean getUserPayBean(UsersOrders orders) {
+        if (orders == null) {
+            return null;
+        }
+        UserPayBean payBean = new UserPayBean(
+                orders.getUsersOrdersId(),
+                orders.getServerUnitAccountId(),
+                orders.getUsersAccountId(),
+                orders.getServerUnitServicesId(),
+                orders.getUsersOrdersConfigAirTourId(),
+                orders.getUsersOrdersConfigCharteredAirplaneId(),
+                orders.getUsersOrdersConfigParachuteFlightId(),
+                orders.getUsersOrdersOrderState(),
+                orders.getUsersOrdersServerType(),
+                orders.getUsersOrdersMoney(),
+                orders.getUsersOrdersTimeCreate(),
+                orders.getUsersOrdersTimePay(),
+                orders.getUsersOrdersTimeFinish(),
+                orders.getUsersOrdersOrderCode()
+        );
+
+        switch (orders.getUsersOrdersServerType()) {
+            case "空中游览":
+                UsersOrdersConfigAirTour airTour = usersOrdersConfigAirTourService.selectById(orders.getUsersOrdersConfigAirTourId());
+                if (airTour == null) {
+                    return null;
+                }
+                payBean.setUsersOrdersConfigAirTourDuration(airTour.getUsersOrdersConfigAirTourDuration());
+                payBean.setUsersOrdersConfigAirTourNumber(airTour.getUsersOrdersConfigAirTourNumber());
+                payBean.setUsersOrdersConfigAirTourAircraftModel(airTour.getUsersOrdersConfigAirTourAircraftModel());
+                payBean.setUsersOrdersConfigAirTourScheduledTime(airTour.getUsersOrdersConfigAirTourScheduledTime());
+                break;
+            case "包机飞行":
+                UsersOrdersConfigCharteredAirplane charteredAirplane = usersOrdersConfigCharteredAirplaneService.selectById(orders.getUsersOrdersConfigCharteredAirplaneId());
+                if (charteredAirplane == null) {
+                    return null;
+                }
+                payBean.setUsersOrdersConfigCharteredAirplaneAircraftModel(charteredAirplane.getUsersOrdersConfigCharteredAirplaneAircraftModel());
+                payBean.setUsersOrdersConfigCharteredAirplaneScheduledTime(charteredAirplane.getUsersOrdersConfigCharteredAirplaneScheduledTime());
+                break;
+            case "跳伞飞行":
+                UsersOrdersConfigParachuteFlight parachuteFlight = usersOrdersConfigParachuteFlightService.selectById(orders.getUsersOrdersConfigParachuteFlightId());
+                if (parachuteFlight == null) {
+                    return null;
+                }
+                payBean.setUsersOrdersConfigParachuteFlightType(parachuteFlight.getUsersOrdersConfigParachuteFlightType());
+                payBean.setUsersOrdersConfigParachuteFlightNeedHold(parachuteFlight.getUsersOrdersConfigParachuteFlightNeedHold());
+                payBean.setUsersOrdersConfigParachuteFlightNeedTripartite(parachuteFlight.getUsersOrdersConfigParachuteFlightNeedTripartite());
+                payBean.setUsersOrdersConfigAirTourScheduledTime(parachuteFlight.getUsersOrdersConfigParachuteFlightScheduledTime());
+                payBean.setUsersOrdersConfigParachuteFlightPersonNum(parachuteFlight.getUsersOrdersConfigParachuteFlightPersonNum());
+                break;
+            default:
+                return null;
+        }
+        return payBean;
+    }
+
+
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public ServerUnitCompany getCompanyByServerId(int serverId) {
+        if (serverId == 0) {
+            return null;
+        }
+        return serverUnitCompanyService.selectByServerId(serverId);
+    }
+
+    public ServerUnitServicesDetail getServerUnitService(int serverId) {
+        ServerUnitServices services = serverUnitServicesService.select(serverId);
+        if (services == null) {
+            return null;
+        }
+        IServerUnitService iServerUnitService;
+        switch (services.getServerUnitServicesType()) {
+            case "空中游览":
+                iServerUnitService = serverUnitServicesAirTourService.select(services.getServerUnitServicesAirTourId());
+                break;
+            case "包机飞行":
+                iServerUnitService = serverUnitServicesCharteredAirplaneService.select(services.getServerUnitServicesCharteredAirplaneId());
+                break;
+            case "跳伞飞行":
+                iServerUnitService = serverUnitServicesParachuteFlightService.select(services.getServerUnitServicesParachuteFlightId());
+                break;
+            case "人工增雨":
+                iServerUnitService = serverUnitServicesArtificialRainfallService.select(services.getServerUnitServicesArtificialRainfallId());
+                break;
+            case "直升机出租":
+                iServerUnitService = serverUnitServicesHelicopterRentalService.select(services.getServerUnitServicesHelicopterRentalId());
+                break;
+            default:
+                return null;
+        }
+        return new ServerUnitServicesDetail(services, iServerUnitService);
+    }
+
+    @RequestMapping("/delete/order")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object deleteOrder(int orderId) {
+        UsersOrders orders = usersOrderService.selectById(orderId);
+        switch (orders.getUsersOrdersServerType()) {
+            case "空中游览":
+                usersOrdersConfigAirTourService.delete(orders.getUsersOrdersConfigAirTourId());
+                break;
+            case "包机飞行":
+                usersOrdersConfigCharteredAirplaneService.delete(orders.getUsersOrdersConfigCharteredAirplaneId());
+                break;
+            case "跳伞飞行":
+                usersOrdersConfigParachuteFlightService.delete(orders.getUsersOrdersConfigParachuteFlightId());
+                break;
+            default:
+                break;
+        }
+        usersOrderService.delete(orderId);
+        return new MyResponseBody(200, "OK");
+    }
+
+    @RequestMapping("get/order/list/param")
+    @ResponseBody
+    public Object select(int accountId, String param) {
+        List<UsersOrders> ordersList = usersOrderService.selectByAccountParam(accountId, param);
+        List<OrderDetailBean> result = new ArrayList<>();
+        for (UsersOrders orders : ordersList) {
+            UserPayBean payBean = getUserPayBean(orders);
+            if (payBean == null) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            int serverId = payBean.getServerUnitServicesId();
+            if (serverId == 0) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            ServerUnitCompany company = getCompanyByServerId(serverId);
+            if (company == null) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            ServerUnitServicesDetail serverDetail = getServerUnitService(serverId);
+            if (serverDetail == null) {
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
+            }
+            OrderDetailBean orderDetailBean = new OrderDetailBean();
+            orderDetailBean.setPayBean(payBean);
+            orderDetailBean.setCompany(company);
+            orderDetailBean.setServerUnitServicesDetail(serverDetail);
+            result.add(orderDetailBean);
+        }
+        return new MyResponseBody(200, "OK", result);
+    }
 
 }

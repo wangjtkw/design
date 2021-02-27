@@ -13,4 +13,12 @@ public class UsersOrdersConfigParachuteFlightService {
     public void insert(UsersOrdersConfigParachuteFlight parachuteFlight) {
         mapper.insert(parachuteFlight);
     }
+
+    public UsersOrdersConfigParachuteFlight selectById(int id) {
+        return mapper.selectByPrimaryKey(id);
+    }
+
+    public int delete(int id) {
+        return mapper.deleteByPrimaryKey(id);
+    }
 }
