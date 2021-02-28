@@ -20,6 +20,8 @@ public interface UsersOrdersMapper {
 
     List<UsersOrders> selectByAccountParam(@Param("accountId") int accountId, @Param("param") String params);
 
+    List<UsersOrders> selectByServerUnitAccountParam(@Param("serverAccountId") int serverAccountId, @Param("param") String params);
+    
     List<UsersOrders> selectAll();
 
     int updateByPrimaryKey(UsersOrders record);

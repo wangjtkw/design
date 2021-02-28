@@ -259,7 +259,7 @@ public class UserController {
         if (orderId < 0) {
             requestContent = "请求参数不完全或参数错误";
         } else {
-            String ip = "192.168.0.106";
+            String ip = "10.20.151.16";
             StringBuilder builder = new StringBuilder();
             builder.append("http://").append(ip).append(":8080/page/order.html?");
             builder.append("orderId=").append(orderId);
