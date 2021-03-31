@@ -10,19 +10,16 @@ public class ServerUnitServicesHelicopterRental implements IServerUnitService {
 
     private String serverUnitServicesHelicopterRentalPrice;
 
-    private String serverUnitServicesHelicopterRentalPhone;
 
-    public ServerUnitServicesHelicopterRental(String serverUnitServicesHelicopterRentalAircraftModel, String serverUnitServicesHelicopterRentalPrice, String serverUnitServicesHelicopterRentalPhone) {
+    public ServerUnitServicesHelicopterRental(String serverUnitServicesHelicopterRentalAircraftModel, String serverUnitServicesHelicopterRentalPrice) {
         this.serverUnitServicesHelicopterRentalAircraftModel = serverUnitServicesHelicopterRentalAircraftModel;
         this.serverUnitServicesHelicopterRentalPrice = serverUnitServicesHelicopterRentalPrice;
-        this.serverUnitServicesHelicopterRentalPhone = serverUnitServicesHelicopterRentalPhone;
-    }
+         }
 
-    public ServerUnitServicesHelicopterRental(Integer serverUnitServicesHelicopterRentalId, String serverUnitServicesHelicopterRentalAircraftModel, String serverUnitServicesHelicopterRentalPrice, String serverUnitServicesHelicopterRentalPhone) {
+    public ServerUnitServicesHelicopterRental(Integer serverUnitServicesHelicopterRentalId, String serverUnitServicesHelicopterRentalAircraftModel, String serverUnitServicesHelicopterRentalPrice) {
         this.serverUnitServicesHelicopterRentalId = serverUnitServicesHelicopterRentalId;
         this.serverUnitServicesHelicopterRentalAircraftModel = serverUnitServicesHelicopterRentalAircraftModel;
         this.serverUnitServicesHelicopterRentalPrice = serverUnitServicesHelicopterRentalPrice;
-        this.serverUnitServicesHelicopterRentalPhone = serverUnitServicesHelicopterRentalPhone;
     }
 
     public ServerUnitServicesHelicopterRental() {
@@ -52,11 +49,4 @@ public class ServerUnitServicesHelicopterRental implements IServerUnitService {
         this.serverUnitServicesHelicopterRentalPrice = serverUnitServicesHelicopterRentalPrice == null ? null : serverUnitServicesHelicopterRentalPrice.trim();
     }
 
-    public String getServerUnitServicesHelicopterRentalPhone() {
-        return serverUnitServicesHelicopterRentalPhone;
-    }
-
-    public void setServerUnitServicesHelicopterRentalPhone(String serverUnitServicesHelicopterRentalPhone) {
-        this.serverUnitServicesHelicopterRentalPhone = serverUnitServicesHelicopterRentalPhone == null ? null : serverUnitServicesHelicopterRentalPhone.trim();
-    }
 }

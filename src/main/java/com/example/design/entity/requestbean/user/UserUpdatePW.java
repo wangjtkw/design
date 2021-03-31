@@ -1,21 +1,21 @@
 package com.example.design.entity.requestbean.user;
 
 public class UserUpdatePW {
-    private int usersAccountId;
+    private Integer usersAccountId;
     private String oldPW;
     private String newPW;
 
-    public UserUpdatePW(int usersAccountId, String oldPW, String newPW) {
+    public UserUpdatePW(Integer usersAccountId, String oldPW, String newPW) {
         this.usersAccountId = usersAccountId;
         this.oldPW = oldPW;
         this.newPW = newPW;
     }
 
-    public int getUsersAccountId() {
+    public Integer getUsersAccountId() {
         return usersAccountId;
     }
 
-    public void setUsersAccountId(int usersAccountId) {
+    public void setUsersAccountId(Integer usersAccountId) {
         this.usersAccountId = usersAccountId;
     }
 

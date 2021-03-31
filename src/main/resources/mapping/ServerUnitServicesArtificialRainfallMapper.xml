@@ -12,8 +12,6 @@
                 property="serverUnitServicesArtificialRainfallMaxDose"/>
         <result column="server_unit_services_artificial_rainfall_price" jdbcType="VARCHAR"
                 property="serverUnitServicesArtificialRainfallPrice"/>
-        <result column="server_unit_services_artificial_rainfall_phone" jdbcType="VARCHAR"
-                property="serverUnitServicesArtificialRainfallPhone"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
@@ -26,14 +24,13 @@
         </selectKey>
         insert into server_unit_services_artificial_rainfall (server_unit_services_artificial_rainfall_id,
         server_unit_services_artificial_rainfall_aircraft_model, server_unit_services_artificial_rainfall_catalyzer,
-        server_unit_services_artificial_rainfall_max_dose, server_unit_services_artificial_rainfall_price,
-        server_unit_services_artificial_rainfall_phone)
+        server_unit_services_artificial_rainfall_max_dose, server_unit_services_artificial_rainfall_price
+        )
         values (#{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER},
         #{serverUnitServicesArtificialRainfallAircraftModel,jdbcType=VARCHAR},
         #{serverUnitServicesArtificialRainfallCatalyzer,jdbcType=VARCHAR},
         #{serverUnitServicesArtificialRainfallMaxDose,jdbcType=VARCHAR},
-        #{serverUnitServicesArtificialRainfallPrice,jdbcType=VARCHAR},
-        #{serverUnitServicesArtificialRainfallPhone,jdbcType=VARCHAR})
+        #{serverUnitServicesArtificialRainfallPrice,jdbcType=VARCHAR})
     </insert>
     <update id="updateByPrimaryKey"
             parameterType="com.example.design.entity.server.ServerUnitServicesArtificialRainfall">
@@ -42,8 +39,7 @@
             server_unit_services_artificial_rainfall_catalyzer      = #{serverUnitServicesArtificialRainfallCatalyzer,jdbcType=VARCHAR},
             server_unit_services_artificial_rainfall_max_dose       = #{serverUnitServicesArtificialRainfallMaxDose,jdbcType=VARCHAR},
             server_unit_services_artificial_rainfall_price          = #{serverUnitServicesArtificialRainfallPrice,jdbcType=VARCHAR},
-            server_unit_services_artificial_rainfall_phone          = #{serverUnitServicesArtificialRainfallPhone,jdbcType=VARCHAR}
-        where server_unit_services_artificial_rainfall_id = #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER}
+            where server_unit_services_artificial_rainfall_id = #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKeySelective"
             parameterType="com.example.design.entity.server.ServerUnitServicesArtificialRainfall">
@@ -66,10 +62,6 @@
                 server_unit_services_artificial_rainfall_price =
                 #{serverUnitServicesArtificialRainfallPrice,jdbcType=VARCHAR},
             </if>
-            <if test="serverUnitServicesArtificialRainfallPhone != null">
-                server_unit_services_artificial_rainfall_phone =
-                #{serverUnitServicesArtificialRainfallPhone,jdbcType=VARCHAR}
-            </if>
         </set>
         where server_unit_services_artificial_rainfall_id = #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER}
     </update>
@@ -79,8 +71,7 @@
                server_unit_services_artificial_rainfall_aircraft_model,
                server_unit_services_artificial_rainfall_catalyzer,
                server_unit_services_artificial_rainfall_max_dose,
-               server_unit_services_artificial_rainfall_price,
-               server_unit_services_artificial_rainfall_phone
+               server_unit_services_artificial_rainfall_price
         from server_unit_services_artificial_rainfall
         where server_unit_services_artificial_rainfall_id = #{serverUnitServicesArtificialRainfallId,jdbcType=INTEGER}
     </select>
@@ -90,8 +81,7 @@
                server_unit_services_artificial_rainfall_aircraft_model,
                server_unit_services_artificial_rainfall_catalyzer,
                server_unit_services_artificial_rainfall_max_dose,
-               server_unit_services_artificial_rainfall_price,
-               server_unit_services_artificial_rainfall_phone
+               server_unit_services_artificial_rainfall_price
         from server_unit_services_artificial_rainfall
     </select>
 </mapper>

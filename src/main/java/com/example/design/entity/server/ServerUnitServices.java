@@ -27,19 +27,20 @@ public class ServerUnitServices {
 
     private String serverUnitServicesReleaseTime;
 
-    public ServerUnitServices(Integer serverUnitAccountId, String serverUnitServicesTitle, String serverUnitServicesImg, String serverUnitServicesDetail, String serverUnitServicesType, String serverUnitServicesAuditStatus) {
+    private String serverUnitServicesPhone;
+
+    public ServerUnitServices(Integer serverUnitAccountId, String serverUnitServicesTitle, String serverUnitServicesImg, String serverUnitServicesDetail, String serverUnitServicesType, String serverUnitServicesAuditStatus, String serverUnitServicesPhone) {
         this.serverUnitAccountId = serverUnitAccountId;
         this.serverUnitServicesTitle = serverUnitServicesTitle;
         this.serverUnitServicesImg = serverUnitServicesImg;
         this.serverUnitServicesDetail = serverUnitServicesDetail;
         this.serverUnitServicesType = serverUnitServicesType;
         this.serverUnitServicesAuditStatus = serverUnitServicesAuditStatus;
+        this.serverUnitServicesPhone = serverUnitServicesPhone;
     }
 
     public ServerUnitServices() {
     }
-
-
 
     public Integer getServerUnitServicesId() {
         return serverUnitServicesId;
@@ -102,7 +103,7 @@ public class ServerUnitServices {
     }
 
     public void setServerUnitServicesTitle(String serverUnitServicesTitle) {
-        this.serverUnitServicesTitle = serverUnitServicesTitle == null ? null : serverUnitServicesTitle.trim();
+        this.serverUnitServicesTitle = serverUnitServicesTitle;
     }
 
     public String getServerUnitServicesImg() {
@@ -110,7 +111,7 @@ public class ServerUnitServices {
     }
 
     public void setServerUnitServicesImg(String serverUnitServicesImg) {
-        this.serverUnitServicesImg = serverUnitServicesImg == null ? null : serverUnitServicesImg.trim();
+        this.serverUnitServicesImg = serverUnitServicesImg;
     }
 
     public String getServerUnitServicesDetail() {
@@ -118,7 +119,7 @@ public class ServerUnitServices {
     }
 
     public void setServerUnitServicesDetail(String serverUnitServicesDetail) {
-        this.serverUnitServicesDetail = serverUnitServicesDetail == null ? null : serverUnitServicesDetail.trim();
+        this.serverUnitServicesDetail = serverUnitServicesDetail;
     }
 
     public String getServerUnitServicesType() {
@@ -126,7 +127,7 @@ public class ServerUnitServices {
     }
 
     public void setServerUnitServicesType(String serverUnitServicesType) {
-        this.serverUnitServicesType = serverUnitServicesType == null ? null : serverUnitServicesType.trim();
+        this.serverUnitServicesType = serverUnitServicesType;
     }
 
     public String getServerUnitServicesAuditStatus() {
@@ -134,7 +135,7 @@ public class ServerUnitServices {
     }
 
     public void setServerUnitServicesAuditStatus(String serverUnitServicesAuditStatus) {
-        this.serverUnitServicesAuditStatus = serverUnitServicesAuditStatus == null ? null : serverUnitServicesAuditStatus.trim();
+        this.serverUnitServicesAuditStatus = serverUnitServicesAuditStatus;
     }
 
     public String getServerUnitServicesReleaseTime() {
@@ -142,6 +143,34 @@ public class ServerUnitServices {
     }
 
     public void setServerUnitServicesReleaseTime(String serverUnitServicesReleaseTime) {
-        this.serverUnitServicesReleaseTime = serverUnitServicesReleaseTime == null ? null : serverUnitServicesReleaseTime.trim();
+        this.serverUnitServicesReleaseTime = serverUnitServicesReleaseTime;
+    }
+
+    public String getServerUnitServicesPhone() {
+        return serverUnitServicesPhone;
+    }
+
+    public void setServerUnitServicesPhone(String serverUnitServicesPhone) {
+        this.serverUnitServicesPhone = serverUnitServicesPhone;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerUnitServices{" +
+                "serverUnitServicesId=" + serverUnitServicesId +
+                ", serverUnitAccountId=" + serverUnitAccountId +
+                ", serverUnitServicesHelicopterRentalId=" + serverUnitServicesHelicopterRentalId +
+                ", serverUnitServicesParachuteFlightId=" + serverUnitServicesParachuteFlightId +
+                ", serverUnitServicesAirTourId=" + serverUnitServicesAirTourId +
+                ", serverUnitServicesCharteredAirplaneId=" + serverUnitServicesCharteredAirplaneId +
+                ", serverUnitServicesArtificialRainfallId=" + serverUnitServicesArtificialRainfallId +
+                ", serverUnitServicesTitle='" + serverUnitServicesTitle + '\'' +
+                ", serverUnitServicesImg='" + serverUnitServicesImg + '\'' +
+                ", serverUnitServicesDetail='" + serverUnitServicesDetail + '\'' +
+                ", serverUnitServicesType='" + serverUnitServicesType + '\'' +
+                ", serverUnitServicesAuditStatus='" + serverUnitServicesAuditStatus + '\'' +
+                ", serverUnitServicesReleaseTime='" + serverUnitServicesReleaseTime + '\'' +
+                ", serverUnitServicesPhone='" + serverUnitServicesPhone + '\'' +
+                '}';
     }
 }

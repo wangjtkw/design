@@ -1,6 +1,7 @@
 package com.example.design.controller;
 
 import com.example.design.common.ErrorCode;
+import com.example.design.common.MyFile;
 import com.example.design.common.MyResponseBody;
 import com.example.design.common.QrCodeUtil;
 import com.example.design.entity.requestbean.user.UserUpdateEmail;
@@ -67,7 +68,6 @@ public class UserController {
     @Autowired
     private UsersOrdersConfigParachuteFlightService usersOrdersConfigParachuteFlightService;
 
-
     /**
      * 1.通航用户注册接口
      *
@@ -78,16 +78,25 @@ public class UserController {
     @PostMapping("/register")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object register(UserRegister register) {
+    public Object register(@RequestBody UserRegister register) {
         if (register.getUsersAccountAccount() == null
+                || register.getUsersAccountAccount().isEmpty()
                 || register.getUsersAccountEmail() == null
-                || register.getUsersAccountPassword() == null) {
+                || register.getUsersAccountEmail().isEmpty()
+                || register.getUsersAccountPassword() == null
+                || register.getUsersAccountPassword().isEmpty()) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "注册必填信息不完整");
         }
         if (register.getUsersEssentialInformationName() == null
-                || register.getUsersEssentialInformationIdNumber() == null) {
+                || register.getUsersEssentialInformationName().isEmpty()
+                || register.getUsersEssentialInformationIdNumber() == null
+                || register.getUsersEssentialInformationIdNumber().isEmpty()) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "注册必填信息不完整");
         }
+        if (usersAccountService.getUserByAccount(register.getUsersAccountAccount()) != null) {
+            return new MyResponseBody(ErrorCode.DUPLICATE_ACCOUNT_NUMBER_CODE, ErrorCode.DUPLICATE_ACCOUNT_NUMBER_DESCRIBE);
+        }
+
         UsersAccount usersAccount = new UsersAccount(
                 register.getUsersAccountAccount(),
                 register.getUsersAccountPassword(),
@@ -110,9 +119,11 @@ public class UserController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public Object login(UserLogin userLogin) {
+    public Object login(@RequestBody UserLogin userLogin) {
         if (userLogin.getUsersAccountAccount() == null
-                || userLogin.getUsersAccountPassword() == null) {
+                || userLogin.getUsersAccountAccount().isEmpty()
+                || userLogin.getUsersAccountPassword() == null
+                || userLogin.getUsersAccountPassword().isEmpty()) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "账号或密码错误");
         }
         UsersAccount account = usersAccountService.login(userLogin.getUsersAccountAccount());
@@ -125,7 +136,7 @@ public class UserController {
     @PostMapping("/update/email")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object updateEmail(UserUpdateEmail userUpdateEmail) {
+    public Object updateEmail(@RequestBody UserUpdateEmail userUpdateEmail) {
         if (userUpdateEmail == null
                 || userUpdateEmail.getPw() == null
                 || userUpdateEmail.getPw().equals("")
@@ -148,8 +159,9 @@ public class UserController {
     @PostMapping("/update/pw")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object updatePassword(UserUpdatePW userUpdatePW) {
+    public Object updatePassword(@RequestBody UserUpdatePW userUpdatePW) {
         if (userUpdatePW == null
+                || userUpdatePW.getUsersAccountId() == null
                 || userUpdatePW.getOldPW() == null
                 || userUpdatePW.getOldPW().equals("")
                 || userUpdatePW.getNewPW() == null
@@ -170,7 +182,7 @@ public class UserController {
 
     @GetMapping("/get/server/home")
     @ResponseBody
-    public Object getServer(int limit) {
+    public Object getServer(@RequestBody int limit) {
         List<UserServerTypeItemBean> airTour = getServerByType("空中游览", limit);
         List<UserServerTypeItemBean> charteredAirplane = getServerByType("包机飞行", limit);
         List<UserServerTypeItemBean> parachuteFlight = getServerByType("跳伞飞行", limit);
@@ -184,7 +196,7 @@ public class UserController {
 
     @GetMapping("/get/server/type")
     @ResponseBody
-    public Object getServerType(String type) {
+    public Object getServerType(@RequestBody String type) {
         List<UserServerTypeItemBean> result = getServerByType(type, -1);
         if (result == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "请求类型错误");
@@ -215,7 +227,7 @@ public class UserController {
     }
 
     @GetMapping("/server/detail")
-    public Object getServerDetail(int serverId) {
+    public Object getServerDetail(@RequestBody int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id 不合法");
@@ -259,7 +271,7 @@ public class UserController {
         if (orderId < 0) {
             requestContent = "请求参数不完全或参数错误";
         } else {
-            String ip = "10.20.151.16";
+            String ip = MyFile.address;
             StringBuilder builder = new StringBuilder();
             builder.append("http://").append(ip).append(":8080/page/order.html?");
             builder.append("orderId=").append(orderId);
@@ -280,7 +292,8 @@ public class UserController {
                 || payBean.getServerUnitServicesId() == null
                 || payBean.getUsersOrdersServerType() == null
                 || payBean.getUsersOrdersServerType().equals("")
-                || payBean.getUsersOrdersMoney() == null) {
+                || payBean.getUsersOrdersMoney() == null
+                || payBean.getUsersOrdersMoney().isEmpty()) {
             return -1;
         }
         UsersOrders orders = new UsersOrders(
@@ -290,14 +303,19 @@ public class UserController {
                 "待付款",
                 payBean.getUsersOrdersServerType(),
                 payBean.getUsersOrdersMoney());
-
+        orders.setUsersOrdersUnitDelete(false);
+        orders.setUsersOrdersUserDelete(false);
         switch (payBean.getUsersOrdersServerType()) {
             case "空中游览":
 //                usersOrdersConfigAirTourService
                 if (payBean.getUsersOrdersConfigAirTourDuration() == null
+                        || payBean.getUsersOrdersConfigAirTourDuration().isEmpty()
                         || payBean.getUsersOrdersConfigAirTourNumber() == null
+                        || payBean.getUsersOrdersConfigAirTourNumber().isEmpty()
                         || payBean.getUsersOrdersConfigAirTourAircraftModel() == null
-                        || payBean.getUsersOrdersConfigAirTourScheduledTime() == null) {
+                        || payBean.getUsersOrdersConfigAirTourAircraftModel().isEmpty()
+                        || payBean.getUsersOrdersConfigAirTourScheduledTime() == null
+                        || payBean.getUsersOrdersConfigAirTourScheduledTime().isEmpty()) {
                     return -1;
                 }
                 UsersOrdersConfigAirTour airTour = new UsersOrdersConfigAirTour(
@@ -312,7 +330,9 @@ public class UserController {
             case "包机飞行":
 //              usersOrdersConfigCharteredAirplaneService
                 if (payBean.getUsersOrdersConfigCharteredAirplaneAircraftModel() == null
-                        || payBean.getUsersOrdersConfigCharteredAirplaneScheduledTime() == null) {
+                        || payBean.getUsersOrdersConfigCharteredAirplaneAircraftModel().isEmpty()
+                        || payBean.getUsersOrdersConfigCharteredAirplaneScheduledTime() == null
+                        || payBean.getUsersOrdersConfigCharteredAirplaneScheduledTime().isEmpty()) {
                     return -1;
                 }
                 UsersOrdersConfigCharteredAirplane charteredAirplane = new UsersOrdersConfigCharteredAirplane(
@@ -325,10 +345,15 @@ public class UserController {
             case "跳伞飞行":
 //                usersOrdersConfigParachuteFlightService
                 if (payBean.getUsersOrdersConfigParachuteFlightType() == null
+                        ||payBean.getUsersOrdersConfigParachuteFlightType().isEmpty()
                         || payBean.getUsersOrdersConfigParachuteFlightNeedHold() == null
+                        || payBean.getUsersOrdersConfigParachuteFlightNeedHold().isEmpty()
                         || payBean.getUsersOrdersConfigParachuteFlightNeedTripartite() == null
+                        || payBean.getUsersOrdersConfigParachuteFlightNeedTripartite().isEmpty()
                         || payBean.getUsersOrdersConfigParachuteFlightScheduledTime() == null
-                        || payBean.getUsersOrdersConfigParachuteFlightPersonNum() == null) {
+                        || payBean.getUsersOrdersConfigParachuteFlightScheduledTime().isEmpty()
+                        || payBean.getUsersOrdersConfigParachuteFlightPersonNum() == null
+                        || payBean.getUsersOrdersConfigParachuteFlightPersonNum().isEmpty()) {
                     return -1;
                 }
                 UsersOrdersConfigParachuteFlight parachuteFlight = new UsersOrdersConfigParachuteFlight(
@@ -350,7 +375,7 @@ public class UserController {
 
     @RequestMapping("/pay/confirm")
     @ResponseBody
-    public Object payConfirm(int orderId) {
+    public Object payConfirm(@RequestBody int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
         if (orders == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单id错误");
@@ -361,9 +386,22 @@ public class UserController {
         return new MyResponseBody(200, "OK");
     }
 
+    @RequestMapping("/pay/finish")
+    @ResponseBody
+    public Object orderFinish(@RequestBody int orderId) {
+        UsersOrders orders = usersOrderService.selectById(orderId);
+        if (orders == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单id错误");
+        }
+        orders.setUsersOrdersOrderState("已完成");
+        usersOrderService.updateBySelective(orders);
+        return new MyResponseBody(200, "OK");
+    }
+
+
     @RequestMapping("/get/order/list")
     @ResponseBody
-    public Object getOrderList(int accountId) {
+    public Object getOrderList(@RequestBody int accountId) {
         List<UsersOrders> ordersList = usersOrderService.selectByAccountId(accountId);
         List<OrderDetailBean> result = new ArrayList<>();
         for (UsersOrders orders : ordersList) {
@@ -384,6 +422,7 @@ public class UserController {
                 return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
             }
             OrderDetailBean orderDetailBean = new OrderDetailBean();
+            payBean.setUsersOrdersOrderCode(orderCodeId(payBean.getUsersOrdersId()));
             orderDetailBean.setPayBean(payBean);
             orderDetailBean.setCompany(company);
             orderDetailBean.setServerUnitServicesDetail(serverDetail);
@@ -392,9 +431,21 @@ public class UserController {
         return new MyResponseBody(200, "OK", result);
     }
 
+    private String orderCodeId(@RequestBody int orderId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(orderId);
+        int max = 10 - stringBuilder.length();
+        while (max > 0) {
+            stringBuilder.insert(0, "0");
+            max--;
+        }
+        return stringBuilder.toString();
+    }
+
+
     @RequestMapping("/get/order/detail")
     @ResponseBody
-    public Object getOrderDetail(int orderId) {
+    public Object getOrderDetail(@RequestBody int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
         if (orders == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单id错误");
@@ -416,6 +467,7 @@ public class UserController {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
         }
         OrderDetailBean orderDetailBean = new OrderDetailBean();
+        payBean.setUsersOrdersOrderCode(orderCodeId(payBean.getUsersOrdersId()));
         orderDetailBean.setPayBean(payBean);
         orderDetailBean.setCompany(company);
         orderDetailBean.setServerUnitServicesDetail(serverDetail);
@@ -423,7 +475,7 @@ public class UserController {
     }
 
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public UserPayBean getUserPayBean(UsersOrders orders) {
+    public UserPayBean getUserPayBean(@RequestBody UsersOrders orders) {
         if (orders == null) {
             return null;
         }
@@ -482,7 +534,7 @@ public class UserController {
 
 
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public ServerUnitCompany getCompanyByServerId(int serverId) {
+    public ServerUnitCompany getCompanyByServerId(@RequestBody int serverId) {
         if (serverId == 0) {
             return null;
         }
@@ -520,28 +572,18 @@ public class UserController {
     @RequestMapping("/delete/order")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object deleteOrder(int orderId) {
+    public Object deleteOrder(@RequestBody int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
-        switch (orders.getUsersOrdersServerType()) {
-            case "空中游览":
-                usersOrdersConfigAirTourService.delete(orders.getUsersOrdersConfigAirTourId());
-                break;
-            case "包机飞行":
-                usersOrdersConfigCharteredAirplaneService.delete(orders.getUsersOrdersConfigCharteredAirplaneId());
-                break;
-            case "跳伞飞行":
-                usersOrdersConfigParachuteFlightService.delete(orders.getUsersOrdersConfigParachuteFlightId());
-                break;
-            default:
-                break;
+        if (orders != null) {
+            orders.setUsersOrdersUserDelete(true);
+            usersOrderService.updateBySelective(orders);
         }
-        usersOrderService.delete(orderId);
         return new MyResponseBody(200, "OK");
     }
 
     @RequestMapping("get/order/list/param")
     @ResponseBody
-    public Object select(int accountId, String param) {
+    public Object select(@RequestBody int accountId, String param) {
         List<UsersOrders> ordersList = usersOrderService.selectByAccountParam(accountId, param);
         List<OrderDetailBean> result = new ArrayList<>();
         for (UsersOrders orders : ordersList) {
@@ -562,6 +604,7 @@ public class UserController {
                 return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
             }
             OrderDetailBean orderDetailBean = new OrderDetailBean();
+            payBean.setUsersOrdersOrderCode(orderCodeId(payBean.getUsersOrdersId()));
             orderDetailBean.setPayBean(payBean);
             orderDetailBean.setCompany(company);
             orderDetailBean.setServerUnitServicesDetail(serverDetail);
@@ -569,5 +612,6 @@ public class UserController {
         }
         return new MyResponseBody(200, "OK", result);
     }
+
 
 }

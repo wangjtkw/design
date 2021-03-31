@@ -7,6 +7,7 @@ import com.example.design.common.UploadUtils;
 import com.example.design.entity.requestbean.server.ServerUnitLogin;
 import com.example.design.entity.requestbean.server.ServerUnitRegister;
 import com.example.design.entity.requestbean.server.ServerUnitServicesAdd;
+import com.example.design.entity.requestbean.server.ServerUnitUpdatePW;
 import com.example.design.entity.responsebean.OrderDetailBean;
 import com.example.design.entity.responsebean.ServerUnitServicesDetail;
 import com.example.design.entity.responsebean.UserDetailBean;
@@ -15,11 +16,11 @@ import com.example.design.entity.server.*;
 import com.example.design.entity.user.*;
 import com.example.design.service.server.*;
 import com.example.design.service.user.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -75,31 +76,45 @@ public class ServerUnitController {
     /**
      * 需要做账号、密码、邮箱的格式检查
      */
-    @PostMapping("/register")
+    @RequestMapping("/register")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object register(ServerUnitRegister serverUnitRegister) {
+    public Object register(@RequestBody ServerUnitRegister serverUnitRegister) {
         this.log.info(serverUnitRegister.toString());
         this.log.info(serverUnitRegister.toString());
         //账户、密码、邮箱、企业名称、基地、机场、资本、法人姓名、法人联系方式、经营范围、企业类型、有效期
         if (serverUnitRegister.getServerUnitAccountAccount() == null
+                || serverUnitRegister.getServerUnitAccountAccount().isEmpty()
                 || serverUnitRegister.getServerUnitAccountPassword() == null
+                || serverUnitRegister.getServerUnitAccountPassword().isEmpty()
                 || serverUnitRegister.getServerUnitAccountEmail() == null
+                || serverUnitRegister.getServerUnitAccountEmail().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyName() == null
+                || serverUnitRegister.getServerUnitCompanyName().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyBase() == null
+                || serverUnitRegister.getServerUnitCompanyBase().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyAirport() == null
+                || serverUnitRegister.getServerUnitCompanyAirport().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyCapital() == null
+                || serverUnitRegister.getServerUnitCompanyCapital().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyLegalRepresentativeName() == null
+                || serverUnitRegister.getServerUnitCompanyLegalRepresentativeName().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyLegalRepresentativePhone() == null
+                || serverUnitRegister.getServerUnitCompanyLegalRepresentativePhone().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyScope() == null
+                || serverUnitRegister.getServerUnitCompanyScope().isEmpty()
                 || serverUnitRegister.getServerUnitCompanyType() == null
-                || serverUnitRegister.getServerUnitCompanyValidityTerm() == null) {
+                || serverUnitRegister.getServerUnitCompanyType().isEmpty()
+                || serverUnitRegister.getServerUnitCompanyValidityTerm() == null
+                || serverUnitRegister.getServerUnitCompanyValidityTerm().isEmpty()) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE);
         }
         //如果账户已存在
-        if (serverUnitAccountService.getServerUnitAccountByAccount(serverUnitRegister.getServerUnitAccountAccount()) != null) {
+        if (serverUnitAccountService.getServerUnitAccountByAccount(
+                serverUnitRegister.getServerUnitAccountAccount()) != null) {
             return new MyResponseBody(ErrorCode.DUPLICATE_ACCOUNT_NUMBER_CODE, ErrorCode.DUPLICATE_ACCOUNT_NUMBER_DESCRIBE);
         }
+
         ServerUnitAccount serverUnitAccount = new ServerUnitAccount(
                 serverUnitRegister.getServerUnitAccountAccount(),
                 serverUnitRegister.getServerUnitAccountPassword(),
@@ -123,25 +138,58 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK");
     }
 
-    @PostMapping("/login")
+    @RequestMapping("/login")
     @ResponseBody
-    public Object login(ServerUnitLogin serverUnitLogin) {
-        if (serverUnitLogin.getServerUnitAccountAccount() == null
-                || serverUnitLogin.getServerUnitAccountPassword() == null) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE);
+    public Object login(@RequestBody ServerUnitLogin serverUnitLogin) {
+        System.out.println(serverUnitLogin);
+        if (serverUnitLogin == null
+                || serverUnitLogin.getServerUnitAccountAccount() == null
+                || serverUnitLogin.getServerUnitAccountAccount().isEmpty()
+                || serverUnitLogin.getServerUnitAccountPassword() == null
+                || serverUnitLogin.getServerUnitAccountPassword().isEmpty()) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE,
+                    ErrorCode.PARAMETER_ERROR_DESCRIBE);
         }
-
-        ServerUnitAccount account = serverUnitAccountService.getServerUnitAccountByAccount(serverUnitLogin.getServerUnitAccountAccount());
-        if (account != null && account.getServerUnitAccountPassword().equals(serverUnitLogin.getServerUnitAccountPassword())) {
+        ServerUnitAccount account = serverUnitAccountService.getServerUnitAccountByAccount(
+                serverUnitLogin.getServerUnitAccountAccount());
+        if (account != null && account.getServerUnitAccountPassword().equals(
+                serverUnitLogin.getServerUnitAccountPassword())) {
             account.setServerUnitAccountPassword("");
             return new MyResponseBody(200, "OK", account);
         } else {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "账号或密码错误");
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE,
+                    ErrorCode.PARAMETER_ERROR_DESCRIBE + "账号或密码错误");
         }
     }
 
-    @GetMapping("/company/get")
-    public Object getCompanyInfo(@RequestParam int companyId) {
+    @RequestMapping("/update/pw")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object updatePassword(@RequestBody ServerUnitUpdatePW serverUnitUpdatePW) {
+        if (serverUnitUpdatePW == null
+                || serverUnitUpdatePW.getServerUnitAccountId() == null
+                || serverUnitUpdatePW.getOldPW() == null
+                || serverUnitUpdatePW.getOldPW().isEmpty()
+                || serverUnitUpdatePW.getNewPW() == null
+                || serverUnitUpdatePW.getNewPW().isEmpty()) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "密码不能为空");
+        }
+        ServerUnitAccount account = serverUnitAccountService.selectByKey(serverUnitUpdatePW.getServerUnitAccountId());
+        if (account == null) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户id不存在");
+        }
+        if (!account.getServerUnitAccountPassword().equals(serverUnitUpdatePW.getOldPW())) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "旧密码错误");
+        }
+        account.setServerUnitAccountPassword(serverUnitUpdatePW.getNewPW());
+        serverUnitAccountService.update(account);
+        return new MyResponseBody(200, "OK");
+
+
+    }
+
+    @RequestMapping("/company/get")
+    public Object getCompanyInfo(int companyId) {
         ServerUnitCompany company = serverUnitCompanyService.select(companyId);
         if (company != null) {
             return new MyResponseBody(200, "OK", company);
@@ -150,9 +198,9 @@ public class ServerUnitController {
         }
     }
 
-    @PostMapping("/company/update")
+    @RequestMapping("/company/update")
     @ResponseBody
-    public Object updateCompanyInfo(ServerUnitCompany company) {
+    public Object updateCompanyInfo(@RequestBody ServerUnitCompany company) {
         this.log.info(company.toString());
         serverUnitCompanyService.update(company);
         return new MyResponseBody(200, "OK");
@@ -161,7 +209,7 @@ public class ServerUnitController {
     /**
      * 还需做数据验证
      */
-    @PostMapping("/server/add")
+    @RequestMapping("/server/add")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public Object addServer(@RequestParam MultipartFile file, ServerUnitServicesAdd addInfo) {
@@ -176,8 +224,13 @@ public class ServerUnitController {
 
         if (addInfo.getServerUnitAccountId() == null
                 || addInfo.getServerUnitServicesTitle() == null
+                || addInfo.getServerUnitServicesTitle().isEmpty()
                 || addInfo.getServerUnitServicesDetail() == null
-                || addInfo.getServerUnitServicesType() == null) {
+                || addInfo.getServerUnitServicesDetail().isEmpty()
+                || addInfo.getServerUnitServicesType() == null
+                || addInfo.getServerUnitServicesType().isEmpty()
+                || addInfo.getServerUnitServicesPhone() == null
+                || addInfo.getServerUnitServicesPhone().isEmpty()) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数未填写全");
         }
         ServerUnitServices services = new ServerUnitServices(
@@ -186,9 +239,25 @@ public class ServerUnitController {
                 imgName,
                 addInfo.getServerUnitServicesDetail(),
                 addInfo.getServerUnitServicesType(),
-                "待审批");
+                "待审批",
+                addInfo.getServerUnitServicesPhone());
         switch (addInfo.getServerUnitServicesType()) {
             case "空中游览":
+                if (addInfo.getServerUnitServicesAirTourSightseeingPlaces() == null
+                        || addInfo.getServerUnitServicesAirTourSightseeingPlaces().isEmpty()
+                        || addInfo.getServerUnitServicesAirTourDuration() == null
+                        || addInfo.getServerUnitServicesAirTourDuration().isEmpty()
+                        || addInfo.getServerUnitServicesAirTourAircraftModel() == null
+                        || addInfo.getServerUnitServicesAirTourAircraftModel().isEmpty()
+                        || addInfo.getServerUnitServicesAirTourNumberLimit() == null
+                        || addInfo.getServerUnitServicesAirTourNumberLimit().isEmpty()
+                        || addInfo.getServerUnitServicesAirTourBoardingLocation() == null
+                        || addInfo.getServerUnitServicesAirTourBoardingLocation().isEmpty()
+                        || addInfo.getServerUnitServicesAirTourPrice() == null
+                        || addInfo.getServerUnitServicesAirTourPrice().isEmpty()) {
+                    return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数未填写全");
+                }
+
                 ServerUnitServicesAirTour servicesAirTour = new ServerUnitServicesAirTour(
                         addInfo.getServerUnitServicesAirTourSightseeingPlaces(),
                         addInfo.getServerUnitServicesAirTourDuration(),
@@ -201,6 +270,20 @@ public class ServerUnitController {
 //                serverUnitServicesService.update(services);
                 break;
             case "包机飞行":
+                if (addInfo.getServerUnitServicesCharteredAirplaneStartAddress() == null
+                        || addInfo.getServerUnitServicesCharteredAirplaneStartAddress().isEmpty()
+                        || addInfo.getServerUnitServicesCharteredAirplaneEndAddress() == null
+                        || addInfo.getServerUnitServicesCharteredAirplaneEndAddress().isEmpty()
+                        || addInfo.getServerUnitServicesCharteredAirplaneAircraftModel() == null
+                        || addInfo.getServerUnitServicesCharteredAirplaneAircraftModel().isEmpty()
+                        || addInfo.getServerUnitServicesCharteredAirplaneSeatsNum() == null
+                        || addInfo.getServerUnitServicesCharteredAirplaneSeatsNum().isEmpty()
+                        || addInfo.getServerUnitServicesCharteredAirplaneBoardingLocation() == null
+                        || addInfo.getServerUnitServicesCharteredAirplaneBoardingLocation().isEmpty()
+                        || addInfo.getServerUnitServicesCharteredAirplanePrice() == null
+                        || addInfo.getServerUnitServicesCharteredAirplanePrice().isEmpty()) {
+                    return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数未填写全");
+                }
                 ServerUnitServicesCharteredAirplane charteredAirplane = new ServerUnitServicesCharteredAirplane(
                         addInfo.getServerUnitServicesCharteredAirplaneStartAddress(),
                         addInfo.getServerUnitServicesCharteredAirplaneEndAddress(),
@@ -213,6 +296,14 @@ public class ServerUnitController {
 //                serverUnitServicesService.update(services);
                 break;
             case "跳伞飞行":
+                if (addInfo.getServerUnitServicesParachuteFlightAddress() == null
+                        || addInfo.getServerUnitServicesParachuteFlightAddress().isEmpty()
+                        || addInfo.getServerUnitServicesParachuteFlightAircraftModel() == null
+                        || addInfo.getServerUnitServicesParachuteFlightAircraftModel().isEmpty()
+                        || addInfo.getServerUnitServicesParachuteFlightPrice() == null
+                        || addInfo.getServerUnitServicesParachuteFlightPrice().isEmpty()) {
+                    return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数未填写全");
+                }
                 ServerUnitServicesParachuteFlight parachuteFlight = new ServerUnitServicesParachuteFlight(
                         addInfo.getServerUnitServicesParachuteFlightAddress(),
                         addInfo.getServerUnitServicesParachuteFlightAircraftModel(),
@@ -222,22 +313,36 @@ public class ServerUnitController {
 //                serverUnitServicesService.update(services);
                 break;
             case "人工增雨":
+                if (addInfo.getServerUnitServicesArtificialRainfallAircraftModel() == null
+                        || addInfo.getServerUnitServicesArtificialRainfallAircraftModel().isEmpty()
+                        || addInfo.getServerUnitServicesArtificialRainfallCatalyzer() == null
+                        || addInfo.getServerUnitServicesArtificialRainfallCatalyzer().isEmpty()
+                        || addInfo.getServerUnitServicesArtificialRainfallMaxDose() == null
+                        || addInfo.getServerUnitServicesArtificialRainfallMaxDose().isEmpty()
+                        || addInfo.getServerUnitServicesArtificialRainfallPrice() == null
+                        || addInfo.getServerUnitServicesArtificialRainfallPrice().isEmpty()) {
+                    return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数未填写全");
+                }
+
                 ServerUnitServicesArtificialRainfall artificialRainfall = new ServerUnitServicesArtificialRainfall(
                         addInfo.getServerUnitServicesArtificialRainfallAircraftModel(),
                         addInfo.getServerUnitServicesArtificialRainfallCatalyzer(),
                         addInfo.getServerUnitServicesArtificialRainfallMaxDose(),
-                        addInfo.getServerUnitServicesArtificialRainfallPrice(),
-                        addInfo.getServerUnitServicesArtificialRainfallPhone());
+                        addInfo.getServerUnitServicesArtificialRainfallPrice());
                 serverUnitServicesArtificialRainfallService.insert(artificialRainfall);
                 services.setServerUnitServicesArtificialRainfallId(artificialRainfall.getServerUnitServicesArtificialRainfallId());
 //                serverUnitServicesService.update(services);
                 break;
             case "直升机出租":
-                ServerUnitServicesHelicopterRental helicopterRental = new ServerUnitServicesHelicopterRental(
+                if (addInfo.getServerUnitServicesHelicopterRentalAircraftModel() == null
+                        || addInfo.getServerUnitServicesHelicopterRentalAircraftModel().isEmpty()
+                        || addInfo.getServerUnitServicesHelicopterRentalPrice() == null
+                        || addInfo.getServerUnitServicesHelicopterRentalPrice().isEmpty()){
 
-                        addInfo.getServerUnitServicesHelicopterRentalAircraftModel(),
-                        addInfo.getServerUnitServicesHelicopterRentalPrice(),
-                        addInfo.getServerUnitServicesHelicopterRentalPhone());
+                }
+                    ServerUnitServicesHelicopterRental helicopterRental = new ServerUnitServicesHelicopterRental(
+                            addInfo.getServerUnitServicesHelicopterRentalAircraftModel(),
+                            addInfo.getServerUnitServicesHelicopterRentalPrice());
                 serverUnitServicesHelicopterRentalService.insert(helicopterRental);
                 services.setServerUnitServicesHelicopterRentalId(helicopterRental.getServerUnitServicesHelicopterRentalId());
 //                serverUnitServicesService.update(services);
@@ -249,9 +354,9 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK");
     }
 
-    @GetMapping("/server/detail")
+    @RequestMapping("/server/detail")
     @ResponseBody
-    public Object getServer(@RequestParam int serverId) {
+    public Object getServer( int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id 不合法");
@@ -279,10 +384,10 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK", new ServerUnitServicesDetail(services, iServerUnitService));
     }
 
-    @PostMapping("/server/update")
+    @RequestMapping("/server/update")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object updateServer(@RequestParam(required = false) MultipartFile file, ServerUnitServicesAdd addInfo) {
+    public Object updateServer(@RequestBody(required = false) MultipartFile file, ServerUnitServicesAdd addInfo) {
         if (file != null) {
             String imgName = UploadUtils.uploadImg(file);
             if (imgName == null) {
@@ -301,7 +406,8 @@ public class ServerUnitController {
                 addInfo.getServerUnitServicesImg(),
                 addInfo.getServerUnitServicesDetail(),
                 addInfo.getServerUnitServicesType(),
-                "待审批"
+                "待审批",
+                addInfo.getServerUnitServicesPhone()
         );
         System.out.println(services.getServerUnitServicesImg());
         int result;
@@ -345,8 +451,7 @@ public class ServerUnitController {
                         addInfo.getServerUnitServicesArtificialRainfallAircraftModel(),
                         addInfo.getServerUnitServicesArtificialRainfallCatalyzer(),
                         addInfo.getServerUnitServicesArtificialRainfallMaxDose(),
-                        addInfo.getServerUnitServicesArtificialRainfallPrice(),
-                        addInfo.getServerUnitServicesArtificialRainfallPhone()
+                        addInfo.getServerUnitServicesArtificialRainfallPrice()
                 );
                 result = serverUnitServicesArtificialRainfallService.update(artificialRainfall);
                 break;
@@ -354,8 +459,7 @@ public class ServerUnitController {
                 ServerUnitServicesHelicopterRental helicopterRental = new ServerUnitServicesHelicopterRental(
                         addInfo.getServerUnitServicesHelicopterRentalId(),
                         addInfo.getServerUnitServicesHelicopterRentalAircraftModel(),
-                        addInfo.getServerUnitServicesHelicopterRentalPrice(),
-                        addInfo.getServerUnitServicesHelicopterRentalPhone()
+                        addInfo.getServerUnitServicesHelicopterRentalPrice()
                 );
                 result = serverUnitServicesHelicopterRentalService.update(helicopterRental);
                 break;
@@ -365,18 +469,19 @@ public class ServerUnitController {
         if (result != 1) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "服务具体类型id错误");
         }
+        System.out.println("servises:" + services);
         serverUnitServicesService.update(services);
         return new MyResponseBody(200, "OK");
     }
 
-    @GetMapping("/server/list")
-    public Object getServerList(@RequestParam int accountId) {
+    @RequestMapping("/server/list")
+    public Object getServerList( int accountId) {
         List<ServerUnitServices> result = serverUnitServicesService.selectByAccountKey(accountId);
         return new MyResponseBody(200, "OK", result);
     }
 
-    @GetMapping("/test/img")
-    public Object uploadImg(@RequestParam MultipartFile file) {
+    @RequestMapping("/test/img")
+    public Object uploadImg(@RequestBody MultipartFile file) {
         if (file.isEmpty()) {
             return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "服务图片不能为空");
         }
@@ -387,14 +492,14 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK", imgName);
     }
 
-    @GetMapping("/server/deleteSingle")
-    public Object deleteServer(@RequestParam int serverId) {
+    @RequestMapping("/server/deleteSingle")
+    public Object deleteServer( int serverId) {
         delete(serverId);
         return new MyResponseBody(200, "OK");
     }
 
     @Transactional
-    void delete(int serverId) {
+    void delete(@RequestBody int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) return;
         serverUnitServicesService.delete(serverId);
@@ -427,7 +532,7 @@ public class ServerUnitController {
         }
     }
 
-    @GetMapping("/server/deleteList")
+    @RequestMapping("/server/deleteList")
     public Object deleteServer(@RequestParam(value = "serverIdList[]") List<Integer> serverIdList) {
         for (int serverId : serverIdList) {
             delete(serverId);
@@ -435,8 +540,8 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK");
     }
 
-    @GetMapping("/server/search")
-    public Object search(@RequestParam int accountId, String param) {
+    @RequestMapping("/server/search")
+    public Object search( int accountId, String param) {
         if (param == null || "".equals(param)) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "查询参数错误");
         }
@@ -446,7 +551,7 @@ public class ServerUnitController {
 
     @RequestMapping("get/order/list")
     @ResponseBody
-    public Object getOrderList(int serverUnitId) {
+    public Object getOrderList( int serverUnitId) {
         List<UsersOrders> ordersList = usersOrderService.selectByServerUnitAccount(serverUnitId);
         List<OrderDetailBean> result = new ArrayList<>();
         for (UsersOrders orders : ordersList) {
@@ -471,6 +576,7 @@ public class ServerUnitController {
                 return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
             }
             OrderDetailBean orderDetailBean = new OrderDetailBean();
+            payBean.setUsersOrdersOrderCode(orderCodeId(payBean.getUsersOrdersId()));
             orderDetailBean.setPayBean(payBean);
             orderDetailBean.setUserDetailBean(detailBean);
             orderDetailBean.setServerUnitServicesDetail(serverDetail);
@@ -481,7 +587,7 @@ public class ServerUnitController {
 
     @RequestMapping("/get/order/detail")
     @ResponseBody
-    public Object getOrderDetail(int orderId) {
+    public Object getOrderDetail( int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
         if (orders == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单id错误");
@@ -507,6 +613,7 @@ public class ServerUnitController {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
         }
         OrderDetailBean orderDetailBean = new OrderDetailBean();
+        payBean.setUsersOrdersOrderCode(orderCodeId(payBean.getUsersOrdersId()));
         orderDetailBean.setPayBean(payBean);
         orderDetailBean.setUserDetailBean(detailBean);
         orderDetailBean.setServerUnitServicesDetail(serverDetail);
@@ -571,7 +678,7 @@ public class ServerUnitController {
         return payBean;
     }
 
-    public UserDetailBean getUserDetail(int userAccountId) {
+    public UserDetailBean getUserDetail(@RequestBody int userAccountId) {
         UsersAccount account = usersAccountService.getUserByKey(userAccountId);
         if (account == null) {
             return null;
@@ -592,7 +699,7 @@ public class ServerUnitController {
 
     }
 
-    public ServerUnitServicesDetail getServerUnitService(int serverId) {
+    public ServerUnitServicesDetail getServerUnitService(@RequestBody int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
             return null;
@@ -623,28 +730,18 @@ public class ServerUnitController {
     @RequestMapping("/delete/order")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object deleteOrder(int orderId) {
+    public Object deleteOrder(@RequestBody int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
-        switch (orders.getUsersOrdersServerType()) {
-            case "空中游览":
-                usersOrdersConfigAirTourService.delete(orders.getUsersOrdersConfigAirTourId());
-                break;
-            case "包机飞行":
-                usersOrdersConfigCharteredAirplaneService.delete(orders.getUsersOrdersConfigCharteredAirplaneId());
-                break;
-            case "跳伞飞行":
-                usersOrdersConfigParachuteFlightService.delete(orders.getUsersOrdersConfigParachuteFlightId());
-                break;
-            default:
-                break;
+        if (orders != null) {
+            orders.setUsersOrdersUnitDelete(true);
+            usersOrderService.updateBySelective(orders);
         }
-        usersOrderService.delete(orderId);
         return new MyResponseBody(200, "OK");
     }
 
     @RequestMapping("get/order/list/param")
     @ResponseBody
-    public Object select(int serverAccountId, String param) {
+    public Object select(@RequestBody int serverAccountId, String param) {
         List<UsersOrders> ordersList = usersOrderService.selectByServerUnitAccountParam(serverAccountId, param);
         List<OrderDetailBean> result = new ArrayList<>();
         for (UsersOrders orders : ordersList) {
@@ -669,6 +766,7 @@ public class ServerUnitController {
                 return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "参数错误");
             }
             OrderDetailBean orderDetailBean = new OrderDetailBean();
+            payBean.setUsersOrdersOrderCode(orderCodeId(payBean.getUsersOrdersId()));
             orderDetailBean.setPayBean(payBean);
             orderDetailBean.setUserDetailBean(detailBean);
             orderDetailBean.setServerUnitServicesDetail(serverDetail);
@@ -677,5 +775,14 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK", result);
     }
 
-
+    private String orderCodeId(int orderId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(orderId);
+        int max = 10 - stringBuilder.length();
+        while (max > 0) {
+            stringBuilder.insert(0, "0");
+            max--;
+        }
+        return stringBuilder.toString();
+    }
 }

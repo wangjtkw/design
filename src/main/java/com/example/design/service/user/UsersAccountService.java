@@ -29,6 +29,10 @@ public class UsersAccountService {
         return usersAccountMapper.selectByPrimaryKey(userAccountId);
     }
 
+    public UsersAccount getUserByAccount(String account) {
+        return usersAccountMapper.selectByAccount(account);
+    }
+
     public UsersAccount getUserByKey(int accountId) {
         return usersAccountMapper.selectByPrimaryKey(accountId);
     }
@@ -37,7 +41,7 @@ public class UsersAccountService {
         return usersAccountMapper.selectAll();
     }
 
-    public void delete(int accountId){
+    public void delete(int accountId) {
         usersAccountMapper.deleteByPrimaryKey(accountId);
     }
 }

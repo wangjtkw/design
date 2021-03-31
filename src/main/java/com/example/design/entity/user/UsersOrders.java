@@ -29,6 +29,10 @@ public class UsersOrders {
 
     private String usersOrdersOrderCode;
 
+    private Boolean usersOrdersUserDelete;
+
+    private Boolean usersOrdersUnitDelete;
+
     public UsersOrders(Integer serverUnitAccountId, Integer usersAccountId, Integer serverUnitServicesId, String usersOrdersOrderState, String usersOrdersServerType, String usersOrdersMoney) {
         this.serverUnitAccountId = serverUnitAccountId;
         this.usersAccountId = usersAccountId;
@@ -99,7 +103,7 @@ public class UsersOrders {
     }
 
     public void setUsersOrdersOrderState(String usersOrdersOrderState) {
-        this.usersOrdersOrderState = usersOrdersOrderState == null ? null : usersOrdersOrderState.trim();
+        this.usersOrdersOrderState = usersOrdersOrderState;
     }
 
     public String getUsersOrdersServerType() {
@@ -107,7 +111,7 @@ public class UsersOrders {
     }
 
     public void setUsersOrdersServerType(String usersOrdersServerType) {
-        this.usersOrdersServerType = usersOrdersServerType == null ? null : usersOrdersServerType.trim();
+        this.usersOrdersServerType = usersOrdersServerType;
     }
 
     public String getUsersOrdersMoney() {
@@ -115,7 +119,7 @@ public class UsersOrders {
     }
 
     public void setUsersOrdersMoney(String usersOrdersMoney) {
-        this.usersOrdersMoney = usersOrdersMoney == null ? null : usersOrdersMoney.trim();
+        this.usersOrdersMoney = usersOrdersMoney;
     }
 
     public String getUsersOrdersTimeCreate() {
@@ -123,7 +127,7 @@ public class UsersOrders {
     }
 
     public void setUsersOrdersTimeCreate(String usersOrdersTimeCreate) {
-        this.usersOrdersTimeCreate = usersOrdersTimeCreate == null ? null : usersOrdersTimeCreate.trim();
+        this.usersOrdersTimeCreate = usersOrdersTimeCreate;
     }
 
     public String getUsersOrdersTimePay() {
@@ -131,7 +135,7 @@ public class UsersOrders {
     }
 
     public void setUsersOrdersTimePay(String usersOrdersTimePay) {
-        this.usersOrdersTimePay = usersOrdersTimePay == null ? null : usersOrdersTimePay.trim();
+        this.usersOrdersTimePay = usersOrdersTimePay;
     }
 
     public String getUsersOrdersTimeFinish() {
@@ -139,7 +143,7 @@ public class UsersOrders {
     }
 
     public void setUsersOrdersTimeFinish(String usersOrdersTimeFinish) {
-        this.usersOrdersTimeFinish = usersOrdersTimeFinish == null ? null : usersOrdersTimeFinish.trim();
+        this.usersOrdersTimeFinish = usersOrdersTimeFinish;
     }
 
     public String getUsersOrdersOrderCode() {
@@ -147,6 +151,22 @@ public class UsersOrders {
     }
 
     public void setUsersOrdersOrderCode(String usersOrdersOrderCode) {
-        this.usersOrdersOrderCode = usersOrdersOrderCode == null ? null : usersOrdersOrderCode.trim();
+        this.usersOrdersOrderCode = usersOrdersOrderCode;
+    }
+
+    public Boolean getUsersOrdersUserDelete() {
+        return usersOrdersUserDelete;
+    }
+
+    public void setUsersOrdersUserDelete(Boolean usersOrdersUserDelete) {
+        this.usersOrdersUserDelete = usersOrdersUserDelete;
+    }
+
+    public Boolean getUsersOrdersUnitDelete() {
+        return usersOrdersUnitDelete;
+    }
+
+    public void setUsersOrdersUnitDelete(Boolean usersOrdersUnitDelete) {
+        this.usersOrdersUnitDelete = usersOrdersUnitDelete;
     }
 }

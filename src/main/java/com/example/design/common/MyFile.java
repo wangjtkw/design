@@ -8,4 +8,5 @@ public class MyFile {
     public static final String uploadWindowPage = "C:\\File_rec\\page\\";
     public static final String uploadLinuxPage = "/user/page/";
 
+    public static final String address = "119.29.20.213";
 }

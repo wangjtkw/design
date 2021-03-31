@@ -5,14 +5,6 @@ public class MyResponseBody {
     private String description;
     private Object data;
 
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
     public MyResponseBody() {
     }
 
@@ -26,6 +18,16 @@ public class MyResponseBody {
         this.description = description;
         this.data = data;
     }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+
 
     public int getCode() {
         return code;

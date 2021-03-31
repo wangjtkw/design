@@ -1,6 +1,5 @@
 
 
-
 spring:
   datasource:
     username: root
@@ -28,4 +27,7 @@ file:
 #  file.staticAccessPath=/uploadimg/**
 #  #文件上传目录（注意Linux和Windows上的目录结构不同）
 #  #file.uploadFolder=/root/uploadFiles/
+#server:
+#  port: 8080
+#  address: 10.20.151.16
 #  file.uploadFolder=C://File_rec/tmp/

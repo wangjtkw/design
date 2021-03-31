@@ -28,6 +28,8 @@ public class ServerUnitServicesAdd {
 
     private String serverUnitServicesReleaseTime;
 
+    private String serverUnitServicesPhone;
+
     private String serverUnitServicesAirTourSightseeingPlaces;
 
     private String serverUnitServicesAirTourDuration;
@@ -48,8 +50,6 @@ public class ServerUnitServicesAdd {
 
     private String serverUnitServicesArtificialRainfallPrice;
 
-    private String serverUnitServicesArtificialRainfallPhone;
-
     private String serverUnitServicesCharteredAirplaneStartAddress;
 
     private String serverUnitServicesCharteredAirplaneEndAddress;
@@ -65,8 +65,6 @@ public class ServerUnitServicesAdd {
     private String serverUnitServicesHelicopterRentalAircraftModel;
 
     private String serverUnitServicesHelicopterRentalPrice;
-
-    private String serverUnitServicesHelicopterRentalPhone;
 
     private String serverUnitServicesParachuteFlightAddress;
 
@@ -178,6 +176,14 @@ public class ServerUnitServicesAdd {
         this.serverUnitServicesReleaseTime = serverUnitServicesReleaseTime;
     }
 
+    public String getServerUnitServicesPhone() {
+        return serverUnitServicesPhone;
+    }
+
+    public void setServerUnitServicesPhone(String serverUnitServicesPhone) {
+        this.serverUnitServicesPhone = serverUnitServicesPhone;
+    }
+
     public String getServerUnitServicesAirTourSightseeingPlaces() {
         return serverUnitServicesAirTourSightseeingPlaces;
     }
@@ -258,14 +264,6 @@ public class ServerUnitServicesAdd {
         this.serverUnitServicesArtificialRainfallPrice = serverUnitServicesArtificialRainfallPrice;
     }
 
-    public String getServerUnitServicesArtificialRainfallPhone() {
-        return serverUnitServicesArtificialRainfallPhone;
-    }
-
-    public void setServerUnitServicesArtificialRainfallPhone(String serverUnitServicesArtificialRainfallPhone) {
-        this.serverUnitServicesArtificialRainfallPhone = serverUnitServicesArtificialRainfallPhone;
-    }
-
     public String getServerUnitServicesCharteredAirplaneStartAddress() {
         return serverUnitServicesCharteredAirplaneStartAddress;
     }
@@ -330,14 +328,6 @@ public class ServerUnitServicesAdd {
         this.serverUnitServicesHelicopterRentalPrice = serverUnitServicesHelicopterRentalPrice;
     }
 
-    public String getServerUnitServicesHelicopterRentalPhone() {
-        return serverUnitServicesHelicopterRentalPhone;
-    }
-
-    public void setServerUnitServicesHelicopterRentalPhone(String serverUnitServicesHelicopterRentalPhone) {
-        this.serverUnitServicesHelicopterRentalPhone = serverUnitServicesHelicopterRentalPhone;
-    }
-
     public String getServerUnitServicesParachuteFlightAddress() {
         return serverUnitServicesParachuteFlightAddress;
     }
@@ -365,6 +355,7 @@ public class ServerUnitServicesAdd {
     @Override
     public String toString() {
         return "ServerUnitServicesAdd{" +
+                "serverUnitServicesId=" + serverUnitServicesId +
                 ", serverUnitAccountId=" + serverUnitAccountId +
                 ", serverUnitServicesHelicopterRentalId=" + serverUnitServicesHelicopterRentalId +
                 ", serverUnitServicesParachuteFlightId=" + serverUnitServicesParachuteFlightId +
@@ -377,6 +368,7 @@ public class ServerUnitServicesAdd {
                 ", serverUnitServicesType='" + serverUnitServicesType + '\'' +
                 ", serverUnitServicesAuditStatus='" + serverUnitServicesAuditStatus + '\'' +
                 ", serverUnitServicesReleaseTime='" + serverUnitServicesReleaseTime + '\'' +
+                ", serverUnitServicesPhone='" + serverUnitServicesPhone + '\'' +
                 ", serverUnitServicesAirTourSightseeingPlaces='" + serverUnitServicesAirTourSightseeingPlaces + '\'' +
                 ", serverUnitServicesAirTourDuration='" + serverUnitServicesAirTourDuration + '\'' +
                 ", serverUnitServicesAirTourAircraftModel='" + serverUnitServicesAirTourAircraftModel + '\'' +
@@ -387,7 +379,6 @@ public class ServerUnitServicesAdd {
                 ", serverUnitServicesArtificialRainfallCatalyzer='" + serverUnitServicesArtificialRainfallCatalyzer + '\'' +
                 ", serverUnitServicesArtificialRainfallMaxDose='" + serverUnitServicesArtificialRainfallMaxDose + '\'' +
                 ", serverUnitServicesArtificialRainfallPrice='" + serverUnitServicesArtificialRainfallPrice + '\'' +
-                ", serverUnitServicesArtificialRainfallPhone='" + serverUnitServicesArtificialRainfallPhone + '\'' +
                 ", serverUnitServicesCharteredAirplaneStartAddress='" + serverUnitServicesCharteredAirplaneStartAddress + '\'' +
                 ", serverUnitServicesCharteredAirplaneEndAddress='" + serverUnitServicesCharteredAirplaneEndAddress + '\'' +
                 ", serverUnitServicesCharteredAirplaneAircraftModel='" + serverUnitServicesCharteredAirplaneAircraftModel + '\'' +
@@ -396,7 +387,6 @@ public class ServerUnitServicesAdd {
                 ", serverUnitServicesCharteredAirplanePrice='" + serverUnitServicesCharteredAirplanePrice + '\'' +
                 ", serverUnitServicesHelicopterRentalAircraftModel='" + serverUnitServicesHelicopterRentalAircraftModel + '\'' +
                 ", serverUnitServicesHelicopterRentalPrice='" + serverUnitServicesHelicopterRentalPrice + '\'' +
-                ", serverUnitServicesHelicopterRentalPhone='" + serverUnitServicesHelicopterRentalPhone + '\'' +
                 ", serverUnitServicesParachuteFlightAddress='" + serverUnitServicesParachuteFlightAddress + '\'' +
                 ", serverUnitServicesParachuteFlightAircraftModel='" + serverUnitServicesParachuteFlightAircraftModel + '\'' +
                 ", serverUnitServicesParachuteFlightPrice='" + serverUnitServicesParachuteFlightPrice + '\'' +

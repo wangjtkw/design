@@ -19,6 +19,7 @@
         <result column="server_unit_services_type" jdbcType="VARCHAR" property="serverUnitServicesType"/>
         <result column="server_unit_services_audit_status" jdbcType="VARCHAR" property="serverUnitServicesAuditStatus"/>
         <result column="server_unit_services_release_time" jdbcType="VARCHAR" property="serverUnitServicesReleaseTime"/>
+        <result column="server_unit_services_phone" jdbcType="VARCHAR" property="serverUnitServicesPhone"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
@@ -43,7 +44,7 @@
         server_unit_services_detail,
         server_unit_services_type,
         server_unit_services_audit_status,
-        server_unit_services_release_time)
+        server_unit_services_release_time, server_unit_services_phone)
         values (
         #{serverUnitServicesId,jdbcType=INTEGER},
         #{serverUnitAccountId,jdbcType=INTEGER},
@@ -58,6 +59,7 @@
         #{serverUnitServicesType,jdbcType=VARCHAR},
         #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
         NOW()
+        , #{serverUnitServicesPhone,jdbcType=VARCHAR}
         )
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.example.design.entity.server.ServerUnitServices">
@@ -73,7 +75,7 @@
             server_unit_services_detail                 = #{serverUnitServicesDetail,jdbcType=VARCHAR},
             server_unit_services_type                   = #{serverUnitServicesType,jdbcType=VARCHAR},
             server_unit_services_audit_status           = #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
-            server_unit_services_release_time           = #{serverUnitServicesReleaseTime,jdbcType=VARCHAR}
+            server_unit_services_release_time           = #{serverUnitServicesReleaseTime,jdbcType=VARCHAR} server_unit_services_phone                  = #{serverUnitServicesPhone,jdbcType=VARCHAR}
         where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
     </update>
 
@@ -114,6 +116,10 @@
             <if test="serverUnitServicesAuditStatus != null">
                 server_unit_services_audit_status = #{serverUnitServicesAuditStatus,jdbcType=VARCHAR},
             </if>
+            <if test="serverUnitServicesPhone != null">
+                server_unit_services_phone = #{serverUnitServicesPhone,jdbcType=VARCHAR}
+            </if>
+
         </set>
         where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
     </update>
@@ -130,7 +136,8 @@
                server_unit_services_detail,
                server_unit_services_type,
                server_unit_services_audit_status,
-               server_unit_services_release_time
+               server_unit_services_release_time,
+               server_unit_services_phone
         from server_unit_services
         where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
     </select>
@@ -139,7 +146,6 @@
         select server_unit_services_id,
                server_unit_account_id,
                server_unit_services_helicopter_rental_id,
-
                server_unit_services_parachute_flight_id,
                server_unit_services_air_tour_id,
                server_unit_services_chartered_airplane_id,
@@ -149,7 +155,8 @@
                server_unit_services_detail,
                server_unit_services_type,
                server_unit_services_audit_status,
-               server_unit_services_release_time
+               server_unit_services_release_time,
+               server_unit_services_phone
         from server_unit_services
         where server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
     </select>
@@ -167,7 +174,8 @@
                server_unit_services_detail,
                server_unit_services_type,
                server_unit_services_audit_status,
-               server_unit_services_release_time
+               server_unit_services_release_time,
+               server_unit_services_phone
         from server_unit_services
         where server_unit_services_audit_status = #{status,jdbcType=VARCHAR}
     </select>
@@ -185,7 +193,8 @@
         server_unit_services_detail,
         server_unit_services_type,
         server_unit_services_audit_status,
-        server_unit_services_release_time
+        server_unit_services_release_time,
+        server_unit_services_phone
         from server_unit_services
         where
         <if test="serverUnitAccountId != null">
@@ -216,7 +225,8 @@
         server_unit_services_detail,
         server_unit_services_type,
         server_unit_services_audit_status,
-        server_unit_services_release_time
+        server_unit_services_release_time,
+        server_unit_services_phone
         from server_unit_services
         where
         <if test="param != null || param != ''">
@@ -242,7 +252,8 @@
         server_unit_services_detail,
         server_unit_services_type,
         server_unit_services_audit_status,
-        server_unit_services_release_time
+        server_unit_services_release_time,
+        server_unit_services_phone
         from server_unit_services
         where
         <if test="param != null">
@@ -255,7 +266,7 @@
         where server_unit_services.server_unit_account_id = server_unit_account.server_unit_account_id
         and server_unit_account.server_unit_company_id = server_unit_company.server_unit_company_id
         and server_unit_company.server_unit_company_audit_status = '审批通过')
-        <if test="limit > 0">
+        <if test="limit &gt; 0">
             order by server_unit_services_release_time desc LIMIT 0,#{limit}
         </if>
     </select>
@@ -273,7 +284,8 @@
                server_unit_services_detail,
                server_unit_services_type,
                server_unit_services_audit_status,
-               server_unit_services_release_time
+               server_unit_services_release_time,
+               server_unit_services_phone
         from server_unit_services
         where server_unit_services.server_unit_services_id in (select server_unit_services.server_unit_services_id
                                                                from server_unit_services,

@@ -33,7 +33,7 @@ public class UsersOrderService {
     }
 
     public List<UsersOrders> selectByServerUnitAccountParam(int serverAccountId, String param) {
-        return mapper.selectByAccountParam(serverAccountId, param);
+        return mapper.selectByServerUnitAccountParam(serverAccountId, param);
     }
 
     public int updateBySelective(UsersOrders orders) {
