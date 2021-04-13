@@ -39,6 +39,17 @@ public class ServerUnitServices {
         this.serverUnitServicesPhone = serverUnitServicesPhone;
     }
 
+    public ServerUnitServices(Integer serverUnitServicesId, Integer serverUnitAccountId, String serverUnitServicesTitle, String serverUnitServicesImg, String serverUnitServicesDetail, String serverUnitServicesType, String serverUnitServicesAuditStatus, String serverUnitServicesPhone) {
+        this.serverUnitServicesId = serverUnitServicesId;
+        this.serverUnitAccountId = serverUnitAccountId;
+        this.serverUnitServicesTitle = serverUnitServicesTitle;
+        this.serverUnitServicesImg = serverUnitServicesImg;
+        this.serverUnitServicesDetail = serverUnitServicesDetail;
+        this.serverUnitServicesType = serverUnitServicesType;
+        this.serverUnitServicesAuditStatus = serverUnitServicesAuditStatus;
+        this.serverUnitServicesPhone = serverUnitServicesPhone;
+    }
+
     public ServerUnitServices() {
     }
 

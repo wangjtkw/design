@@ -6,6 +6,8 @@ import com.example.design.entity.admin.AdministratorsAccount;
 import com.example.design.entity.requestbean.admin.AdminLogin;
 import com.example.design.entity.responsebean.UserDetailBean;
 import com.example.design.entity.responsebean.ServerUnitServicesDetail;
+import com.example.design.entity.responsebean.UserServerItemDetailBean;
+import com.example.design.entity.responsebean.UserServerTypeItemBean;
 import com.example.design.entity.server.IServerUnitService;
 import com.example.design.entity.server.ServerUnitAccount;
 import com.example.design.entity.server.ServerUnitCompany;
@@ -62,7 +64,7 @@ public class AdminController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Object login(@RequestBody AdminLogin adminLogin) {
+    public Object login(AdminLogin adminLogin) {
         if (adminLogin == null
                 || adminLogin.getAdminAccount() == null
                 || adminLogin.getAdminAccount().isEmpty()
@@ -85,7 +87,7 @@ public class AdminController {
 
     @GetMapping("/get/company/detail")
     @ResponseBody
-    public Object getCompanyDetail(@RequestBody int companyId) {
+    public Object getCompanyDetail(int companyId) {
         ServerUnitCompany company = serverUnitCompanyService.select(companyId);
         if (company == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "企业编号不存在");
@@ -95,7 +97,7 @@ public class AdminController {
 
     @GetMapping("/update/company/adopt")
     @ResponseBody
-    public Object updateCompanyAdopt(@RequestBody int companyId) {
+    public Object updateCompanyAdopt(int companyId) {
         ServerUnitCompany company = serverUnitCompanyService.select(companyId);
         if (company == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "企业编号不存在");
@@ -110,7 +112,7 @@ public class AdminController {
 
     @GetMapping("/update/company/refuse")
     @ResponseBody
-    public Object updateCompanyRefuse(@RequestBody int companyId) {
+    public Object updateCompanyRefuse(int companyId) {
         ServerUnitCompany company = serverUnitCompanyService.select(companyId);
         if (company == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "企业编号不存在");
@@ -125,23 +127,33 @@ public class AdminController {
 
     @GetMapping("/get/company/param")
     @ResponseBody
-    public Object selectCompany(@RequestBody String param) {
+    public Object selectCompany(String param) {
         return new MyResponseBody(200, "OK", serverUnitCompanyService.selectByParam(param));
     }
 
     @GetMapping("/get/server/list")
     @ResponseBody
     public Object getServerList() {
-        return new MyResponseBody(200, "OK", serverUnitServicesService.selectByStatus("待审批"));
+        List<ServerUnitServices> services;
+        services = serverUnitServicesService.selectByStatus("待审批");
+
+        List<UserServerTypeItemBean> result = new ArrayList<>();
+        for (ServerUnitServices service : services) {
+            ServerUnitCompany company = serverUnitCompanyService.selectByServerId(service.getServerUnitServicesId());
+            UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(service, company);
+            result.add(serverTypeItemBean);
+        }
+        return new MyResponseBody(200, "OK", result);
     }
+
 
     @GetMapping("/get/server/detail")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object getServerDetail(@RequestBody int serverId) {
+    public Object getServerDetail(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "服务编号不存在");
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id 不合法");
         }
         IServerUnitService iServerUnitService;
         switch (services.getServerUnitServicesType()) {
@@ -163,12 +175,40 @@ public class AdminController {
             default:
                 return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id错误");
         }
-        return new MyResponseBody(200, "OK", new ServerUnitServicesDetail(services, iServerUnitService));
+        ServerUnitCompany company = serverUnitCompanyService.selectByServerId(services.getServerUnitServicesId());
+        UserServerItemDetailBean detailBean = new UserServerItemDetailBean(services, iServerUnitService, company);
+        return new MyResponseBody(200, "OK", detailBean);
+
+//        ServerUnitServices services = serverUnitServicesService.select(serverId);
+//        if (services == null) {
+//            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "服务编号不存在");
+//        }
+//        IServerUnitService iServerUnitService;
+//        switch (services.getServerUnitServicesType()) {
+//            case "空中游览":
+//                iServerUnitService = serverUnitServicesAirTourService.select(services.getServerUnitServicesAirTourId());
+//                break;
+//            case "包机飞行":
+//                iServerUnitService = serverUnitServicesCharteredAirplaneService.select(services.getServerUnitServicesCharteredAirplaneId());
+//                break;
+//            case "跳伞飞行":
+//                iServerUnitService = serverUnitServicesParachuteFlightService.select(services.getServerUnitServicesParachuteFlightId());
+//                break;
+//            case "人工增雨":
+//                iServerUnitService = serverUnitServicesArtificialRainfallService.select(services.getServerUnitServicesArtificialRainfallId());
+//                break;
+//            case "直升机出租":
+//                iServerUnitService = serverUnitServicesHelicopterRentalService.select(services.getServerUnitServicesHelicopterRentalId());
+//                break;
+//            default:
+//                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id错误");
+//        }
+//        return new MyResponseBody(200, "OK", new ServerUnitServicesDetail(services, iServerUnitService));
     }
 
     @GetMapping("/update/server/adopt")
     @ResponseBody
-    public Object updateServerAdopt(@RequestBody int serverId) {
+    public Object updateServerAdopt(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "服务编号不存在");
@@ -183,7 +223,7 @@ public class AdminController {
 
     @GetMapping("/update/server/refuse")
     @ResponseBody
-    public Object updateServerRefuse(@RequestBody int serverId) {
+    public Object updateServerRefuse(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "服务编号不存在");
@@ -198,8 +238,17 @@ public class AdminController {
 
     @GetMapping("/get/server/param")
     @ResponseBody
-    public Object selectServer(@RequestBody String param) {
-        return new MyResponseBody(200, "OK", serverUnitServicesService.selectByParam(param));
+    public Object selectServer(String param) {
+        List<ServerUnitServices> services;
+        services = serverUnitServicesService.selectByParam(param);
+
+        List<UserServerTypeItemBean> result = new ArrayList<>();
+        for (ServerUnitServices service : services) {
+            ServerUnitCompany company = serverUnitCompanyService.selectByServerId(service.getServerUnitServicesId());
+            UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(service, company);
+            result.add(serverTypeItemBean);
+        }
+        return new MyResponseBody(200, "OK", result);
     }
 
     @GetMapping("/get/serverUnit/list")
@@ -211,7 +260,7 @@ public class AdminController {
 
     @GetMapping("/get/serverUnit/detail")
     @ResponseBody
-    public Object getServerUnitDetail(@RequestBody int companyId) {
+    public Object getServerUnitDetail(int companyId) {
         ServerUnitCompany company = serverUnitCompanyService.select(companyId);
         if (company == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "运行单位企业信息编号不存在");
@@ -221,7 +270,7 @@ public class AdminController {
 
     @GetMapping("/get/serverUnit/param")
     @ResponseBody
-    public Object getServerUnitByParam(@RequestBody String param) {
+    public Object getServerUnitByParam(String param) {
         List<ServerUnitCompany> companyList = serverUnitCompanyService.selectAllByParam(param);
         return new MyResponseBody(200, "OK", companyList);
     }
@@ -235,7 +284,7 @@ public class AdminController {
     @GetMapping("/delete/serverUnit")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object deleteServerUnit(@RequestBody int companyId) {
+    public Object deleteServerUnit(int companyId) {
         List<ServerUnitServices> servicesList = serverUnitServicesService.selectByCompanyId(companyId);
         for (ServerUnitServices service : servicesList) {
             delete(service.getServerUnitServicesId());
@@ -246,7 +295,7 @@ public class AdminController {
         return new MyResponseBody(200, "OK");
     }
 
-    void delete(@RequestBody int serverId) {
+    void delete(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) return;
         serverUnitServicesService.delete(serverId);
@@ -304,7 +353,7 @@ public class AdminController {
     @GetMapping("/get/user/detail")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object getUserDetail(@RequestBody int accountId) {
+    public Object getUserDetail(int accountId) {
         UsersAccount account = usersAccountService.getUserByKey(accountId);
         if (account == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户编号不存在");
@@ -341,7 +390,7 @@ public class AdminController {
     @GetMapping("/delete/user")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object deleteUser(@RequestBody int accountId) {
+    public Object deleteUser(int accountId) {
         UsersAccount account = usersAccountService.getUserByKey(accountId);
         if (account == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "用户编号不存在");

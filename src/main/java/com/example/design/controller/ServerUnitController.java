@@ -337,12 +337,12 @@ public class ServerUnitController {
                 if (addInfo.getServerUnitServicesHelicopterRentalAircraftModel() == null
                         || addInfo.getServerUnitServicesHelicopterRentalAircraftModel().isEmpty()
                         || addInfo.getServerUnitServicesHelicopterRentalPrice() == null
-                        || addInfo.getServerUnitServicesHelicopterRentalPrice().isEmpty()){
+                        || addInfo.getServerUnitServicesHelicopterRentalPrice().isEmpty()) {
 
                 }
-                    ServerUnitServicesHelicopterRental helicopterRental = new ServerUnitServicesHelicopterRental(
-                            addInfo.getServerUnitServicesHelicopterRentalAircraftModel(),
-                            addInfo.getServerUnitServicesHelicopterRentalPrice());
+                ServerUnitServicesHelicopterRental helicopterRental = new ServerUnitServicesHelicopterRental(
+                        addInfo.getServerUnitServicesHelicopterRentalAircraftModel(),
+                        addInfo.getServerUnitServicesHelicopterRentalPrice());
                 serverUnitServicesHelicopterRentalService.insert(helicopterRental);
                 services.setServerUnitServicesHelicopterRentalId(helicopterRental.getServerUnitServicesHelicopterRentalId());
 //                serverUnitServicesService.update(services);
@@ -356,7 +356,7 @@ public class ServerUnitController {
 
     @RequestMapping("/server/detail")
     @ResponseBody
-    public Object getServer( int serverId) {
+    public Object getServer(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "id 不合法");
@@ -402,6 +402,7 @@ public class ServerUnitController {
         }
         ServerUnitServices services = new ServerUnitServices(
                 addInfo.getServerUnitServicesId(),
+                addInfo.getServerUnitAccountId(),
                 addInfo.getServerUnitServicesTitle(),
                 addInfo.getServerUnitServicesImg(),
                 addInfo.getServerUnitServicesDetail(),
@@ -475,7 +476,7 @@ public class ServerUnitController {
     }
 
     @RequestMapping("/server/list")
-    public Object getServerList( int accountId) {
+    public Object getServerList(int accountId) {
         List<ServerUnitServices> result = serverUnitServicesService.selectByAccountKey(accountId);
         return new MyResponseBody(200, "OK", result);
     }
@@ -493,13 +494,13 @@ public class ServerUnitController {
     }
 
     @RequestMapping("/server/deleteSingle")
-    public Object deleteServer( int serverId) {
+    public Object deleteServer(int serverId) {
         delete(serverId);
         return new MyResponseBody(200, "OK");
     }
 
     @Transactional
-    void delete(@RequestBody int serverId) {
+    void delete(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) return;
         serverUnitServicesService.delete(serverId);
@@ -541,7 +542,7 @@ public class ServerUnitController {
     }
 
     @RequestMapping("/server/search")
-    public Object search( int accountId, String param) {
+    public Object search(int accountId, String param) {
         if (param == null || "".equals(param)) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "查询参数错误");
         }
@@ -551,7 +552,7 @@ public class ServerUnitController {
 
     @RequestMapping("get/order/list")
     @ResponseBody
-    public Object getOrderList( int serverUnitId) {
+    public Object getOrderList(int serverUnitId) {
         List<UsersOrders> ordersList = usersOrderService.selectByServerUnitAccount(serverUnitId);
         List<OrderDetailBean> result = new ArrayList<>();
         for (UsersOrders orders : ordersList) {
@@ -587,7 +588,7 @@ public class ServerUnitController {
 
     @RequestMapping("/get/order/detail")
     @ResponseBody
-    public Object getOrderDetail( int orderId) {
+    public Object getOrderDetail(int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
         if (orders == null) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单id错误");
@@ -678,7 +679,7 @@ public class ServerUnitController {
         return payBean;
     }
 
-    public UserDetailBean getUserDetail(@RequestBody int userAccountId) {
+    public UserDetailBean getUserDetail(int userAccountId) {
         UsersAccount account = usersAccountService.getUserByKey(userAccountId);
         if (account == null) {
             return null;
@@ -699,7 +700,7 @@ public class ServerUnitController {
 
     }
 
-    public ServerUnitServicesDetail getServerUnitService(@RequestBody int serverId) {
+    public ServerUnitServicesDetail getServerUnitService(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);
         if (services == null) {
             return null;
@@ -730,7 +731,7 @@ public class ServerUnitController {
     @RequestMapping("/delete/order")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object deleteOrder(@RequestBody int orderId) {
+    public Object deleteOrder(int orderId) {
         UsersOrders orders = usersOrderService.selectById(orderId);
         if (orders != null) {
             orders.setUsersOrdersUnitDelete(true);
@@ -741,7 +742,7 @@ public class ServerUnitController {
 
     @RequestMapping("get/order/list/param")
     @ResponseBody
-    public Object select(@RequestBody int serverAccountId, String param) {
+    public Object select(int serverAccountId, String param) {
         List<UsersOrders> ordersList = usersOrderService.selectByServerUnitAccountParam(serverAccountId, param);
         List<OrderDetailBean> result = new ArrayList<>();
         for (UsersOrders orders : ordersList) {

@@ -119,7 +119,6 @@
             <if test="serverUnitServicesPhone != null">
                 server_unit_services_phone = #{serverUnitServicesPhone,jdbcType=VARCHAR}
             </if>
-
         </set>
         where server_unit_services_id = #{serverUnitServicesId,jdbcType=INTEGER}
     </update>
@@ -229,13 +228,14 @@
         server_unit_services_phone
         from server_unit_services
         where
+        server_unit_services_audit_status = '待审批'
         <if test="param != null || param != ''">
             <bind name="param" value="'%' + param + '%'"/>
-            server_unit_services_title like #{param}
+            and (server_unit_services_title like #{param}
             or server_unit_services_detail like #{param}
             or server_unit_services_type like #{param}
-            or server_unit_services_audit_status like #{param}
             or server_unit_services_release_time like #{param}
+            )
         </if>
     </select>
 
