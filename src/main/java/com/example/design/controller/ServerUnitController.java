@@ -202,6 +202,7 @@ public class ServerUnitController {
     @ResponseBody
     public Object updateCompanyInfo(@RequestBody ServerUnitCompany company) {
         this.log.info(company.toString());
+        company.setServerUnitCompanyAuditStatus("待审批");
         serverUnitCompanyService.update(company);
         return new MyResponseBody(200, "OK");
     }
@@ -481,6 +482,19 @@ public class ServerUnitController {
         return new MyResponseBody(200, "OK", result);
     }
 
+    /**
+     * 新增的
+     *
+     * @param accountId
+     * @param type
+     * @return
+     */
+    @RequestMapping("/server/list/type")
+    public Object getServerListType(int accountId, String type) {
+        List<ServerUnitServices> result = serverUnitServicesService.selectByAccountKeyType(accountId, type);
+        return new MyResponseBody(200, "OK", result);
+    }
+
     @RequestMapping("/test/img")
     public Object uploadImg(@RequestBody MultipartFile file) {
         if (file.isEmpty()) {
@@ -547,6 +561,25 @@ public class ServerUnitController {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "查询参数错误");
         }
         List<ServerUnitServices> servicesList = serverUnitServicesService.selectByAccountKeyParam(accountId, param);
+        return new MyResponseBody(200, "OK", servicesList);
+    }
+
+    @RequestMapping("/server/search/type")
+    public Object searchType(int accountId, String type, String param) {
+        switch (type) {
+            case "空中游览":
+            case "包机飞行":
+            case "跳伞飞行":
+            case "人工增雨":
+            case "直升机出租":
+                break;
+            default:
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "查询参数错误");
+        }
+        if (param == null || "".equals(param)) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "查询参数错误");
+        }
+        List<ServerUnitServices> servicesList = serverUnitServicesService.selectByAccountKeyParamType(accountId, type, param);
         return new MyResponseBody(200, "OK", servicesList);
     }
 

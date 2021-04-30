@@ -29,9 +29,18 @@ public class ServerUnitServicesService {
         return servicesMapper.selectByAccountKey(account);
     }
 
+    public List<ServerUnitServices> selectByAccountKeyType(int account, String type) {
+        return servicesMapper.selectByAccountKeyType(account, type);
+    }
+
     public List<ServerUnitServices> selectByStatus(String status) {
         return servicesMapper.selectByStatus(status);
     }
+
+    public List<ServerUnitServices> selectByStatusType(String status, String type) {
+        return servicesMapper.selectByStatusType(status, type);
+    }
+
 
     public void delete(int id) {
         servicesMapper.deleteByPrimaryKey(id);
@@ -41,6 +50,11 @@ public class ServerUnitServicesService {
         return servicesMapper.selectByAccountKeyParam(account, param);
     }
 
+    public List<ServerUnitServices> selectByAccountKeyParamType(int account, String type, String param) {
+        return servicesMapper.selectByAccountKeyParamType(account, type, param);
+    }
+
+
     public List<ServerUnitServices> selectByCompanyId(int companyId) {
         return servicesMapper.selectByCompanyId(companyId);
     }
@@ -49,9 +63,18 @@ public class ServerUnitServicesService {
         return servicesMapper.selectByParam(param);
     }
 
+    public List<ServerUnitServices> selectByParamType(String param, String type) {
+        return servicesMapper.selectByParamType(param, type);
+    }
 
-    public List<ServerUnitServices> selectByType(String param,int limit) {
-        return servicesMapper.selectAllByType(param,limit);
+
+    public List<ServerUnitServices> selectByParamUser(String param) {
+        return servicesMapper.selectByParamUser(param);
+    }
+
+
+    public List<ServerUnitServices> selectByType(String param, int limit) {
+        return servicesMapper.selectAllByType(param, limit);
     }
 
 }

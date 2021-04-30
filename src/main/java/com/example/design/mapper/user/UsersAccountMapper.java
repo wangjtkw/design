@@ -17,6 +17,8 @@ public interface UsersAccountMapper {
 
     List<UsersAccount> selectAll();
 
+    List<UsersAccount> selectAllByParam(String param);
+
     int updateByPrimaryKey(UsersAccount record);
 
     int updateByPrimaryKeySelective(UsersAccount record);

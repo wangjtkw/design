@@ -146,6 +146,37 @@ public class AdminController {
         return new MyResponseBody(200, "OK", result);
     }
 
+    /**
+     * 增加的
+     *
+     * @param type
+     * @return
+     */
+    @GetMapping("/get/server/list/type")
+    @ResponseBody
+    public Object getServerListType(String type) {
+        switch (type) {
+            case "空中游览":
+            case "包机飞行":
+            case "跳伞飞行":
+            case "人工增雨":
+            case "直升机出租":
+                break;
+            default:
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "请求参数错误");
+        }
+        List<ServerUnitServices> services;
+        services = serverUnitServicesService.selectByStatusType("待审批", type);
+
+        List<UserServerTypeItemBean> result = new ArrayList<>();
+        for (ServerUnitServices service : services) {
+            ServerUnitCompany company = serverUnitCompanyService.selectByServerId(service.getServerUnitServicesId());
+            UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(service, company);
+            result.add(serverTypeItemBean);
+        }
+        return new MyResponseBody(200, "OK", result);
+    }
+
 
     @GetMapping("/get/server/detail")
     @ResponseBody
@@ -241,6 +272,31 @@ public class AdminController {
     public Object selectServer(String param) {
         List<ServerUnitServices> services;
         services = serverUnitServicesService.selectByParam(param);
+
+        List<UserServerTypeItemBean> result = new ArrayList<>();
+        for (ServerUnitServices service : services) {
+            ServerUnitCompany company = serverUnitCompanyService.selectByServerId(service.getServerUnitServicesId());
+            UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(service, company);
+            result.add(serverTypeItemBean);
+        }
+        return new MyResponseBody(200, "OK", result);
+    }
+
+    @GetMapping("/get/server/param/type")
+    @ResponseBody
+    public Object selectServer(String type, String param) {
+        switch (type) {
+            case "空中游览":
+            case "包机飞行":
+            case "跳伞飞行":
+            case "人工增雨":
+            case "直升机出租":
+                break;
+            default:
+                return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "查询参数错误");
+        }
+        List<ServerUnitServices> services;
+        services = serverUnitServicesService.selectByParamType(param, type);
 
         List<UserServerTypeItemBean> result = new ArrayList<>();
         for (ServerUnitServices service : services) {
@@ -374,12 +430,30 @@ public class AdminController {
     /**
      * 用户参数查询待完成
      */
-//    @GetMapping("/get/user/param")
-//    @ResponseBody
-//    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-//    public Object getUserByParam(String param) {
-//
-//    }
+    @GetMapping("/get/user/param")
+    @ResponseBody
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public Object getUserByParam(String param) {
+        if (param == null || param.isEmpty()) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "请求参数错误");
+        }
+        List<UsersAccount> accountList = usersAccountService.selectAllByParam(param);
+        List<UserDetailBean> result = new ArrayList<>();
+        for (UsersAccount account : accountList) {
+            UsersEssentialInformation information = usersEssentialInfoService.getById(account.getUsersEssentialInformationId());
+            UserDetailBean userDetailBean = new UserDetailBean(
+                    account.getUsersAccountId(),
+                    account.getUsersEssentialInformationId(),
+                    account.getUsersAccountAccount(),
+                    account.getUsersAccountEmail(),
+                    information.getUsersEssentialInformationName(),
+                    information.getUsersEssentialInformationIdNumber(),
+                    information.getUsersEssentialInformationCompany()
+            );
+            result.add(userDetailBean);
+        }
+        return new MyResponseBody(200, "OK", result);
+    }
 
     /**
      * 待测试

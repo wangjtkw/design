@@ -160,6 +160,26 @@
         where server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
     </select>
 
+    <select id="selectByAccountKeyType" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select server_unit_services_id,
+               server_unit_account_id,
+               server_unit_services_helicopter_rental_id,
+               server_unit_services_parachute_flight_id,
+               server_unit_services_air_tour_id,
+               server_unit_services_chartered_airplane_id,
+               server_unit_services_artificial_rainfall_id,
+               server_unit_services_title,
+               server_unit_services_img,
+               server_unit_services_detail,
+               server_unit_services_type,
+               server_unit_services_audit_status,
+               server_unit_services_release_time,
+               server_unit_services_phone
+        from server_unit_services
+        where server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
+          and server_unit_services_type = #{type,jdbcType=VARCHAR}
+    </select>
+
     <select id="selectByStatus" parameterType="String" resultMap="BaseResultMap">
         select server_unit_services_id,
                server_unit_account_id,
@@ -177,6 +197,26 @@
                server_unit_services_phone
         from server_unit_services
         where server_unit_services_audit_status = #{status,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByStatusType" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select server_unit_services_id,
+               server_unit_account_id,
+               server_unit_services_helicopter_rental_id,
+               server_unit_services_parachute_flight_id,
+               server_unit_services_air_tour_id,
+               server_unit_services_chartered_airplane_id,
+               server_unit_services_artificial_rainfall_id,
+               server_unit_services_title,
+               server_unit_services_img,
+               server_unit_services_detail,
+               server_unit_services_type,
+               server_unit_services_audit_status,
+               server_unit_services_release_time,
+               server_unit_services_phone
+        from server_unit_services
+        where server_unit_services_audit_status = #{status,jdbcType=VARCHAR}
+          and server_unit_services_type = #{type,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByAccountKeyParam" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -211,6 +251,41 @@
         )
     </select>
 
+    <select id="selectByAccountKeyParamType" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select server_unit_services_id,
+        server_unit_account_id,
+        server_unit_services_helicopter_rental_id,
+        server_unit_services_parachute_flight_id,
+        server_unit_services_air_tour_id,
+        server_unit_services_chartered_airplane_id,
+        server_unit_services_artificial_rainfall_id,
+        server_unit_services_title,
+        server_unit_services_img,
+        server_unit_services_detail,
+        server_unit_services_type,
+        server_unit_services_audit_status,
+        server_unit_services_release_time,
+        server_unit_services_phone
+        from server_unit_services
+        where
+        <if test="serverUnitAccountId != null">
+            server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
+        </if>
+        <if test="type != null">
+            and server_unit_services_type = #{type,jdbcType=VARCHAR}
+        </if>
+        and (
+        <if test="param != null || param != ''">
+            <bind name="param" value="'%' + param + '%'"/>
+            server_unit_services_title like #{param}
+            or server_unit_services_detail like #{param}
+            or server_unit_services_type like #{param}
+            or server_unit_services_audit_status like #{param}
+            or server_unit_services_release_time like #{param}
+        </if>
+        )
+    </select>
+
     <select id="selectByParam" parameterType="String" resultMap="BaseResultMap">
         select server_unit_services_id,
         server_unit_account_id,
@@ -229,6 +304,65 @@
         from server_unit_services
         where
         server_unit_services_audit_status = '待审批'
+        <if test="param != null || param != ''">
+            <bind name="param" value="'%' + param + '%'"/>
+            and (server_unit_services_title like #{param}
+            or server_unit_services_detail like #{param}
+            or server_unit_services_type like #{param}
+            or server_unit_services_release_time like #{param}
+            )
+        </if>
+    </select>
+
+    <select id="selectByParamType" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select server_unit_services_id,
+        server_unit_account_id,
+        server_unit_services_helicopter_rental_id,
+        server_unit_services_parachute_flight_id,
+        server_unit_services_air_tour_id,
+        server_unit_services_chartered_airplane_id,
+        server_unit_services_artificial_rainfall_id,
+        server_unit_services_title,
+        server_unit_services_img,
+        server_unit_services_detail,
+        server_unit_services_type,
+        server_unit_services_audit_status,
+        server_unit_services_release_time,
+        server_unit_services_phone
+        from server_unit_services
+        where
+        server_unit_services_audit_status = '待审批'
+        <if test="type != null">
+            and server_unit_services_type = #{type,jdbcType=VARCHAR}
+        </if>
+        <if test="param != null || param != ''">
+            <bind name="param" value="'%' + param + '%'"/>
+            and (server_unit_services_title like #{param}
+            or server_unit_services_detail like #{param}
+            or server_unit_services_type like #{param}
+            or server_unit_services_release_time like #{param}
+            )
+        </if>
+    </select>
+
+    <select id="selectByParamUser" parameterType="String" resultMap="BaseResultMap">
+        select server_unit_services_id,
+        server_unit_account_id,
+        server_unit_services_helicopter_rental_id,
+        server_unit_services_parachute_flight_id,
+        server_unit_services_air_tour_id,
+        server_unit_services_chartered_airplane_id,
+        server_unit_services_artificial_rainfall_id,
+        server_unit_services_title,
+        server_unit_services_img,
+        server_unit_services_detail,
+        server_unit_services_type,
+        server_unit_services_audit_status,
+        server_unit_services_release_time,
+        server_unit_services_phone
+        from server_unit_services
+        where
+        server_unit_services_audit_status = '审批通过'
         <if test="param != null || param != ''">
             <bind name="param" value="'%' + param + '%'"/>
             and (server_unit_services_title like #{param}

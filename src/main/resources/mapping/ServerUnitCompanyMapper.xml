@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.design.mapper.sever.ServerUnitCompanyMapper">
-    <resultMap id="BaseResultMap" type="com.example.design.entity.server.ServerUnitCompany">
-        <id column="server_unit_company_id" jdbcType="INTEGER" property="serverUnitCompanyId"/>
-        <result column="server_unit_company_name" jdbcType="VARCHAR" property="serverUnitCompanyName"/>
-        <result column="server_unit_company_base" jdbcType="VARCHAR" property="serverUnitCompanyBase"/>
-        <result column="server_unit_company_airport" jdbcType="VARCHAR" property="serverUnitCompanyAirport"/>
-        <result column="server_unit_company_type" jdbcType="VARCHAR" property="serverUnitCompanyType"/>
-        <result column="server_unit_company_capital" jdbcType="VARCHAR" property="serverUnitCompanyCapital"/>
-        <result column="server_unit_company_legal_representative_name" jdbcType="VARCHAR"
-                property="serverUnitCompanyLegalRepresentativeName"/>
-        <result column="server_unit_company_legal_representative_phone" jdbcType="VARCHAR"
-                property="serverUnitCompanyLegalRepresentativePhone"/>
-        <result column="server_unit_company_validity_term" jdbcType="VARCHAR" property="serverUnitCompanyValidityTerm"/>
-        <result column="server_unit_company_scope" jdbcType="VARCHAR" property="serverUnitCompanyScope"/>
-        <result column="server_unit_company_audit_status" jdbcType="VARCHAR" property="serverUnitCompanyAuditStatus"/>
+      <resultMap id="BaseResultMap" type="com.example.design.entity.server.ServerUnitCompany">
+        <id column="server_unit_company_id" jdbcType="INTEGER" property="serverUnitCompanyId" />
+        <result column="server_unit_company_name" jdbcType="VARCHAR" property="serverUnitCompanyName" />
+        <result column="server_unit_company_base" jdbcType="VARCHAR" property="serverUnitCompanyBase" />
+        <result column="server_unit_company_airport" jdbcType="VARCHAR" property="serverUnitCompanyAirport" />
+        <result column="server_unit_company_type" jdbcType="VARCHAR" property="serverUnitCompanyType" />
+        <result column="server_unit_company_capital" jdbcType="VARCHAR" property="serverUnitCompanyCapital" />
+        <result column="server_unit_company_legal_representative_name" jdbcType="VARCHAR" property="serverUnitCompanyLegalRepresentativeName" />
+        <result column="server_unit_company_legal_representative_phone" jdbcType="VARCHAR" property="serverUnitCompanyLegalRepresentativePhone" />
+        <result column="server_unit_company_validity_term" jdbcType="VARCHAR" property="serverUnitCompanyValidityTerm" />
+        <result column="server_unit_company_scope" jdbcType="VARCHAR" property="serverUnitCompanyScope" />
+        <result column="server_unit_company_audit_status" jdbcType="VARCHAR" property="serverUnitCompanyAuditStatus" />
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
@@ -84,7 +82,7 @@
         where
         server_unit_company_audit_status = '待审批'
         <if test="param != null and param != ''">
-            <bind name="param" value="'%' + param + '%'"/>
+            <bind name="param" value="'%' + param + '%'" />
             and (
             server_unit_company_name like #{param}
             or server_unit_company_base like #{param}
@@ -114,7 +112,7 @@
         from server_unit_company
         where
         <if test="param != null and param != ''">
-            <bind name="param" value="'%' + param + '%'"/>
+            <bind name="param" value="'%' + param + '%'" />
             server_unit_company_name like #{param}
             or server_unit_company_base like #{param}
             or server_unit_company_airport like #{param}

@@ -41,6 +41,11 @@ public class UsersAccountService {
         return usersAccountMapper.selectAll();
     }
 
+    public List<UsersAccount> selectAllByParam(String param) {
+        return usersAccountMapper.selectAllByParam(param);
+    }
+
+
     public void delete(int accountId) {
         usersAccountMapper.deleteByPrimaryKey(accountId);
     }

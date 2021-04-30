@@ -131,7 +131,7 @@ public class UserController {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "账号或密码错误");
         }
         account.setUsersAccountPassword("");
-        return new MyResponseBody(200, "OK",account);
+        return new MyResponseBody(200, "OK", account);
     }
 
     @PostMapping("/update/email")
@@ -204,6 +204,25 @@ public class UserController {
         }
         return new MyResponseBody(200, "OK", result);
     }
+
+    @GetMapping("/get/server/param")
+    @ResponseBody
+    public Object getServerByParam(String param) {
+        if (param == null
+                || param.isEmpty()) {
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "请求参数错误");
+        }
+        List<ServerUnitServices> services = serverUnitServicesService.selectByParamUser(param);
+
+        List<UserServerTypeItemBean> result = new ArrayList<>();
+        for (ServerUnitServices service : services) {
+            ServerUnitCompany company = serverUnitCompanyService.selectByServerId(service.getServerUnitServicesId());
+            UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(service, company);
+            result.add(serverTypeItemBean);
+        }
+        return new MyResponseBody(200, "OK", result);
+    }
+
 
     private List<UserServerTypeItemBean> getServerByType(String type, int limit) {
         List<ServerUnitServices> services;

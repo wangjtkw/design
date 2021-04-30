@@ -78,4 +78,32 @@
                users_account_email
         from users_account
     </select>
+
+    <select id="selectAllByParam" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select users_account_id,
+        users_essential_information_id,
+        users_account_account,
+        users_account_password,
+        users_account_email
+        from users_account
+        where
+        <if test="param != null || param != ''">
+            <bind name="param" value="'%' + param + '%'"/>
+            (users_account_account like #{param}
+            or users_account_email like #{param}
+            ) or (
+            users_account.users_account_id in (
+            select users_account.users_account_id
+            from users_account,users_essential_information
+            where users_account.users_essential_information_id =
+            users_essential_information.users_essential_information_id
+            and (
+            users_essential_information.users_essential_information_name like #{param}
+            or users_essential_information.users_essential_information_id_number like #{param}
+            or users_essential_information.users_essential_information_company like #{param})
+            )
+            )
+        </if>
+
+    </select>
 </mapper>
