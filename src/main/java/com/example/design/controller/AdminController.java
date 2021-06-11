@@ -72,25 +72,40 @@ public class AdminController {
                 || adminLogin.getAdminPW().isEmpty()) {
             return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "账号或密码错误");
         }
-        AdministratorsAccount account = adminService.getAccount(adminLogin.getAdminAccount());
-        if (account == null || !account.getAdministratorsAccountPassword().equals(adminLogin.getAdminPW())) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "账号或密码错误");
+        AdministratorsAccount account =
+                adminService.getAccount(
+                        adminLogin.getAdminAccount());
+
+
+        if (account == null ||
+                !account.getAdministratorsAccountPassword()
+                        .equals(adminLogin.getAdminPW())) {
+
+
+            return new MyResponseBody(
+                    ErrorCode.PARAMETER_ERROR_CODE,
+                    ErrorCode.PARAMETER_ERROR_DESCRIBE + "账号或密码错误");
         }
+
         return new MyResponseBody(200, "OK");
     }
 
     @GetMapping("/get/company/list")
     @ResponseBody
     public Object getCompanyList() {
-        return new MyResponseBody(200, "OK", serverUnitCompanyService.selectByStatus("待审批"));
+        return new MyResponseBody(200, "OK",
+                serverUnitCompanyService.selectByStatus("待审批"));
     }
+
 
     @GetMapping("/get/company/detail")
     @ResponseBody
     public Object getCompanyDetail(int companyId) {
         ServerUnitCompany company = serverUnitCompanyService.select(companyId);
         if (company == null) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "企业编号不存在");
+            return new MyResponseBody(
+                    ErrorCode.PARAMETER_ERROR_CODE,
+                    ErrorCode.PARAMETER_ERROR_DESCRIBE + "企业编号不存在");
         }
         return new MyResponseBody(200, "OK", company);
     }
@@ -100,10 +115,13 @@ public class AdminController {
     public Object updateCompanyAdopt(int companyId) {
         ServerUnitCompany company = serverUnitCompanyService.select(companyId);
         if (company == null) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "企业编号不存在");
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE,
+                    ErrorCode.PARAMETER_ERROR_DESCRIBE + "企业编号不存在");
         }
         if (!company.getServerUnitCompanyAuditStatus().equals("待审批")) {
-            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE, ErrorCode.PARAMETER_ERROR_DESCRIBE + "订单状态不为待审批");
+            return new MyResponseBody(ErrorCode.PARAMETER_ERROR_CODE,
+                    ErrorCode.PARAMETER_ERROR_DESCRIBE +
+                            "企业信息状态不为待审批");
         }
         company.setServerUnitCompanyAuditStatus("审批通过");
         serverUnitCompanyService.update(company);
@@ -128,7 +146,8 @@ public class AdminController {
     @GetMapping("/get/company/param")
     @ResponseBody
     public Object selectCompany(String param) {
-        return new MyResponseBody(200, "OK", serverUnitCompanyService.selectByParam(param));
+        return new MyResponseBody(200,
+                "OK", serverUnitCompanyService.selectByParam(param));
     }
 
     @GetMapping("/get/server/list")
@@ -139,8 +158,13 @@ public class AdminController {
 
         List<UserServerTypeItemBean> result = new ArrayList<>();
         for (ServerUnitServices service : services) {
-            ServerUnitCompany company = serverUnitCompanyService.selectByServerId(service.getServerUnitServicesId());
-            UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(service, company);
+
+            ServerUnitCompany company = serverUnitCompanyService.selectByServerId(
+                    service.getServerUnitServicesId());
+
+            UserServerTypeItemBean serverTypeItemBean = new UserServerTypeItemBean(
+                    service, company);
+
             result.add(serverTypeItemBean);
         }
         return new MyResponseBody(200, "OK", result);
@@ -341,15 +365,21 @@ public class AdminController {
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public Object deleteServerUnit(int companyId) {
-        List<ServerUnitServices> servicesList = serverUnitServicesService.selectByCompanyId(companyId);
+        List<ServerUnitServices> servicesList =
+                serverUnitServicesService.selectByCompanyId(companyId);
         for (ServerUnitServices service : servicesList) {
+
             delete(service.getServerUnitServicesId());
         }
-        ServerUnitAccount account = serverUnitAccountService.selectByCompanyId(companyId);
+        ServerUnitAccount account =
+                serverUnitAccountService.selectByCompanyId(companyId);
+
         serverUnitAccountService.delete(account.getServerUnitAccountId());
         serverUnitCompanyService.delete(companyId);
         return new MyResponseBody(200, "OK");
     }
+
+
 
     void delete(int serverId) {
         ServerUnitServices services = serverUnitServicesService.select(serverId);

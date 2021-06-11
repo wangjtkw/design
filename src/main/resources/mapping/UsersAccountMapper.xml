@@ -79,7 +79,9 @@
         from users_account
     </select>
 
-    <select id="selectAllByParam" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectAllByParam"
+            parameterType="java.lang.String"
+            resultMap="BaseResultMap">
         select users_account_id,
         users_essential_information_id,
         users_account_account,

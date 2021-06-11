@@ -213,7 +213,8 @@ public class ServerUnitController {
     @RequestMapping("/server/add")
     @ResponseBody
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
-    public Object addServer(@RequestParam MultipartFile file, ServerUnitServicesAdd addInfo) {
+    public Object addServer(@RequestParam MultipartFile file,
+                            ServerUnitServicesAdd addInfo) {
         System.out.println(addInfo);
         if (file == null || file.isEmpty()) {
             return new MyResponseBody(ErrorCode.PICTURE_ERROR_CODE, ErrorCode.PICTURE_ERROR_DESCRIBE + "服务图片不能为空");

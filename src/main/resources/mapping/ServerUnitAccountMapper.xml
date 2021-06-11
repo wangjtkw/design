@@ -15,7 +15,9 @@
     </delete>
 
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey"
+            parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
         select server_unit_account_id,
                server_unit_company_id,
                server_unit_account_account,
@@ -24,6 +26,9 @@
         from server_unit_account
         where server_unit_account_id = #{serverUnitAccountId,jdbcType=INTEGER}
     </select>
+
+
+
     <select id="selectAll" resultMap="BaseResultMap">
         select server_unit_account_id,
                server_unit_company_id,

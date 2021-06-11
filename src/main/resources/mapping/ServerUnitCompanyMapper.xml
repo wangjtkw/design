@@ -66,7 +66,9 @@
         where server_unit_company_audit_status = #{status,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectByParam" parameterType="String" resultMap="BaseResultMap">
+    <select id="selectByParam"
+            parameterType="String"
+            resultMap="BaseResultMap">
         select server_unit_company_id,
         server_unit_company_name,
         server_unit_company_base,

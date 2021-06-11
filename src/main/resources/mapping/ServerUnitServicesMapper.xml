@@ -251,7 +251,9 @@
         )
     </select>
 
-    <select id="selectByAccountKeyParamType" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="selectByAccountKeyParamType"
+            parameterType="java.util.Map"
+            resultMap="BaseResultMap">
         select server_unit_services_id,
         server_unit_account_id,
         server_unit_services_helicopter_rental_id,
@@ -373,7 +375,9 @@
         </if>
     </select>
 
-    <select id="selectAllByType" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="selectAllByType"
+            parameterType="java.util.Map"
+            resultMap="BaseResultMap">
         select server_unit_services_id,
         server_unit_account_id,
         server_unit_services_helicopter_rental_id,
@@ -395,10 +399,15 @@
             and
         </if>
         server_unit_services.server_unit_services_audit_status = '审批通过'
-        and server_unit_services.server_unit_services_id in (select server_unit_services.server_unit_services_id
+        and server_unit_services.server_unit_services_id in (
+
+            select server_unit_services.server_unit_services_id
         from server_unit_services,server_unit_account,server_unit_company
-        where server_unit_services.server_unit_account_id = server_unit_account.server_unit_account_id
-        and server_unit_account.server_unit_company_id = server_unit_company.server_unit_company_id
+        where server_unit_services.server_unit_account_id =
+              server_unit_account.server_unit_account_id
+        and server_unit_account.server_unit_company_id =
+            server_unit_company.server_unit_company_id
+
         and server_unit_company.server_unit_company_audit_status = '审批通过')
         <if test="limit &gt; 0">
             order by server_unit_services_release_time desc LIMIT 0,#{limit}

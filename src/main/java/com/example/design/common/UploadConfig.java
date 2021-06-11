@@ -19,8 +19,13 @@ public class UploadConfig implements WebMvcConfigurer {
         /*
          * linux
          */
-        registry.addResourceHandler(MyFile.imgAccessPath).addResourceLocations("file:" + MyFile.uploadLinuxImg);
-        registry.addResourceHandler(MyFile.pageAccessPath).addResourceLocations("file:" + MyFile.uploadLinuxPage);
+        registry.addResourceHandler(MyFile.imgAccessPath)
+                .addResourceLocations("file:" + MyFile.uploadLinuxImg);
+
+
+
+        registry.addResourceHandler(MyFile.pageAccessPath)
+                .addResourceLocations("file:" + MyFile.uploadLinuxPage);
 
     }
 }

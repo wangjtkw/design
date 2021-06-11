@@ -14,14 +14,19 @@
             <property name="suppressDate" value="true"/>
         </commentGenerator>
 
-        <jdbcConnection userId="root" password="1300421975a" driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/tdesign?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;useSSL=false&amp;serverTimezone=UTC"/>
+        <jdbcConnection
+                userId="root"
+                password="1300421975a"
+                driverClass="com.mysql.cj.jdbc.Driver"
+                connectionURL="jdbc:mysql://localhost:3306/tdesign?useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;useSSL=false&amp;serverTimezone=UTC"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.example.design.entity" targetProject="src/main/java">
+        <javaModelGenerator
+                targetPackage="com.example.design.entity"
+                targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -31,9 +36,12 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator targetPackage="com.example.design.mapper" type="XMLMAPPER"
-                             targetProject="src/main/java">
+        <javaClientGenerator
+                targetPackage="com.example.design.mapper"
+                type="XMLMAPPER"
+                targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
+
         </javaClientGenerator>
 
         <!--        <table schema="ServerUnitAccount" tableName="server_unit_account" enableCountByExample="false" enableDeleteByExample="false"-->

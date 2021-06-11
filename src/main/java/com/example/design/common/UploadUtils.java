@@ -30,7 +30,9 @@ public class UploadUtils {
         String filename = imgFile.getOriginalFilename();
         assert filename != null;
         String prefix = filename.substring(filename.lastIndexOf(".") + 1);
-        filename = UUID.randomUUID().toString().replace("-", "") + "." + prefix;
+        filename = UUID.randomUUID()
+                .toString()
+                .replace("-", "") + "." + prefix;
 
         // 存放上传图片的文件夹
         File fileDir = UploadUtils.getImgDirFile();
