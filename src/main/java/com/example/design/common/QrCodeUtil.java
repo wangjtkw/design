@@ -16,7 +16,6 @@ import java.util.Hashtable;
 
 /**
  * 二维码工具类
- * by liuhongdi
  */
 public class QrCodeUtil {
 

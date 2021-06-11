@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 
-    <!--此处需要更换-->
     <classPathEntry
             location="C:\Users\TKW\.m2\repository\org\mybatis\generator\mybatis-generator-core\1.4.0\mybatis-generator-core-1.4.0.jar"/>
 
